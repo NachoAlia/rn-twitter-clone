@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Text, View } from "react-native";
+import { styles } from "./Algo.styles";
 
 const Algo = () => {
   return (
@@ -10,5 +11,3 @@ const Algo = () => {
 };
 
 export default Algo;
-
-const styles = StyleSheet.create({});

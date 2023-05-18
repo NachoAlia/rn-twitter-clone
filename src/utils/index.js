@@ -1,1 +1,2 @@
-export const aux = "hola mundo";
+export * from "./screenName";
+export * from "./color";

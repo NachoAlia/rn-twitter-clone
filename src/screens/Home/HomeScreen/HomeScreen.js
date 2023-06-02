@@ -36,7 +36,6 @@ export function HomeScreen() {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
-        <Text>HomeScreen</Text>
         <Post dataPost={dataPost[0]} />
         <Post dataPost={dataPost[1]} />
       </ScrollView>

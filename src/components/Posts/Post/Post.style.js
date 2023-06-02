@@ -5,8 +5,12 @@ export const styles = StyleSheet.create({
   container: { paddingVertical: 15, flexDirection: "row" },
   photoUser: { paddingHorizontal: 10 },
   containerData: { width: "80%" },
-  postTitle: { flexDirection: "row", paddingHorizontal: 10 },
-
+  postTitle: { flexDirection: "row" },
+  title: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
   nicknameUser: { fontWeight: "bold", fontSize: 17 },
   nameUser: {
     fontSize: 17,

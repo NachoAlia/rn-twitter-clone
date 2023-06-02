@@ -2,55 +2,11 @@ import React from "react";
 import { View, Dimensions } from "react-native";
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
-import { color, ImageAuto } from "../../../utils";
+import { color, ImageAuto, timePost } from "../../../utils";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
 
 export function Post({ dataPost }) {
-  const timePost = () => {
-    const months = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
-    ];
-
-    const createPost = new Date(dataPost.createdAt);
-    const now = Date.now();
-    const difference = (now - createPost.getTime()) / 1000;
-
-    if (difference < 60)
-      return (
-        <Text style={styles.titleDate}>- {Math.floor(difference)} seg</Text>
-      );
-    if (difference >= 60 && difference < 3600)
-      return (
-        <Text style={{ color: color.light.textSecondary }}>
-          - {Math.floor(difference / 60)} min
-        </Text>
-      );
-    if (difference >= 3600 && difference < 86400)
-      return (
-        <Text style={styles.titleDate}>
-          - {Math.floor(difference / 3600)} h
-        </Text>
-      );
-    if (difference >= 86400)
-      return (
-        <Text style={styles.titleDate}>
-          - {createPost.getDate()} {months[createPost.getMonth()]}
-          {createPost.getFullYear()}
-        </Text>
-      );
-  };
   return (
     <>
       <View style={styles.container}>
@@ -63,10 +19,12 @@ export function Post({ dataPost }) {
         </View>
         <View style={styles.containerData}>
           {dataPost.thread ? <View style={styles.threadBar} /> : <></>}
-          <View style={styles.postTitle}>
-            <Text style={styles.nicknameUser}>{dataPost.nicknameUser}</Text>
-            <Text style={styles.nameUser}>@{dataPost.nameUser}</Text>
-            {timePost()}
+          <View style={styles.title}>
+            <View style={styles.postTitle}>
+              <Text style={styles.nicknameUser}>{dataPost.nicknameUser}</Text>
+              <Text style={styles.nameUser}>@{dataPost.nameUser}</Text>
+            </View>
+            <Text style={styles.titleDate}>{timePost(dataPost.createdAt)}</Text>
           </View>
 
           <View style={styles.containerInfo}>

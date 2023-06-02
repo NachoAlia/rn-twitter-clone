@@ -2,46 +2,15 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Image } from "react-native-elements";
 import { styles } from "./PostButtonBar.style";
+import { IconsButton } from "../../../../utils";
 
 export function PostButtonBar() {
   return (
     <View style={styles.barPost}>
-      <Button
-        buttonStyle={styles.containerButtonImage}
-        icon={
-          <Image
-            source={require("../../../../../assets/icons/ui/comments.png")}
-            style={styles.imageButton}
-          />
-        }
-      />
-      <Button
-        buttonStyle={styles.containerButtonImage}
-        icon={
-          <Image
-            source={require("../../../../../assets/icons/ui/repost.png")}
-            style={styles.imageButton}
-          />
-        }
-      />
-      <Button
-        buttonStyle={styles.containerButtonImage}
-        icon={
-          <Image
-            source={require("../../../../../assets/icons/ui/like_border.png")}
-            style={styles.imageButton}
-          />
-        }
-      />
-      <Button
-        buttonStyle={styles.containerButtonImage}
-        icon={
-          <Image
-            source={require("../../../../../assets/icons/ui/share.png")}
-            style={styles.imageButton}
-          />
-        }
-      />
+      <IconsButton name={"comment"} />
+      <IconsButton name={"repost"} />
+      <IconsButton name={"like_border"} />
+      <IconsButton name={"share"} />
     </View>
   );
 }

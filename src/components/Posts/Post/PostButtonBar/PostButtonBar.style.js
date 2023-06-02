@@ -7,8 +7,4 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: 5,
   },
-  imageButton: { height: 20, width: 20 },
-  containerButtonImage: {
-    backgroundColor: "#fff00",
-  },
 });

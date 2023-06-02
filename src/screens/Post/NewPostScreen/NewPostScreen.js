@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Avatar, Button, Image, Input, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./NewPostScreen.data";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./NewPostScreen.style";
-import { color } from "../../../utils";
+import { IconsButton, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 
 export function NewPostScreen() {
-  const [isOnPress, setIsOnPress] = useState(false);
   const [canBePost, setCanBePost] = useState(true);
   const navigation = useNavigation();
 
@@ -29,15 +28,17 @@ export function NewPostScreen() {
     },
   });
 
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   const openGallery = async () => {
-    setIsOnPress(true);
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
     });
     formik.setFieldValue("image", result.assets[0].uri);
     setCanBePost(false);
-    setIsOnPress(false);
   };
   return (
     <View style={styles.container}>
@@ -73,20 +74,8 @@ export function NewPostScreen() {
         )}
         <CharacterCountBar value={formik.values.content.length} />
         <View style={styles.barPost}>
-          <Button
-            buttonStyle={styles.containerButtonImage}
-            icon={
-              <Image
-                source={
-                  isOnPress
-                    ? require("../../../../assets/icons/ui/image_press.png")
-                    : require("../../../../assets/icons/ui/image.png")
-                }
-                style={styles.imageButton}
-                onPress={openGallery}
-              />
-            }
-          />
+          <IconsButton name={"image"} size={30} onPress={openGallery} />
+
           <Text style={styles.valuesAmount}>
             {formik.values.content.length}/140
           </Text>

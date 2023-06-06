@@ -15,12 +15,11 @@ export const styles = StyleSheet.create({
   nameUser: {
     fontSize: 17,
     paddingHorizontal: 5,
-    color: color.light.textSecondary,
   },
   titleDate: {
-    fontSize: 15,
-    color: color.light.textSecondary,
+    fontSize: 12,
     paddingHorizontal: 5,
+    alignSelf: "center",
   },
   containerInfo: { padding: 10 },
   text: { textAlign: "justify" },
@@ -35,16 +34,13 @@ export const styles = StyleSheet.create({
   threadUser: { paddingHorizontal: 20 },
   threadText: { color: color.light.corporate, fontWeight: "bold" },
   spreaderBar: {
-    height: 2,
-    width: "auto",
-    backgroundColor: color.light.contrast,
+    height: 1,
   },
   threadBar: {
     marginTop: 55,
     height: "95%",
     position: "absolute",
     left: -35,
-    width: 2,
-    backgroundColor: color.light.contrast,
+    width: 1,
   },
 });

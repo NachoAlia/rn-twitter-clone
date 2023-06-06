@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { color } from "../../../utils";
+
 export const styles = StyleSheet.create({
   content: {
     marginTop: 30,
@@ -15,11 +15,9 @@ export const styles = StyleSheet.create({
   userName: {
     marginTop: 5,
     fontSize: 20,
-    color: color.light.text,
   },
   mentionUserName: {
     fontSize: 16,
-    color: color.light.textSecondary,
   },
   infoCount: {
     fontSize: 14,
@@ -27,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 14,
-    color: color.light.textSecondary,
     marginLeft: 5,
   },
   containerInfo: {

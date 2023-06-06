@@ -2,13 +2,16 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { AppStack } from "./src/navigation/AppStack";
 import { LogBox } from "react-native";
+import { ThemaProvider } from "./src/components/ThemeProvider";
 
 LogBox.ignoreAllLogs();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AppStack />
-    </NavigationContainer>
+    <ThemaProvider>
+      <NavigationContainer>
+        <AppStack />
+      </NavigationContainer>
+    </ThemaProvider>
   );
 }

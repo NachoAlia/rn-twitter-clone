@@ -4,9 +4,14 @@ import { Icon } from "react-native-elements";
 import { styles } from "./DrawerOptions.styles";
 import { useNavigation } from "@react-navigation/native";
 import { screen } from "../../../utils/screenName";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 export function DrawerOptions() {
   const navigation = useNavigation();
   const menuOptions = getMenuOptions(navigation);
+
+  const thema = useThemaContext();
+
   return (
     <View>
       {menuOptions.map((elem, index) => {
@@ -20,7 +25,15 @@ export function DrawerOptions() {
                 size={elem.iconSize}
                 iconStyle={styles.iconStyle}
               />
-              <Text style={{ fontSize: 22 }}>{elem.title}</Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  paddingHorizontal: 10,
+                  color: thema ? color.light.text : color.dark.text,
+                }}
+              >
+                {elem.title}
+              </Text>
             </TouchableOpacity>
           </>
         );

@@ -8,10 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 import { styles } from "./NewPostScreen.style";
 import { IconsButton, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
+import { useThemaContext } from "../../../components/ThemeProvider";
 
 export function NewPostScreen() {
   const [canBePost, setCanBePost] = useState(true);
   const navigation = useNavigation();
+
+  const thema = useThemaContext();
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -41,7 +44,16 @@ export function NewPostScreen() {
     setCanBePost(false);
   };
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        },
+      ]}
+    >
       <Avatar
         source={require("../../../../assets/icons/default_user_photo.png")}
         size="large"
@@ -62,6 +74,10 @@ export function NewPostScreen() {
           numberOfLines={5}
           maxLength={140}
           inputContainerStyle={styles.textArea}
+          inputStyle={{ color: thema ? color.light.text : color.dark.text }}
+          placeholderTextColor={
+            thema ? color.light.textSecondary : color.dark.textSecondary
+          }
           onChangeText={(text) => formik.setFieldValue("content", text)}
         />
         {formik.values.image ? (
@@ -76,7 +92,16 @@ export function NewPostScreen() {
         <View style={styles.barPost}>
           <IconsButton name={"image"} size={30} onPress={openGallery} />
 
-          <Text style={styles.valuesAmount}>
+          <Text
+            style={[
+              styles.valuesAmount,
+              {
+                color: thema
+                  ? color.light.textSecondary
+                  : color.dark.textSecondary,
+              },
+            ]}
+          >
             {formik.values.content.length}/140
           </Text>
         </View>

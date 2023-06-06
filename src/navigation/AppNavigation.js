@@ -8,18 +8,25 @@ import { NotificationStack } from "./NotificationStack";
 import { MessagesStack } from "./MessagesStack";
 import { AccountStack } from "./AccountStack";
 
-import { screen } from "../utils";
+import { screen, color } from "../utils";
+import { useThemaContext } from "../components/ThemeProvider";
 
 const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
+  const thema = useThemaContext();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: "blue",
-        tabBarInactiveTintColor: "#646464",
+        tabBarActiveTintColor: color.light.corporate,
+        tabBarInactiveTintColor: color.light.alternative,
         tabBarIcon: ({ color, size }) => screenOptions(route, color, size),
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        },
       })}
     >
       <Tab.Screen

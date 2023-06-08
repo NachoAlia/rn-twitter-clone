@@ -2,8 +2,12 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { ButtonNewPost } from "../../../components";
 import { Post } from "../../../components/Posts";
+import { useThemaContext } from "../../../components/ThemeProvider";
+import { color } from "../../../utils";
 
 export function HomeScreen() {
+  const thema = useThemaContext();
+
   const dataPost = [
     {
       nicknameUser: "nameUser",
@@ -11,7 +15,7 @@ export function HomeScreen() {
       postBody:
         "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
       image: "https://loganstore.com.mx/wp-content/uploads/2022/11/EXIA-4.jpg",
-      thread: false,
+      thread: true,
       createdAt: "2023-05-30T01:58:47.525Z",
     },
     {
@@ -34,7 +38,12 @@ export function HomeScreen() {
   ];
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      }}
+    >
       <ScrollView>
         <Post dataPost={dataPost[0]} />
         <Post dataPost={dataPost[1]} />

@@ -5,8 +5,11 @@ import { styles } from "./Post.style";
 import { color, ImageAuto, timePost } from "../../../utils";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
+import { useThemaContext } from "../../ThemeProvider";
 
 export function Post({ dataPost }) {
+  const thema = useThemaContext();
+
   return (
     <>
       <View style={styles.container}>
@@ -18,17 +21,66 @@ export function Post({ dataPost }) {
           />
         </View>
         <View style={styles.containerData}>
-          {dataPost.thread ? <View style={styles.threadBar} /> : <></>}
+          {dataPost.thread ? (
+            <View
+              style={[
+                styles.threadBar,
+                {
+                  backgroundColor: thema
+                    ? color.light.contrast
+                    : color.dark.contrast,
+                },
+              ]}
+            />
+          ) : (
+            <></>
+          )}
           <View style={styles.title}>
             <View style={styles.postTitle}>
-              <Text style={styles.nicknameUser}>{dataPost.nicknameUser}</Text>
-              <Text style={styles.nameUser}>@{dataPost.nameUser}</Text>
+              <Text
+                style={[
+                  styles.nicknameUser,
+                  { color: thema ? color.light.text : color.dark.text },
+                ]}
+              >
+                {dataPost.nicknameUser}
+              </Text>
+              <Text
+                style={[
+                  styles.nameUser,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                @{dataPost.nameUser}
+              </Text>
             </View>
-            <Text style={styles.titleDate}>{timePost(dataPost.createdAt)}</Text>
+            <Text
+              style={[
+                styles.titleDate,
+                {
+                  color: thema
+                    ? color.light.textSecondary
+                    : color.dark.textSecondary,
+                },
+              ]}
+            >
+              {timePost(dataPost.createdAt)}
+            </Text>
           </View>
 
           <View style={styles.containerInfo}>
-            <Text style={styles.text}>{dataPost.postBody}</Text>
+            <Text
+              style={[
+                styles.text,
+                { color: thema ? color.light.text : color.dark.text },
+              ]}
+            >
+              {dataPost.postBody}
+            </Text>
             {dataPost.image ? (
               <View style={styles.imagePost}>
                 <ImageAuto
@@ -59,7 +111,14 @@ export function Post({ dataPost }) {
       ) : (
         <></>
       )}
-      <View style={styles.spreaderBar} />
+      <View
+        style={[
+          styles.spreaderBar,
+          {
+            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
+          },
+        ]}
+      />
     </>
   );
 }

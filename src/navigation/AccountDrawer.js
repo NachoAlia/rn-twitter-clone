@@ -12,14 +12,26 @@ import { DrawerUserInfo } from "../components/DrawerContent/DrawerUserInfo";
 
 import { screen } from "../utils/screenName";
 import { DrawerOptions } from "../components/DrawerContent";
+import { ChangeThema } from "../components/Thema";
+import { useThemaContext } from "../components/ThemeProvider";
+import { color } from "../utils";
 
 const Drawer = createDrawerNavigator();
 
 export function AccountDrawer() {
   const navigation = useNavigation();
+  const thema = useThemaContext();
+
   const renderAccount = () => {
     return (
-      <View style={{ width: "100%" }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        }}
+      >
         <View style={{ marginTop: 40, marginLeft: 20 }}>
           <Image
             source={require("../../assets/icons/logo_owl.png")}
@@ -32,12 +44,21 @@ export function AccountDrawer() {
             width: "100%",
             height: 1,
             marginTop: 10,
-            backgroundColor: "#c2c2c2",
+            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
           }}
-        ></View>
+        />
         <View style={{ marginTop: 20, marginLeft: 0 }}>
           <DrawerOptions />
         </View>
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            marginTop: 10,
+            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
+          }}
+        />
+        <ChangeThema />
       </View>
     );
   };
@@ -55,6 +76,11 @@ export function AccountDrawer() {
             />
           ),
           headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: thema
+              ? color.light.background
+              : color.dark.background,
+          },
         }}
       />
       <Drawer.Screen

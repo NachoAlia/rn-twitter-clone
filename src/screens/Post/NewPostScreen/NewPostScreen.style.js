@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     padding: 20,
-    backgroundColor: color.light.background,
+    flex: 1,
   },
   containerButtonPostDisabled: { backgroundColor: color.light.alternative },
   containerButtonPost: {
@@ -21,14 +21,12 @@ export const styles = StyleSheet.create({
     resizeMode: "contain",
     marginHorizontal: "3%",
   },
-  imageButton: { height: 30, width: 30 },
   containerButtonImage: {
     backgroundColor: "#fff00",
     alignSelf: "flex-start",
   },
   barPost: { flexDirection: "row", justifyContent: "space-between" },
   valuesAmount: {
-    color: color.light.textSecondary,
     alignSelf: "center",
   },
 });

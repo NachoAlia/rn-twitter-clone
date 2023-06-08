@@ -4,8 +4,11 @@ import { Icon } from "react-native-elements";
 import { styles } from "./DrawerOptions.styles";
 import { useNavigation } from "@react-navigation/native";
 import { screen } from "../../../utils/screenName";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 export function DrawerOptions() {
   const navigation = useNavigation();
+  const thema = useThemaContext();
 
   const getMenuOptions = () => {
     return [
@@ -66,22 +69,26 @@ export function DrawerOptions() {
     <View>
       {menuOptions.map((elem, index) => {
         return (
-          <View key={index}>
-            <TouchableOpacity
-              style={styles.touchable}
-              onPress={elem.onPress}
-              key={index}
-            >
+          <>
+            {index == 4 && <View style={styles.bottomDivider}></View>}
+            <TouchableOpacity style={styles.touchable} onPress={elem.onPress}>
               <Icon
                 type={elem.iconType}
                 name={elem.iconNameLeft}
                 size={elem.iconSize}
                 iconStyle={styles.iconStyle}
               />
-              <Text style={{ fontSize: 22 }}>{elem.title}</Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  paddingHorizontal: 10,
+                  color: thema ? color.light.text : color.dark.text,
+                }}
+              >
+                {elem.title}
+              </Text>
             </TouchableOpacity>
-            {elem.bottomDivider && <View style={styles.bottomDivider}></View>}
-          </View>
+          </>
         );
       })}
     </View>

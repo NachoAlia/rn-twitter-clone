@@ -1,39 +1,35 @@
 import React from "react";
-import { View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { View, ScrollView } from "react-native";
+import { Text, Image } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { LoginForm } from "../../../components/Auth";
 import { screen } from "../../../utils";
+import { styles } from "./LoginScreen.styles";
 
 export function LoginScreen() {
   const navigation = useNavigation();
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>LoginScreen</Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <View style={{ marginHorizontal: 5 }}>
-          <Button
-            title="TestLoguearme"
-            onPress={() => navigation.navigate(screen.account.index)}
-          />
-        </View>
-        <View style={{ marginHorizontal: 5 }}>
-          <Button
-            title="Registrarme"
-            onPress={() => navigation.navigate(screen.account.register)}
-          />
-        </View>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
+      <Image
+        source={require("../../../../assets/icons/logo.png")}
+        style={styles.image}
+      />
+      <View style={styles.content}>
+        <Text style={styles.title}>Sign in</Text>
+        <LoginForm />
+
+        <Text style={styles.textRegister}>
+          ¿New to Owl?{" "}
+          <Text
+            style={styles.btnRegister}
+            onPress={() => {
+              navigation.navigate(screen.account.register);
+            }}
+          >
+            Sign up here
+          </Text>
+        </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }

@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 
 import { useFormik } from "formik";
+import { login } from "../../../config/apis/Auth";
 // import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
@@ -24,12 +25,7 @@ export function LoginForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        // const auth = getAuth();
-        // await signInWithEmailAndPassword(
-        //   auth,
-        //   formValue.email,
-        //   formValue.password
-        // );
+        await login(formValue.email, formValue.password);
 
         Toast.show({
           type: "success",
@@ -38,14 +34,14 @@ export function LoginForm() {
           text2: "Signed in successfully",
         });
 
-        navigation.navigate(screen.account.account);
+        navigation.navigate(screen.account.index);
       } catch (error) {
         console.log(error);
 
         Toast.show({
           type: "error",
           position: "bottom",
-          text1: "User or password are incorrect",
+          text1: "Email or password are incorrect",
         });
       }
     },

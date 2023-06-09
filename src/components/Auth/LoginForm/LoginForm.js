@@ -50,7 +50,7 @@ export function LoginForm() {
   return (
     <View style={styles.content}>
       <Input
-        placeholder="Email or User Name"
+        placeholder="Email"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
         rightIcon={<IconsButton name="mail" size={30} active={false} />}

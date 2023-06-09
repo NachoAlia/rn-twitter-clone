@@ -17,7 +17,7 @@ export function AppStack() {
         component={LoginScreen}
         options={{
           title: "Iniciar Sesion",
-          headerTitleAlign: "center",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -25,8 +25,7 @@ export function AppStack() {
         component={RegisterScreen}
         options={{
           title: "Registrarse",
-          headerTitleAlign: "center",
-          headerBackButtonMenuEnabled: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen

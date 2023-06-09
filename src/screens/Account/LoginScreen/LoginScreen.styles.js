@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 80,
-    color: color.light.text,
+    // color: color.light.text,
     // color: color.light.contrast,
     textAlign: "center",
   },

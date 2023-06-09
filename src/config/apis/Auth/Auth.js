@@ -1,4 +1,8 @@
-const apiUrl = "http://192.168.1.200:3000/api/v1/users/login";
+import { domainUrl } from "../../host";
+
+const route = "/api/v1/users/login";
+
+const apiUrl = `${domainUrl}${route}`;
 
 export async function login(emailOrUsername, password) {
   const response = await fetch(apiUrl, {

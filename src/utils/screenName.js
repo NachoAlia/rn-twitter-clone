@@ -20,8 +20,9 @@ const messagesStack = {
 
 const accountStack = {
   account: "Account",
-  login: "Iniciar sesion",
-  register: "Registrarse",
+  accountProfile: "AccountProfile",
+  signin: "Iniciar sesion",
+  signup: "Registrarse",
   index: "Index",
   editProfile: "Editar perfil",
 };

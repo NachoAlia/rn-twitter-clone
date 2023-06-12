@@ -4,7 +4,7 @@ const route = "/users/login";
 
 const apiUrl = `${domainUrl}${route}`;
 
-export async function Login(emailOrUsername, password) {
+export async function Signin(emailOrUsername, password) {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {

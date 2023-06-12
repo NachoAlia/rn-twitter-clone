@@ -2,8 +2,14 @@ import React from "react";
 import { View } from "react-native";
 import { Avatar, Button, Text, Image, Icon } from "react-native-elements";
 import { styles } from "./InfoUser.styles";
-
+import { useNavigation } from "@react-navigation/native";
+import { screen } from "../../../utils/screenName";
 export function InfoUser() {
+  const navigation = useNavigation();
+
+  const goToEditProfile = () => {
+    navigation.navigate(screen.account.editProfile);
+  };
   return (
     <View style={styles.content}>
       <View style={styles.containerUserInfo}>
@@ -23,6 +29,7 @@ export function InfoUser() {
             buttonStyle={styles.buttonEditProfile}
             containerStyle={styles.containerButtonEditProfile}
             titleStyle={styles.buttonEditProfileTitle}
+            onPress={goToEditProfile}
           />
           <Text style={styles.userName}>UserName</Text>
           <Text style={styles.mentionUserName}>@UserName</Text>

@@ -1,12 +1,11 @@
 import React from "react";
 import { View } from "react-native";
 import { Image, Text } from "react-native-elements";
-import { styles } from "./RegisterScreen.styles";
-import { ImageAuto } from "../../../utils";
+import { styles } from "./SignupScreen.styles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { RegisterForm } from "../../../components/Auth";
+import { SignupForm } from "../../../components/Auth";
 
-export function RegisterScreen() {
+export function SignupScreen() {
   return (
     <KeyboardAwareScrollView>
       <Image
@@ -15,7 +14,7 @@ export function RegisterScreen() {
       />
       <View style={styles.content}>
         <Text style={styles.title}>Sign Up</Text>
-        <RegisterForm />
+        <SignupForm />
       </View>
     </KeyboardAwareScrollView>
   );

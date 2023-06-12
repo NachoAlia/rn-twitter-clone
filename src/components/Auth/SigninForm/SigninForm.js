@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 
 import { useFormik } from "formik";
-import { login } from "../../../config/apis/Auth";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Signin } from "../../../config/api/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
-import { initialValues, validationSchema } from "./LoginForm.data";
+import { initialValues, validationSchema } from "./SigninForm.data";
 
-import { styles } from "./LoginForm.styles";
+import { styles } from "./SigninForm.styles";
 
-export function LoginForm() {
+export function SiginForm() {
   const navigation = useNavigation();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +24,7 @@ export function LoginForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        await login(formValue.email, formValue.password);
+        await Signin(formValue.email, formValue.password);
 
         Toast.show({
           type: "success",

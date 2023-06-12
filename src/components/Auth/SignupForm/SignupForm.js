@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { useFormik } from "formik";
 // import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
-import { initialValues, validationSchema } from "./RegisterForm.data";
-import { styles } from "./RegisterForm.styles";
+import { initialValues, validationSchema } from "./SignupForm.data";
+import { styles } from "./SignupForm.styles";
 
-export function RegisterForm() {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();

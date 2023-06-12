@@ -19,11 +19,12 @@ const messagesStack = {
 };
 
 const accountStack = {
-  tab: "AccountTab",
   account: "Account",
-  login: "Iniciar sesion",
-  register: "Registrarse",
+  accountProfile: "AccountProfile",
+  signin: "Iniciar sesion",
+  signup: "Registrarse",
   index: "Index",
+  editProfile: "Editar perfil",
 };
 export const screen = {
   home: homeStack,

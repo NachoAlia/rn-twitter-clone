@@ -55,7 +55,7 @@ export function SigninScreen() {
           <Text
             style={styles.btnRegister}
             onPress={() => {
-              navigation.navigate(screen.account.register);
+              navigation.navigate(screen.account.signup);
             }}
           >
             Sign up here

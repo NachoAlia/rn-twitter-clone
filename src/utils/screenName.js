@@ -21,8 +21,8 @@ const messagesStack = {
 const accountStack = {
   account: "Account",
   accountProfile: "AccountProfile",
-  signin: "Iniciar sesion",
-  signup: "Registrarse",
+  signin: "Sign In",
+  signup: "Sign Up",
   index: "Index",
   editProfile: "Editar perfil",
 };

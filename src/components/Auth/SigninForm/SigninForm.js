@@ -11,7 +11,7 @@ import { initialValues, validationSchema } from "./SigninForm.data";
 
 import { styles } from "./SigninForm.styles";
 
-export function SiginForm() {
+export function SigninForm() {
   const navigation = useNavigation();
 
   const [showPassword, setShowPassword] = useState(false);

@@ -42,7 +42,7 @@ export function DrawerOptions() {
         iconType: "material-community",
         iconNameLeft: "bookmark-outline",
         iconSize: 32,
-        bottomDivider: true,
+        bottomDivider: false,
         onPress: () => console.log("asd"),
       },
       {
@@ -50,7 +50,7 @@ export function DrawerOptions() {
         iconType: "material-community",
         iconNameLeft: "cog-outline",
         iconSize: 32,
-        bottomDivider: false,
+        bottomDivider: true,
         onPress: () => console.log("asd"),
       },
       {
@@ -69,8 +69,8 @@ export function DrawerOptions() {
     <View>
       {menuOptions.map((elem, index) => {
         return (
-          <>
-            {index == 4 && <View style={styles.bottomDivider}></View>}
+          <View key={index}>
+            {elem.bottomDivider && <View style={styles.bottomDivider}></View>}
             <TouchableOpacity style={styles.touchable} onPress={elem.onPress}>
               <Icon
                 type={elem.iconType}
@@ -88,7 +88,7 @@ export function DrawerOptions() {
                 {elem.title}
               </Text>
             </TouchableOpacity>
-          </>
+          </View>
         );
       })}
     </View>

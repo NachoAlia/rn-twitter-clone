@@ -69,6 +69,7 @@ export function AccountDrawer() {
         name="App"
         component={AppNavigation}
         options={{
+          drawerItemStyle: { color: color.light.corporate },
           title: (
             <Image
               source={require("../../assets/icons/logo_owl.png")}

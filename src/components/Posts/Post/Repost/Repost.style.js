@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     padding: 10,
+    marginVertical: 5,
   },
   postTitle: { flexDirection: "row", justifyContent: "space-between" },
   titleDate: {

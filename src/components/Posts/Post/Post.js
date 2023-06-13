@@ -91,9 +91,13 @@ export function Post({ dataPost }) {
             ) : (
               <></>
             )}
-            {dataPost.repost ? <Repost dataPost={dataPost.repost} /> : <></>}
+            {dataPost.repost.nicknameUser ? (
+              <Repost dataPost={dataPost.repost} />
+            ) : (
+              <></>
+            )}
 
-            <PostButtonBar />
+            <PostButtonBar comment={dataPost.comment} />
           </View>
         </View>
       </View>

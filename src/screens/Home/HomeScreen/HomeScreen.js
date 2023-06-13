@@ -17,6 +17,24 @@ export function HomeScreen() {
       image: "https://loganstore.com.mx/wp-content/uploads/2022/11/EXIA-4.jpg",
       thread: true,
       createdAt: "2023-05-30T01:58:47.525Z",
+      repost: {},
+      comment: [
+        {
+          nicknameUser: "nameUser",
+          commentBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        },
+        {
+          nicknameUser: "nameUser",
+          commentBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        },
+        {
+          nicknameUser: "nameUser",
+          commentBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        },
+      ],
     },
     {
       nicknameUser: "nameUser",
@@ -34,6 +52,7 @@ export function HomeScreen() {
         image: "",
         createdAt: "2023-05-30T01:58:47.525Z",
       },
+      comment: [],
     },
   ];
 

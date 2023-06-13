@@ -1,39 +1,22 @@
 import React from "react";
 import { View } from "react-native";
-import { Button, Text } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
-import { screen } from "../../../utils";
+import { Image, Text } from "react-native-elements";
+import { styles } from "./RegisterScreen.styles";
+import { ImageAuto } from "../../../utils";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { RegisterForm } from "../../../components/Auth";
 
 export function RegisterScreen() {
-  const navigation = useNavigation();
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>LoginScreen</Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <View style={{ marginHorizontal: 5 }}>
-          <Button
-            title="TestRegistrarme"
-            onPress={() => navigation.navigate(screen.account.index)}
-          />
-        </View>
-        <View style={{ marginHorizontal: 5 }}>
-          <Button
-            title="TestVolverAlLogin"
-            onPress={() => navigation.navigate(screen.account.login)}
-          />
-        </View>
+    <KeyboardAwareScrollView>
+      <Image
+        source={require("../../../../assets/icons/logo_only_owl.png")}
+        style={styles.image}
+      />
+      <View style={styles.content}>
+        <Text style={styles.title}>Sign Up</Text>
+        <RegisterForm />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }

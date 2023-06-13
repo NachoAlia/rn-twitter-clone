@@ -6,7 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 
 import { AppNavigation } from "./AppNavigation";
-import { AccountScreen } from "../screens/Account";
+//import { AccountScreen } from "../screens/Account";
 
 import { DrawerUserInfo } from "../components/DrawerContent/DrawerUserInfo";
 
@@ -15,6 +15,7 @@ import { DrawerOptions } from "../components/DrawerContent";
 import { ChangeThema } from "../components/Thema";
 import { useThemaContext } from "../components/ThemeProvider";
 import { color } from "../utils";
+import { AccountStack } from "./AccountStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -64,7 +65,12 @@ export function AccountDrawer() {
   };
 
   return (
-    <Drawer.Navigator drawerContent={() => renderAccount()}>
+    <Drawer.Navigator
+      drawerContent={() => renderAccount()}
+      screenOptions={{
+        headerTintColor: "red",
+      }}
+    >
       <Drawer.Screen
         name="App"
         component={AppNavigation}
@@ -86,18 +92,10 @@ export function AccountDrawer() {
       />
       <Drawer.Screen
         name={screen.account.account}
-        component={AccountScreen}
+        component={AccountStack}
         options={{
           swipeEnabled: false,
-          headerLeft: () => (
-            <Icon
-              type="material-community"
-              name="arrow-left"
-              iconStyle={{ marginLeft: 10 }}
-              size={28}
-              onPress={() => navigation.navigate(screen.home.tab)}
-            />
-          ),
+          headerShown: false,
         }}
       />
     </Drawer.Navigator>

@@ -41,7 +41,7 @@ export function SignupForm() {
         Toast.show({
           type: "error",
           text1: `Account was not created`,
-          text2: `Email already in use`,
+          text2: `Email or username already in use`,
           position: "bottom",
         });
       }
@@ -59,6 +59,15 @@ export function SignupForm() {
         leftIcon={<IconsButton name="users" size={30} active={false} />}
         rightIcon={<IconsButton name="mail" size={30} active={false} />}
         onChangeText={(text) => formik.setFieldValue("email", text)}
+        errorMessage={formik.errors.email}
+      />
+      <Input
+        placeholder="Username"
+        containerStyle={styles.input}
+        inputContainerStyle={styles.inputContainer}
+        leftIcon={<IconsButton name="users" size={30} active={false} />}
+        rightIcon={<IconsButton name="profile" size={30} active={false} />}
+        onChangeText={(text) => formik.setFieldValue("username", text)}
         errorMessage={formik.errors.email}
       />
       <Input
@@ -95,6 +104,7 @@ export function SignupForm() {
         onChangeText={(text) => formik.setFieldValue("confirmPassword", text)}
         errorMessage={formik.errors.confirmPassword}
       />
+
       <Button
         title="Create Account"
         containerStyle={styles.btnContainer}

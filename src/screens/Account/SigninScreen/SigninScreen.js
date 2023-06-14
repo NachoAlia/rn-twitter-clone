@@ -2,15 +2,15 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, Image } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { LoginForm } from "../../../components/Auth";
-import { screen, ImageAuto, color } from "../../../utils";
-import { styles } from "./LoginScreen.styles";
+import { SigninForm } from "../../../components/Auth";
+import { screen, color } from "../../../utils";
+import { styles } from "./SigninScreen.styles";
 import { useThemaContext } from "../../../components/ThemeProvider";
 
-export function LoginScreen() {
+export function SigninScreen() {
   const navigation = useNavigation();
   const theme = useThemaContext();
-  console.log(theme);
+  // console.log(theme);
 
   return (
     <ScrollView
@@ -41,7 +41,7 @@ export function LoginScreen() {
         >
           Sign in
         </Text>
-        <LoginForm />
+        <SigninForm />
 
         <Text
           style={[
@@ -55,7 +55,7 @@ export function LoginScreen() {
           <Text
             style={styles.btnRegister}
             onPress={() => {
-              navigation.navigate(screen.account.register);
+              navigation.navigate(screen.account.signup);
             }}
           >
             Sign up here

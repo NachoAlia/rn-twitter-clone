@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LoginScreen, RegisterScreen } from "../screens/Account";
+import { SigninScreen, SignupScreen } from "../screens/Account";
 
 import { AccountDrawer } from "./AccountDrawer";
 
@@ -11,20 +11,20 @@ const Stack = createNativeStackNavigator();
 
 export function AppStack() {
   return (
-    <Stack.Navigator initialRouteName={screen.account.login}>
+    <Stack.Navigator initialRouteName={screen.account.signin}>
       <Stack.Screen
-        name={screen.account.login}
-        component={LoginScreen}
+        name={screen.account.signin}
+        component={SigninScreen}
         options={{
-          title: "Iniciar Sesion",
+          title: "Sign In",
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name={screen.account.register}
-        component={RegisterScreen}
+        name={screen.account.signup}
+        component={SignupScreen}
         options={{
-          title: "Registrarse",
+          title: "Sign Up",
           headerShown: false,
         }}
       />

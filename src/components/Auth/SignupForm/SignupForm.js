@@ -1,23 +1,18 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
-
+import { Input, Button } from "react-native-elements";
 import { useFormik } from "formik";
-import { login } from "../../../config/apis/Auth";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Signup } from "../../../config/api/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
-import { initialValues, validationSchema } from "./LoginForm.data";
+import { initialValues, validationSchema } from "./SignupForm.data";
+import { styles } from "./SignupForm.styles";
 
-import { styles } from "./LoginForm.styles";
-
-export function LoginForm() {
-  const navigation = useNavigation();
-
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const showHiddenPassword = () => setShowPassword((prevState) => !prevState);
+  const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -25,27 +20,30 @@ export function LoginForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        await login(formValue.email, formValue.password);
+        await Signup(formValue.email, formValue.username, formValue.password);
 
         Toast.show({
           type: "success",
+          text1: `"Acount Created!`,
+          text2: `"Welcome 🤗`,
           position: "bottom",
-          text1: "Welcome!!",
-          text2: "Signed in successfully",
         });
 
         navigation.navigate(screen.account.index);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         Toast.show({
           type: "error",
+          text1: `Account was not created`,
+          text2: `Email or username already in use`,
           position: "bottom",
-          text1: "Email or password are incorrect",
         });
       }
     },
   });
+
+  const showHiddenPassword = () => setShowPassword((prevState) => !prevState);
 
   return (
     <View style={styles.content}>
@@ -53,10 +51,19 @@ export function LoginForm() {
         placeholder="Email"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
-        rightIcon={<IconsButton name="mail" size={30} active={false} />}
         leftIcon={<IconsButton name="users" size={30} active={false} />}
+        rightIcon={<IconsButton name="mail" size={30} active={false} />}
         onChangeText={(text) => formik.setFieldValue("email", text)}
         errorMessage={formik.errors.email}
+      />
+      <Input
+        placeholder="Username"
+        containerStyle={styles.input}
+        inputContainerStyle={styles.inputContainer}
+        leftIcon={<IconsButton name="users" size={30} active={false} />}
+        rightIcon={<IconsButton name="profile" size={30} active={false} />}
+        onChangeText={(text) => formik.setFieldValue("username", text)}
+        errorMessage={formik.errors.username}
       />
       <Input
         placeholder="Password"
@@ -75,10 +82,27 @@ export function LoginForm() {
         onChangeText={(text) => formik.setFieldValue("password", text)}
         errorMessage={formik.errors.password}
       />
+      <Input
+        placeholder="Confirm Password"
+        containerStyle={styles.input}
+        inputContainerStyle={styles.inputContainer}
+        secureTextEntry={showPassword ? false : true}
+        leftIcon={<IconsButton name="lock" size={30} active={false} />}
+        rightIcon={
+          <IconsButton
+            name={showPassword ? "visibility_off" : "visibility"}
+            size={30}
+            active={false}
+            onPress={showHiddenPassword}
+          />
+        }
+        onChangeText={(text) => formik.setFieldValue("confirmPassword", text)}
+        errorMessage={formik.errors.confirmPassword}
+      />
+
       <Button
-        title="Sign In"
+        title="Create Account"
         containerStyle={styles.btnContainer}
-        titleStyle={styles.btntitleContainer}
         buttonStyle={styles.btn}
         onPress={formik.handleSubmit}
         loading={formik.isSubmitting}

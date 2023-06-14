@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { useFormik } from "formik";
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Signup } from "../../../config/api/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
@@ -20,12 +20,7 @@ export function SignupForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        // const auth = getAuth();
-        // await createUserWithEmailAndPassword(
-        //   auth,
-        //   formValue.email,
-        //   formValue.password
-        // );
+        await Signup(formValue.email, formValue.username, formValue.password);
 
         Toast.show({
           type: "success",
@@ -34,9 +29,9 @@ export function SignupForm() {
           position: "bottom",
         });
 
-        navigation.navigate(screen.account.account);
+        navigation.navigate(screen.account.index);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         Toast.show({
           type: "error",
@@ -68,7 +63,7 @@ export function SignupForm() {
         leftIcon={<IconsButton name="users" size={30} active={false} />}
         rightIcon={<IconsButton name="profile" size={30} active={false} />}
         onChangeText={(text) => formik.setFieldValue("username", text)}
-        errorMessage={formik.errors.email}
+        errorMessage={formik.errors.username}
       />
       <Input
         placeholder="Password"

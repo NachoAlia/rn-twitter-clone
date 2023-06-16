@@ -26,10 +26,17 @@ const accountStack = {
   index: "Index",
   editProfile: "Editar perfil",
 };
+
+const bookmarkStack = {
+  tab: "BookmarkTab",
+  index: "Bookmark",
+};
+
 export const screen = {
   home: homeStack,
   search: searchStack,
   notifications: notificationStack,
   messages: messagesStack,
   account: accountStack,
+  bookmark: bookmarkStack,
 };

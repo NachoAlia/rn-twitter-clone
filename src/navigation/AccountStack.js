@@ -22,7 +22,7 @@ export function AccountStack() {
             <Icon
               type="material-community"
               name="arrow-left"
-              iconStyle={{ marginLeft: 0, marginRight: 30 }}
+              containerStyle={{ marginLeft: 0, marginRight: 30 }}
               size={24}
               onPress={() => navigation.navigate(screen.home.tab)}
             />

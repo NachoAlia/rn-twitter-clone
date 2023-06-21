@@ -16,6 +16,7 @@ import { ChangeThema } from "../components/Thema";
 import { useThemaContext } from "../components/ThemeProvider";
 import { color } from "../utils";
 import { AccountStack } from "./AccountStack";
+import { BookmarkStack } from "./BookmarkStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -68,7 +69,7 @@ export function AccountDrawer() {
     <Drawer.Navigator
       drawerContent={() => renderAccount()}
       screenOptions={{
-        headerTintColor: "red",
+        headerTintColor: thema ? color.light.corporate : color.dark.corporate,
       }}
     >
       <Drawer.Screen
@@ -93,6 +94,14 @@ export function AccountDrawer() {
       <Drawer.Screen
         name={screen.account.account}
         component={AccountStack}
+        options={{
+          swipeEnabled: false,
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name={screen.bookmark.tab}
+        component={BookmarkStack}
         options={{
           swipeEnabled: false,
           headerShown: false,

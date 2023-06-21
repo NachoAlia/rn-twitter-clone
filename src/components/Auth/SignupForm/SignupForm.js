@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { useFormik } from "formik";
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Signup } from "../../../config/api/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
-import { initialValues, validationSchema } from "./RegisterForm.data";
-import { styles } from "./RegisterForm.styles";
+import { initialValues, validationSchema } from "./SignupForm.data";
+import { styles } from "./SignupForm.styles";
 
-export function RegisterForm() {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
-
   const navigation = useNavigation();
 
   const formik = useFormik({
@@ -20,12 +19,7 @@ export function RegisterForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        // const auth = getAuth();
-        // await createUserWithEmailAndPassword(
-        //   auth,
-        //   formValue.email,
-        //   formValue.password
-        // );
+        await Signup(formValue.email, formValue.username, formValue.password);
 
         Toast.show({
           type: "success",
@@ -34,14 +28,12 @@ export function RegisterForm() {
           position: "bottom",
         });
 
-        navigation.navigate(screen.account.account);
+        navigation.navigate(screen.account.signin);
       } catch (error) {
-        console.log(error);
-
         Toast.show({
           type: "error",
           text1: `Account was not created`,
-          text2: `Email already in use`,
+          text2: `Email or username already in use`,
           position: "bottom",
         });
       }
@@ -60,6 +52,15 @@ export function RegisterForm() {
         rightIcon={<IconsButton name="mail" size={30} active={false} />}
         onChangeText={(text) => formik.setFieldValue("email", text)}
         errorMessage={formik.errors.email}
+      />
+      <Input
+        placeholder="Username"
+        containerStyle={styles.input}
+        inputContainerStyle={styles.inputContainer}
+        leftIcon={<IconsButton name="users" size={30} active={false} />}
+        rightIcon={<IconsButton name="profile" size={30} active={false} />}
+        onChangeText={(text) => formik.setFieldValue("username", text)}
+        errorMessage={formik.errors.username}
       />
       <Input
         placeholder="Password"
@@ -95,6 +96,7 @@ export function RegisterForm() {
         onChangeText={(text) => formik.setFieldValue("confirmPassword", text)}
         errorMessage={formik.errors.confirmPassword}
       />
+
       <Button
         title="Create Account"
         containerStyle={styles.btnContainer}

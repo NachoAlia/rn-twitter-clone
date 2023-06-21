@@ -1,10 +1,10 @@
 import { domainUrl } from "../../host";
 
-const route = "/api/v1/users/login";
+const route = "/users/login";
 
 const apiUrl = `${domainUrl}${route}`;
 
-export async function login(emailOrUsername, password) {
+export async function Signin(emailOrUsername, password) {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {

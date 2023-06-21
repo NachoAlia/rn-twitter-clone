@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
 import { styles } from "./DrawerUserInfo.styles";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
-
+import { UserContext } from "../../../context";
 export function DrawerUserInfo() {
+  const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
 
   return (
@@ -22,7 +23,7 @@ export function DrawerUserInfo() {
           { color: thema ? color.light.text : color.dark.text },
         ]}
       >
-        UserName
+        {currentUser.username}
       </Text>
       <Text
         style={[
@@ -32,7 +33,7 @@ export function DrawerUserInfo() {
           },
         ]}
       >
-        @UserName
+        {currentUser.email}
       </Text>
       <View style={styles.containerInfo}>
         <View style={styles.containerFollowers}>

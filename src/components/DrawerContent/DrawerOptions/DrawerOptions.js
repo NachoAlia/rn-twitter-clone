@@ -43,7 +43,7 @@ export function DrawerOptions() {
         iconNameLeft: "bookmark-outline",
         iconSize: 32,
         bottomDivider: false,
-        onPress: () => console.log("asd"),
+        onPress: () => navigation.navigate(screen.bookmark.tab),
       },
       {
         title: "Settings",

@@ -23,15 +23,22 @@ const messagesStack = {
 const accountStack = {
   account: "Account",
   accountProfile: "AccountProfile",
-  login: "Iniciar sesion",
-  register: "Registrarse",
+  signin: "Sign In",
+  signup: "Sign Up",
   index: "Index",
   editProfile: "Editar perfil",
 };
+
+const bookmarkStack = {
+  tab: "BookmarkTab",
+  index: "Bookmark",
+};
+
 export const screen = {
   home: homeStack,
   search: searchStack,
   notifications: notificationStack,
   messages: messagesStack,
   account: accountStack,
+  bookmark: bookmarkStack,
 };

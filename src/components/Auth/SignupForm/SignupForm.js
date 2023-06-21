@@ -11,7 +11,6 @@ import { styles } from "./SignupForm.styles";
 
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
-
   const navigation = useNavigation();
 
   const formik = useFormik({
@@ -29,10 +28,8 @@ export function SignupForm() {
           position: "bottom",
         });
 
-        navigation.navigate(screen.account.index);
+        navigation.navigate(screen.account.signin);
       } catch (error) {
-        // console.log(error);
-
         Toast.show({
           type: "error",
           text1: `Account was not created`,

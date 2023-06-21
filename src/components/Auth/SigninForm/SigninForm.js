@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import { Input, Button } from "react-native-elements";
 
@@ -9,11 +9,12 @@ import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
 import { initialValues, validationSchema } from "./SigninForm.data";
 
+import { UserContext } from "../../../context";
 import { styles } from "./SigninForm.styles";
 
 export function SigninForm() {
   const navigation = useNavigation();
-
+  const { onLoginSuccess } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
 
   const showHiddenPassword = () => setShowPassword((prevState) => !prevState);
@@ -24,7 +25,9 @@ export function SigninForm() {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        await Signin(formValue.email, formValue.password);
+        await Signin(formValue.email, formValue.password).then((response) => {
+          onLoginSuccess(response);
+        });
 
         Toast.show({
           type: "success",

@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/Home";
-import { NewPostScreen } from "../screens/Post";
+import { AddCommentScreen, NewPostScreen, PostScreen } from "../screens/Post";
 import { screen } from "../utils";
 const Stack = createNativeStackNavigator();
 
@@ -19,10 +19,26 @@ export function HomeStack() {
         }}
       />
       <Stack.Screen
+        name={screen.home.post}
+        component={PostScreen}
+        options={{
+          title: "Publicación",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
         name={screen.home.newPost}
         component={NewPostScreen}
         options={{
           title: "Nueva Publicación",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name={screen.home.addComment}
+        component={AddCommentScreen}
+        options={{
+          title: "Nueva Comentario",
           headerTitleAlign: "center",
         }}
       />

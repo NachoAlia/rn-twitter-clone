@@ -1,7 +1,9 @@
 const homeStack = {
   tab: "HomeTab",
   home: "Home",
+  post: "Post",
   newPost: "NewPost",
+  addComment: "AddComment",
 };
 const searchStack = {
   tab: "SearchTab",

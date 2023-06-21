@@ -40,7 +40,7 @@ export function HomeScreen() {
       nicknameUser: "nameUser",
       nameUser: "nameUser",
       postBody:
-        "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
       image:
         "https://cdn.akamai.steamstatic.com/steam/apps/1816670/ss_8b402582ed8110387d04e0b7f8260c985d108dd0.1920x1080.jpg?t=1681367471",
       thread: false,

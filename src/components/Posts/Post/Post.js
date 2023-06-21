@@ -1,14 +1,24 @@
 import React from "react";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, TouchableOpacity } from "react-native";
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
-import { color, ImageAuto, timePost } from "../../../utils";
+import { color, ImageAuto, screen, timePost } from "../../../utils";
+import { useNavigation } from "@react-navigation/native";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
 import { useThemaContext } from "../../ThemeProvider";
 
 export function Post({ dataPost }) {
   const thema = useThemaContext();
+
+  const navigation = useNavigation();
+
+  const goPost = () => {
+    navigation.navigate(screen.home.tab, {
+      screen: screen.home.post,
+      params: { dataPost },
+    });
+  };
 
   return (
     <>
@@ -20,6 +30,7 @@ export function Post({ dataPost }) {
             rounded
           />
         </View>
+
         <View style={styles.containerData}>
           {dataPost.thread ? (
             <View
@@ -45,6 +56,7 @@ export function Post({ dataPost }) {
               >
                 {dataPost.nicknameUser}
               </Text>
+
               <Text
                 style={[
                   styles.nameUser,
@@ -81,6 +93,8 @@ export function Post({ dataPost }) {
             >
               {dataPost.postBody}
             </Text>
+            <TouchableOpacity style={styles.postButton} onPress={goPost} />
+
             {dataPost.image ? (
               <View style={styles.imagePost}>
                 <ImageAuto
@@ -97,7 +111,7 @@ export function Post({ dataPost }) {
               <></>
             )}
 
-            <PostButtonBar comment={dataPost.comment} />
+            <PostButtonBar dataPost={dataPost} />
           </View>
         </View>
       </View>

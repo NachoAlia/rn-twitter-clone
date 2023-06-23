@@ -8,7 +8,12 @@ import { UserLikes } from "../UserLikes/UserLikes";
 import { UserMedia } from "../UserMedia/UserMedia";
 import { UserReplies } from "../UserReplies/UserReplies";
 
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
+
 export function UserButtonGroup() {
+  const thema = useThemaContext();
+
   const [index, setIndex] = useState(0);
   const buttons = ["Post", "Replies", "Media", "Likes"];
 
@@ -17,12 +22,28 @@ export function UserButtonGroup() {
   };
 
   return (
-    <View style={styles.content}>
+    <View
+      style={[
+        styles.content,
+        {
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        },
+      ]}
+    >
       <ButtonGroup
         onPress={updateIndex}
         selectedIndex={index}
         buttons={buttons}
-        containerStyle={styles.containerStyle}
+        containerStyle={[
+          styles.containerStyle,
+          {
+            borderBottomColor: thema
+              ? color.light.background
+              : color.dark.background,
+          },
+        ]}
         innerBorderStyle={styles.innerBorderStyle}
         selectedButtonStyle={styles.selectedButtonStyle}
         selectedTextStyle={styles.selectedTextStyle}

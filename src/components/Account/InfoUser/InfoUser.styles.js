@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
   profileUserInfo: {
     width: "100%",
     height: "100%",
-    backgroundColor: color.light.background,
   },
   userName: {
     fontWeight: "bold",
@@ -72,7 +71,6 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: -10,
     flexDirection: "row",
-    backgroundColor: color.light.background,
   },
   userLocationContainer: {
     flexDirection: "row",

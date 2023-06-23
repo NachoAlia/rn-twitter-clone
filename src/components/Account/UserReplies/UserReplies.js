@@ -1,42 +1,20 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 
 export function UserReplies() {
+  const thema = useThemaContext();
   return (
     <View style={{ alignItems: "center", marginTop: 40 }}>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
-      <Text>UserRepliesTest</Text>
+      <Text
+        style={{
+          color: thema ? color.light.text : color.dark.text,
+          fontSize: 20,
+        }}
+      >
+        UserReplies
+      </Text>
     </View>
   );
 }

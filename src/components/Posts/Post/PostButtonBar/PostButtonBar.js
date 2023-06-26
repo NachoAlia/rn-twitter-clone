@@ -6,16 +6,17 @@ import { styles } from "./PostButtonBar.style";
 import { IconsButton, color, screen } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
 
-export function PostButtonBar({ dataPost }) {
+export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
   const [isLike, setIsLike] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(false);
 
   const navigation = useNavigation();
 
   const thema = useThemaContext();
 
   const addComment = () => {
-    navigation.navigate(screen.home.tab, {
-      screen: screen.home.addComment,
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.addComment,
       params: { dataPost },
     });
   };
@@ -28,60 +29,89 @@ export function PostButtonBar({ dataPost }) {
     setIsLike(false);
   };
 
+  const giveBookmark = () => {
+    setIsBookmark(true);
+  };
+
+  const removeBookmark = () => {
+    setIsBookmark(false);
+  };
   return (
     <View style={styles.barPost}>
       <View style={styles.barElement}>
-        <IconsButton name={"comment"} onPress={addComment} />
-        <Text
-          style={[
-            styles.text,
-            {
-              color: thema
-                ? color.light.textSecondary
-                : color.dark.textSecondary,
-            },
-          ]}
-        >
-          {dataPost.comment.length}
-        </Text>
+        <IconsButton name={"comment"} size={size} onPress={addComment} />
+        {amount ? (
+          <Text
+            style={[
+              styles.text,
+              {
+                color: thema
+                  ? color.light.textSecondary
+                  : color.dark.textSecondary,
+              },
+            ]}
+          >
+            {dataPost.comment.length}
+          </Text>
+        ) : (
+          <></>
+        )}
       </View>
       <View style={styles.barElement}>
-        <IconsButton name={"repost"} />
-        <Text
-          style={[
-            styles.text,
-            {
-              color: thema
-                ? color.light.textSecondary
-                : color.dark.textSecondary,
-            },
-          ]}
-        >
-          0
-        </Text>
+        <IconsButton name={"repost"} size={size} />
+        {amount ? (
+          <Text
+            style={[
+              styles.text,
+              {
+                color: thema
+                  ? color.light.textSecondary
+                  : color.dark.textSecondary,
+              },
+            ]}
+          >
+            0
+          </Text>
+        ) : (
+          <></>
+        )}
       </View>
       <View style={styles.barElement}>
         {isLike ? (
-          <IconsButton name={"like"} onPress={removeLike} />
+          <IconsButton name={"like"} size={size} onPress={removeLike} />
         ) : (
-          <IconsButton name={"like_border"} onPress={giveLike} />
+          <IconsButton name={"like_border"} size={size} onPress={giveLike} />
         )}
-
-        <Text
-          style={[
-            styles.text,
-            {
-              color: thema
-                ? color.light.textSecondary
-                : color.dark.textSecondary,
-            },
-          ]}
-        >
-          0
-        </Text>
+        {amount ? (
+          <Text
+            style={[
+              styles.text,
+              {
+                color: thema
+                  ? color.light.textSecondary
+                  : color.dark.textSecondary,
+              },
+            ]}
+          >
+            0
+          </Text>
+        ) : (
+          <></>
+        )}
       </View>
       <View style={styles.barElement}>
-        <IconsButton name={"share"} />
+        {isBookmark ? (
+          <IconsButton name={"bookmark"} size={size} onPress={removeBookmark} />
+        ) : (
+          <IconsButton
+            name={"bookmark_border"}
+            size={size}
+            onPress={giveBookmark}
+          />
+        )}
+      </View>
+      <View style={styles.barElement}>
+        <IconsButton name={"share"} size={size} />
       </View>
     </View>
   );

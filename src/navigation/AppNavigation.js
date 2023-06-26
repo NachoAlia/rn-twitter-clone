@@ -10,6 +10,7 @@ import { AccountStack } from "./AccountStack";
 
 import { screen, color } from "../utils";
 import { useThemaContext } from "../components/ThemeProvider";
+import { PostStack } from "./PostStack";
 
 const Tab = createBottomTabNavigator();
 

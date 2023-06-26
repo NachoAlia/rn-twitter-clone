@@ -17,6 +17,7 @@ import { useThemaContext } from "../components/ThemeProvider";
 import { color } from "../utils";
 import { AccountStack } from "./AccountStack";
 import { BookmarkStack } from "./BookmarkStack";
+import { PostStack } from "./PostStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -102,6 +103,14 @@ export function AccountDrawer() {
       <Drawer.Screen
         name={screen.bookmark.tab}
         component={BookmarkStack}
+        options={{
+          swipeEnabled: false,
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name={screen.post.tab}
+        component={PostStack}
         options={{
           swipeEnabled: false,
           headerShown: false,

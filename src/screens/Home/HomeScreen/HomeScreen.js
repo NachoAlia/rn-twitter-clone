@@ -20,19 +20,34 @@ export function HomeScreen() {
       repost: {},
       comment: [
         {
+          id: 1,
           nicknameUser: "nameUser",
-          commentBody:
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
             "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
         },
         {
+          id: 2,
           nicknameUser: "nameUser",
-          commentBody:
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
             "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
         },
         {
+          id: 3,
           nicknameUser: "nameUser",
-          commentBody:
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
             "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
         },
       ],
     },

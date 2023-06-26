@@ -9,8 +9,8 @@ export function ButtonNewPost() {
   const navigation = useNavigation();
 
   const gotoNewPost = () => {
-    navigation.navigate(screen.home.tab, {
-      screen: screen.home.newPost,
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.newPost,
     });
   };
   return (

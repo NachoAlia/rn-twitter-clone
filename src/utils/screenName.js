@@ -2,6 +2,14 @@ const homeStack = {
   tab: "HomeTab",
   home: "Home",
   post: "Post",
+  image: "Image",
+  newPost: "NewPost",
+  addComment: "AddComment",
+};
+const PostStack = {
+  tab: "postTab",
+  post: "Post",
+  image: "Image",
   newPost: "NewPost",
   addComment: "AddComment",
 };
@@ -41,4 +49,5 @@ export const screen = {
   messages: messagesStack,
   account: accountStack,
   bookmark: bookmarkStack,
+  post: PostStack,
 };

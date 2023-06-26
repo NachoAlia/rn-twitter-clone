@@ -1,5 +1,10 @@
 import React from "react";
-import { View, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Dimensions,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import { color, ImageAuto, screen, timePost } from "../../../utils";
@@ -14,8 +19,15 @@ export function Post({ dataPost }) {
   const navigation = useNavigation();
 
   const goPost = () => {
-    navigation.navigate(screen.home.tab, {
-      screen: screen.home.post,
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.post,
+      params: { dataPost },
+    });
+  };
+
+  const goImage = () => {
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.image,
       params: { dataPost },
     });
   };
@@ -97,10 +109,12 @@ export function Post({ dataPost }) {
 
             {dataPost.image ? (
               <View style={styles.imagePost}>
-                <ImageAuto
-                  uri={dataPost.image}
-                  desiredWidth={Dimensions.get("window").width * 0.75}
-                />
+                <TouchableOpacity onPress={goImage}>
+                  <ImageAuto
+                    uri={dataPost.image}
+                    desiredWidth={Dimensions.get("window").width * 0.75}
+                  />
+                </TouchableOpacity>
               </View>
             ) : (
               <></>
@@ -110,8 +124,9 @@ export function Post({ dataPost }) {
             ) : (
               <></>
             )}
-
-            <PostButtonBar dataPost={dataPost} />
+            <View style={{ marginTop: 10 }}>
+              <PostButtonBar dataPost={dataPost} />
+            </View>
           </View>
         </View>
       </View>

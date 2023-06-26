@@ -1,42 +1,20 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 
 export function UserMedia() {
+  const thema = useThemaContext();
   return (
     <View style={{ alignItems: "center", marginTop: 40 }}>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
-      <Text>UserMediaTest</Text>
+      <Text
+        style={{
+          color: thema ? color.light.text : color.dark.text,
+          fontSize: 20,
+        }}
+      >
+        UserMedia
+      </Text>
     </View>
   );
 }

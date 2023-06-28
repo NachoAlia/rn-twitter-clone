@@ -10,10 +10,13 @@ import Toast from "react-native-toast-message";
 import { initialValues, validationSchema } from "./SigninForm.data";
 
 import { UserContext } from "../../../context";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 import { styles } from "./SigninForm.styles";
 
 export function SigninForm() {
   const navigation = useNavigation();
+  const theme = useThemaContext();
   const { onLoginSuccess } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -54,6 +57,7 @@ export function SigninForm() {
       <Input
         placeholder="Email"
         containerStyle={styles.input}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         inputContainerStyle={styles.inputContainer}
         rightIcon={<IconsButton name="mail" size={30} active={false} />}
         leftIcon={<IconsButton name="users" size={30} active={false} />}
@@ -63,6 +67,7 @@ export function SigninForm() {
       <Input
         placeholder="Password"
         containerStyle={styles.input}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         inputContainerStyle={styles.inputContainer}
         secureTextEntry={showPassword ? false : true}
         leftIcon={<IconsButton name="lock" size={30} active={false} />}

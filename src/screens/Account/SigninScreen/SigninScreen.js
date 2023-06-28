@@ -26,9 +26,6 @@ export function SigninScreen() {
       <Image
         source={require("../../../../assets/icons/logo.png")}
         style={styles.image}
-        onPress={() => {
-          navigation.navigate(screen.account.index);
-        }}
       />
       <View style={styles.content}>
         <Text

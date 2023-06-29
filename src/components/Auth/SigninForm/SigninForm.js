@@ -59,8 +59,9 @@ export function SigninForm() {
         containerStyle={styles.input}
         inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         inputContainerStyle={styles.inputContainer}
-        rightIcon={<IconsButton name="mail" size={30} active={false} />}
-        leftIcon={<IconsButton name="users" size={30} active={false} />}
+        leftIcon={
+          <IconsButton name="mail" size={30} touchable={false} active={true} />
+        }
         onChangeText={(text) => formik.setFieldValue("email", text)}
         errorMessage={formik.errors.email}
       />
@@ -70,7 +71,7 @@ export function SigninForm() {
         inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         inputContainerStyle={styles.inputContainer}
         secureTextEntry={showPassword ? false : true}
-        leftIcon={<IconsButton name="lock" size={30} active={false} />}
+        leftIcon={<IconsButton name="lock" size={30} touchable={false} />}
         rightIcon={
           <IconsButton
             name={showPassword ? "visibility_off" : "visibility"}

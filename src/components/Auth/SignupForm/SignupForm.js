@@ -48,8 +48,9 @@ export function SignupForm() {
         placeholder="Email"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
-        leftIcon={<IconsButton name="users" size={30} active={false} />}
-        rightIcon={<IconsButton name="mail" size={30} active={false} />}
+        leftIcon={
+          <IconsButton name="mail" size={30} active={true} touchable={false} />
+        }
         onChangeText={(text) => formik.setFieldValue("email", text)}
         errorMessage={formik.errors.email}
       />
@@ -57,8 +58,14 @@ export function SignupForm() {
         placeholder="Username"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
-        leftIcon={<IconsButton name="users" size={30} active={false} />}
-        rightIcon={<IconsButton name="profile" size={30} active={false} />}
+        leftIcon={
+          <IconsButton
+            name="users"
+            size={30}
+            active={false}
+            touchable={false}
+          />
+        }
         onChangeText={(text) => formik.setFieldValue("username", text)}
         errorMessage={formik.errors.username}
       />
@@ -67,7 +74,7 @@ export function SignupForm() {
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
         secureTextEntry={showPassword ? false : true}
-        leftIcon={<IconsButton name="lock" size={30} active={false} />}
+        leftIcon={<IconsButton name="lock" size={30} touchable={false} />}
         rightIcon={
           <IconsButton
             name={showPassword ? "visibility_off" : "visibility"}
@@ -84,7 +91,7 @@ export function SignupForm() {
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
         secureTextEntry={showPassword ? false : true}
-        leftIcon={<IconsButton name="lock" size={30} active={false} />}
+        leftIcon={<IconsButton name="lock" size={30} touchable={false} />}
         rightIcon={
           <IconsButton
             name={showPassword ? "visibility_off" : "visibility"}

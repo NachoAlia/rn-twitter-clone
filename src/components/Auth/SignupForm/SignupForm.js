@@ -7,11 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
 import { initialValues, validationSchema } from "./SignupForm.data";
+import { useThemaContext } from "../../ThemeProvider";
+import { color } from "../../../utils";
 import { styles } from "./SignupForm.styles";
 
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
+  const theme = useThemaContext();
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -47,6 +50,7 @@ export function SignupForm() {
       <Input
         placeholder="Email"
         containerStyle={styles.input}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         inputContainerStyle={styles.inputContainer}
         leftIcon={<IconsButton name="users" size={30} active={false} />}
         rightIcon={<IconsButton name="mail" size={30} active={false} />}
@@ -57,6 +61,7 @@ export function SignupForm() {
         placeholder="Username"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         leftIcon={<IconsButton name="users" size={30} active={false} />}
         rightIcon={<IconsButton name="profile" size={30} active={false} />}
         onChangeText={(text) => formik.setFieldValue("username", text)}
@@ -66,6 +71,7 @@ export function SignupForm() {
         placeholder="Password"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         secureTextEntry={showPassword ? false : true}
         leftIcon={<IconsButton name="lock" size={30} active={false} />}
         rightIcon={
@@ -83,6 +89,7 @@ export function SignupForm() {
         placeholder="Confirm Password"
         containerStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
+        inputStyle={{ color: theme ? color.light.text : color.dark.text }}
         secureTextEntry={showPassword ? false : true}
         leftIcon={<IconsButton name="lock" size={30} active={false} />}
         rightIcon={

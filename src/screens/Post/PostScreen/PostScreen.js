@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Dimensions, ScrollView, FlatList } from "react-native";
 import { Avatar } from "react-native-elements";
 import { styles } from "./PostScreen.style";
-import { ImageAuto, color } from "../../../utils";
+import { IconsButton, ImageAuto, color } from "../../../utils";
 import { date } from "../../../utils/date";
 import { Repost } from "../../../components/Posts/Post/Repost";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { PostButtonBar } from "../../../components/Posts/Post/PostButtonBar/PostButtonBar";
 import { Post } from "../../../components";
+import { useNavigation } from "@react-navigation/native";
 
 export function PostScreen(props) {
   const { route } = props;
   const data = route.params.dataPost;
+
+  const navigation = useNavigation();
+
   const thema = useThemaContext();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => {},
+      headerLeft: () =>
+        thema ? (
+          <IconsButton name={"arrow_dark"} size={25} onPress={goBack} />
+        ) : (
+          <IconsButton name={"arrow_light"} size={25} onPress={goBack} />
+        ),
+      headerStyle: {
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      },
+    });
+  }, []);
+
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <ScrollView
       style={{

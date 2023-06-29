@@ -17,9 +17,21 @@ export function ImageScreen(props) {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => {},
-      headerLeft: () => <Text>x</Text>,
+      headerLeft: () =>
+        thema ? (
+          <IconsButton name={"cross_dark"} size={25} onPress={goBack} />
+        ) : (
+          <IconsButton name={"cross_light"} size={25} onPress={goBack} />
+        ),
+      headerStyle: {
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      },
     });
-  }, []);
+  }, [thema]);
+
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <>
       <View

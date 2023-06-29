@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddCommentScreen, NewPostScreen, PostScreen } from "../screens/Post";
-import { IconsButton, screen } from "../utils";
+import { screen } from "../utils";
 import { ImageScreen } from "../screens/Post/ImageScreen";
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +18,13 @@ export function PostStack() {
           headerTitleAlign: "center",
         }}
       />
-      <Stack.Screen name={screen.post.image} component={ImageScreen} />
+      <Stack.Screen
+        name={screen.post.image}
+        component={ImageScreen}
+        options={{
+          title: "Imagen",
+        }}
+      />
       <Stack.Screen
         name={screen.post.newPost}
         component={NewPostScreen}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Avatar, Button, Image, Input, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
@@ -33,6 +33,31 @@ export function AddCommentScreen(props) {
     },
   });
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => {},
+      headerLeft: () =>
+        thema ? (
+          <IconsButton name={"arrow_dark"} size={25} onPress={goBack} />
+        ) : (
+          <IconsButton name={"arrow_light"} size={25} onPress={goBack} />
+        ),
+      headerRight: () => (
+        <Button
+          title="Responder"
+          buttonStyle={styles.containerButtonPost}
+          onPress={formik.handleSubmit}
+          loading={formik.isSubmitting}
+          disabled={formik.values.content.length == 0 && canBePost}
+          disabledStyle={styles.containerButtonPostDisabled}
+        />
+      ),
+      headerStyle: {
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      },
+    });
+  }, [thema, canBePost, formik]);
+
   const goBack = () => {
     navigation.goBack();
   };
@@ -56,16 +81,6 @@ export function AddCommentScreen(props) {
         },
       ]}
     >
-      <View>
-        <Button
-          title="Responder"
-          buttonStyle={styles.containerButtonPost}
-          onPress={formik.handleSubmit}
-          loading={formik.isSubmitting}
-          disabled={formik.values.content.length == 0 && canBePost}
-          disabledStyle={styles.containerButtonPostDisabled}
-        />
-      </View>
       <HeaderComment dataPost={route.params.dataPost} />
       <View style={{ flexDirection: "row", height: 150 }}>
         <View>

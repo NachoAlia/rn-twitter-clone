@@ -32,11 +32,12 @@ export function NewPostScreen() {
 
         const formData = new FormData();
         formData.append("tweet[body]", formValue.content);
-        formData.append("tweet[user_id]", currentUser.id);
-        formData.append("tweet[photoTweet]", formValue.image);
+        if (formValue.image) {
+          formData.append("tweet[photoTweet]", formValue.image);
+        }
 
         const response = await fetch(apiUrl, {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -84,9 +85,10 @@ export function NewPostScreen() {
   const getNewFileFormat = (uri) => {
     const newImageUri = "file:///" + uri.split("file:/").join("");
     const filename = uri.split("/").pop();
+    console.log(filename);
     const file = {
       uri: newImageUri,
-      type: "jpg",
+      type: "image/jpeg",
       name: filename,
     };
     return file;

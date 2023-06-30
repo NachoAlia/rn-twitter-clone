@@ -17,12 +17,45 @@ export function HomeScreen() {
       image: "https://loganstore.com.mx/wp-content/uploads/2022/11/EXIA-4.jpg",
       thread: true,
       createdAt: "2023-05-30T01:58:47.525Z",
+      repost: {},
+      comment: [
+        {
+          id: 1,
+          nicknameUser: "nameUser",
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
+        },
+        {
+          id: 2,
+          nicknameUser: "nameUser",
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
+        },
+        {
+          id: 3,
+          nicknameUser: "nameUser",
+          nameUser: "nameUser",
+          createdAt: "2023-05-30T01:58:47.525Z",
+          postBody:
+            "lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          repost: {},
+          comment: [],
+        },
+      ],
     },
     {
       nicknameUser: "nameUser",
       nameUser: "nameUser",
       postBody:
-        "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
       image:
         "https://cdn.akamai.steamstatic.com/steam/apps/1816670/ss_8b402582ed8110387d04e0b7f8260c985d108dd0.1920x1080.jpg?t=1681367471",
       thread: false,
@@ -34,6 +67,7 @@ export function HomeScreen() {
         image: "",
         createdAt: "2023-05-30T01:58:47.525Z",
       },
+      comment: [],
     },
   ];
 

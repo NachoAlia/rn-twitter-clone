@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { styles } from "./EditInfoForm.styles";
 
@@ -6,8 +6,11 @@ import { Icon, Text, Button, Input } from "react-native-elements";
 import { useThemaContext } from "../../../ThemeProvider";
 import { color } from "../../../../utils";
 
+import { UserContext } from "../../../../context";
+
 export function EditInfoForm(props) {
   const { formik } = props;
+  const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
   return (
     <View>
@@ -24,6 +27,7 @@ export function EditInfoForm(props) {
         <Input
           placeholder="Name"
           label="UserName"
+          defaultValue={currentUser?.username}
           containerStyle={styles.input}
           inputStyle={{ color: thema ? color.light.text : color.dark.text }}
           onChangeText={(text) => formik.setFieldValue("userName", text)}
@@ -32,6 +36,7 @@ export function EditInfoForm(props) {
         <Input
           placeholder={"Biography"}
           label="Biography"
+          defaultValue={currentUser?.biography}
           numberOfLines={4}
           multiline={true}
           style={styles.biographyInputContainer}
@@ -42,6 +47,7 @@ export function EditInfoForm(props) {
         <Input
           placeholder="Localization"
           label="Localization"
+          defaultValue={currentUser?.localization}
           containerStyle={styles.input}
           inputStyle={{ color: thema ? color.light.text : color.dark.text }}
           onChangeText={(text) => formik.setFieldValue("localization", text)}
@@ -50,6 +56,7 @@ export function EditInfoForm(props) {
         <Input
           placeholder="WebSite"
           label={"WebSite"}
+          defaultValue={currentUser?.website}
           containerStyle={styles.input}
           inputStyle={{ color: thema ? color.light.text : color.dark.text }}
           onChangeText={(text) => formik.setFieldValue("website", text)}

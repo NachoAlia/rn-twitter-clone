@@ -1,18 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { UserButtonGroup } from "../../../components/Account/UserButtonGroup/UserButtonGroup";
-import { screen } from "../../../utils/screenName";
-import { styles } from "./AccountScreen.styles";
-import { InfoUser } from "../../../components/Account/InfoUser/InfoUser";
 import { ScrollView } from "react-native-gesture-handler";
 import { useThemaContext } from "../../../components/ThemeProvider";
+
+import { InfoUser } from "../../../components/Account/InfoUser/InfoUser";
+
+import { styles } from "./AccountScreen.styles";
 import { color } from "../../../utils";
+
 import { useNavigation } from "@react-navigation/native";
+import { screen } from "../../../utils/screenName";
+
+import { UserContext } from "../../../context/UserProvider";
 
 export function AccountScreen() {
   const navigation = useNavigation();
   const thema = useThemaContext();
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -26,6 +32,7 @@ export function AccountScreen() {
           onPress={() => navigation.navigate(screen.home.tab)}
         />
       ),
+      headerTitle: currentUser.username,
       headerTintColor: thema ? color.light.text : color.dark.text,
       headerStyle: {
         backgroundColor: thema ? color.light.background : color.dark.background,

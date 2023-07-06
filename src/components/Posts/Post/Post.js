@@ -1,14 +1,36 @@
 import React from "react";
-import { View, Dimensions } from "react-native";
+import {
+  View,
+  Dimensions,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
-import { color, ImageAuto, timePost } from "../../../utils";
+import { color, ImageAuto, screen, timePost } from "../../../utils";
+import { useNavigation } from "@react-navigation/native";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
 import { useThemaContext } from "../../ThemeProvider";
 
 export function Post({ dataPost }) {
   const thema = useThemaContext();
+
+  const navigation = useNavigation();
+
+  const goPost = () => {
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.post,
+      params: { dataPost },
+    });
+  };
+
+  const goImage = () => {
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.image,
+      params: { dataPost },
+    });
+  };
 
   return (
     <>
@@ -20,6 +42,7 @@ export function Post({ dataPost }) {
             rounded
           />
         </View>
+
         <View style={styles.containerData}>
           {dataPost.thread ? (
             <View
@@ -45,6 +68,7 @@ export function Post({ dataPost }) {
               >
                 {dataPost.nicknameUser}
               </Text>
+
               <Text
                 style={[
                   styles.nameUser,
@@ -81,19 +105,28 @@ export function Post({ dataPost }) {
             >
               {dataPost.postBody}
             </Text>
+            <TouchableOpacity style={styles.postButton} onPress={goPost} />
+
             {dataPost.image ? (
               <View style={styles.imagePost}>
-                <ImageAuto
-                  uri={dataPost.image}
-                  desiredWidth={Dimensions.get("window").width * 0.75}
-                />
+                <TouchableOpacity onPress={goImage}>
+                  <ImageAuto
+                    uri={dataPost.image}
+                    desiredWidth={Dimensions.get("window").width * 0.75}
+                  />
+                </TouchableOpacity>
               </View>
             ) : (
               <></>
             )}
-            {dataPost.repost ? <Repost dataPost={dataPost.repost} /> : <></>}
-
-            <PostButtonBar />
+            {dataPost.repost.nicknameUser ? (
+              <Repost dataPost={dataPost.repost} />
+            ) : (
+              <></>
+            )}
+            <View style={{ marginTop: 10 }}>
+              <PostButtonBar dataPost={dataPost} />
+            </View>
           </View>
         </View>
       </View>

@@ -36,6 +36,7 @@ export const styles = StyleSheet.create({
   spreaderBar: {
     height: 1,
   },
+  postButton: { height: "90%", width: "107%", position: "absolute" },
   threadBar: {
     marginTop: 55,
     height: "95%",

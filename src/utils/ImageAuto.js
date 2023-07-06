@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image } from "react-native-elements";
 
-export function ImageAuto({ uri, desiredWidth }) {
+export function ImageAuto({ uri, desiredWidth, radius = true }) {
   const [autoHeight, setAutoHeight] = useState(0);
 
   Image.getSize(uri, (width, height) => {
@@ -13,7 +13,7 @@ export function ImageAuto({ uri, desiredWidth }) {
       style={{
         width: desiredWidth,
         height: autoHeight,
-        borderRadius: 15,
+        borderRadius: radius ? 15 : 0,
       }}
     />
   );

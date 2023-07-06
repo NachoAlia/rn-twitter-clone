@@ -5,7 +5,6 @@ const WIDTH = Dimensions.get("window").width;
 export const styles = StyleSheet.create({
   content: {
     backgroundColor: color.light.background,
-    marginTop: "40%",
   },
   containerStyle: {
     height: 40,

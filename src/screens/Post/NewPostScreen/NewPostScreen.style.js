@@ -16,10 +16,9 @@ export const styles = StyleSheet.create({
   },
   textArea: { padding: 0, margin: 0, borderBottomWidth: 0 },
   imagePost: {
-    width: "94%",
-    height: 200,
-    resizeMode: "contain",
-    marginHorizontal: "3%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
   },
   containerButtonImage: {
     backgroundColor: "#fff00",

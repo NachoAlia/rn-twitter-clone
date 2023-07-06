@@ -9,13 +9,17 @@ export const styles = StyleSheet.create({
   },
   containerUserInfo: {
     width: "100%",
-    height: 250,
+    maxHeight: 400,
   },
   containerProfileCover: {
     width: "100%",
-    height: "50%",
-    padding: 2,
+    height: 135,
+    padding: 0,
     backgroundColor: color.light.corporate,
+    borderStyle: "solid",
+    borderBottomWidth: 3,
+    borderBottomColor: "#fff",
+    justifyContent: "center",
   },
   profileCover: {
     width: "100%",
@@ -59,16 +63,17 @@ export const styles = StyleSheet.create({
   mentionUserName: {
     fontSize: 16,
     color: color.light.textSecondary,
+    marginBottom: 5,
   },
   userBiography: {
     alignSelf: "flex-start",
-    marginTop: 10,
     marginRight: 20,
+    marginBottom: 5,
   },
 
   infoUser: {
     width: "100%",
-    marginTop: 20,
+    marginBottom: 15,
     marginLeft: -10,
     flexDirection: "row",
   },

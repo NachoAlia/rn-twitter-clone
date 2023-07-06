@@ -11,19 +11,28 @@ export function DrawerUserInfo() {
 
   return (
     <View style={styles.content}>
-      <Avatar
-        rounded
-        source={require("../../../../assets/icons/default_user_photo.png")}
-        containerStyle={styles.avatar}
-        overlayContainerStyle={styles.avatarOverlay}
-      />
+      {currentUser.photoProfile_url ? (
+        <Avatar
+          rounded
+          source={{ uri: currentUser.photoProfile_url }}
+          containerStyle={styles.avatar}
+          overlayContainerStyle={styles.avatarOverlay}
+        />
+      ) : (
+        <Avatar
+          rounded
+          source={require("../../../../assets/icons/default_user_photo.png")}
+          containerStyle={styles.avatar}
+          overlayContainerStyle={styles.avatarOverlay}
+        />
+      )}
       <Text
         style={[
           styles.userName,
           { color: thema ? color.light.text : color.dark.text },
         ]}
       >
-        {currentUser.username}
+        {currentUser ? currentUser.username : "userName"}
       </Text>
       <Text
         style={[
@@ -33,7 +42,7 @@ export function DrawerUserInfo() {
           },
         ]}
       >
-        {currentUser.email}
+        {currentUser ? currentUser.email : "@userName"}
       </Text>
       <View style={styles.containerInfo}>
         <View style={styles.containerFollowers}>

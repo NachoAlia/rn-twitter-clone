@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Button, Icon, Image } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -18,10 +19,12 @@ import { color } from "../utils";
 import { AccountStack } from "./AccountStack";
 import { BookmarkStack } from "./BookmarkStack";
 import { PostStack } from "./PostStack";
+import { DrawerContext } from "../context";
 
 const Drawer = createDrawerNavigator();
 
 export function AccountDrawer() {
+  const { drawerScreenOptions } = useContext(DrawerContext);
   const navigation = useNavigation();
   const thema = useThemaContext();
 
@@ -71,6 +74,15 @@ export function AccountDrawer() {
       drawerContent={() => renderAccount()}
       screenOptions={{
         headerTintColor: thema ? color.light.corporate : color.dark.corporate,
+        title: (
+          <Image
+            source={require("../../assets/icons/logo_owl.png")}
+            style={{ width: 80, height: 30, resizeMode: "center" }}
+          />
+        ),
+        headerTitleAlign: "center",
+        headerTitleStyle: { width: "100%" },
+        ...drawerScreenOptions,
       }}
     >
       <Drawer.Screen
@@ -78,13 +90,7 @@ export function AccountDrawer() {
         component={AppNavigation}
         options={{
           drawerItemStyle: { color: color.light.corporate },
-          title: (
-            <Image
-              source={require("../../assets/icons/logo_owl.png")}
-              style={{ width: 80, height: 30, resizeMode: "center" }}
-            />
-          ),
-          headerTitleAlign: "center",
+
           headerStyle: {
             backgroundColor: thema
               ? color.light.background

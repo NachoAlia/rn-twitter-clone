@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Input, Button } from "react-native-elements";
 
@@ -9,6 +9,7 @@ import { screen, IconsButton } from "../../../utils";
 import Toast from "react-native-toast-message";
 import { initialValues, validationSchema } from "./SigninForm.data";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../../../context";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
@@ -51,6 +52,38 @@ export function SigninForm() {
       }
     },
   });
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem("token");
+
+      if (token) {
+        try {
+          const response = await Signin("", ""); // Enviamos valores vacíos ya que no necesitamos email y contraseña en este caso
+          onLoginSuccess(response);
+
+          Toast.show({
+            type: "success",
+            position: "bottom",
+            text1: "Welcome back!",
+            text2: "Signed in successfully",
+          });
+
+          navigation.navigate(screen.account.index);
+        } catch (error) {
+          console.log(error);
+
+          Toast.show({
+            type: "error",
+            position: "bottom",
+            text1: "Failed to sign in with saved token",
+          });
+        }
+      }
+    };
+
+    checkToken();
+  }, []);
 
   return (
     <View style={styles.content}>

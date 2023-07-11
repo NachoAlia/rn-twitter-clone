@@ -40,7 +40,7 @@ export function SigninForm() {
           text2: "Signed in successfully",
         });
 
-        navigation.navigate(screen.account.index);
+        navigation.replace(screen.account.index);
       } catch (error) {
         console.log(error);
 
@@ -69,7 +69,7 @@ export function SigninForm() {
             text2: "Signed in successfully",
           });
 
-          navigation.navigate(screen.account.index);
+          navigation.replace(screen.account.index);
         } catch (error) {
           console.log(error);
 

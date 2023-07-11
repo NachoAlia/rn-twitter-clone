@@ -74,9 +74,11 @@ function screenOptions(route, color, size) {
   let iconName;
   if (route.name === screen.home.tab) {
     iconName = "home-outline";
+    size = 28;
   }
   if (route.name === screen.search.tab) {
     iconName = "magnify";
+    size = 28;
   }
   if (route.name === screen.notifications.tab) {
     iconName = "bell-outline";

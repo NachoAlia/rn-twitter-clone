@@ -72,10 +72,7 @@ export function MessagesScreen() {
     >
       <>
         <ConversationList />
-        <AddConversationButton
-          setDrawerScreenOptions={setDrawerScreenOptions}
-          drawerScreenOptions={drawerScreenOptions}
-        />
+        <AddConversationButton />
       </>
     </View>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, VirtualizedList } from "react-native";
 import { styles } from "./ConversationList.styles";
 import { Conversation } from "../Conversation/Conversation";
 import { useThemaContext } from "../../ThemeProvider";
@@ -129,15 +129,21 @@ export function ConversationList() {
       fecha: new Date(),
     },
   ];
+  const getItem = (data, index) => {
+    return data[index];
+  };
+  const getItemCount = () => conversations.length;
 
   return (
-    <FlatList
-      keyExtractor={(item) => item.id}
+    <VirtualizedList
+      keyExtractor={(item) => item.id.toString()}
       data={conversations}
+      getItem={getItem}
+      getItemCount={getItemCount}
       renderItem={({ item }) => <Conversation chatbox={item} />}
       style={{
         marginTop: 20,
       }}
-    ></FlatList>
+    />
   );
 }

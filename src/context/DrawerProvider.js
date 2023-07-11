@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 export const DrawerContext = createContext();
 
 export const DrawerProvider = ({ children }) => {

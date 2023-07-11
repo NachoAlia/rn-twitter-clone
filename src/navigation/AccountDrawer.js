@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Button, Icon, Image } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 
 import { AppNavigation } from "./AppNavigation";
-//import { AccountScreen } from "../screens/Account";
 
 import { DrawerUserInfo } from "../components/DrawerContent/DrawerUserInfo";
 
@@ -24,9 +23,11 @@ import { DrawerContext } from "../context";
 const Drawer = createDrawerNavigator();
 
 export function AccountDrawer() {
-  const { drawerScreenOptions } = useContext(DrawerContext);
-  const navigation = useNavigation();
+  const { drawerScreenOptions, setDrawerNavigation } =
+    useContext(DrawerContext);
   const thema = useThemaContext();
+
+  const navigation = useNavigation();
 
   const renderAccount = () => {
     return (

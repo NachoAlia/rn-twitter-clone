@@ -9,7 +9,8 @@ import { Icon, Input } from "react-native-elements";
 import { AddConversationButton } from "../../../components/Messages/AddConversationButton";
 
 export function MessagesScreen() {
-  const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const { setDrawerScreenOptions, drawerScreenOptions } =
+    useContext(DrawerContext);
   const thema = useThemaContext();
   const navigation = useNavigation();
 
@@ -48,7 +49,7 @@ export function MessagesScreen() {
           <TouchableOpacity style={{ marginRight: 10 }}>
             <Icon
               type="material-community"
-              name="cogs"
+              name="cog-outline"
               color={color.light.corporate}
             />
           </TouchableOpacity>
@@ -71,7 +72,10 @@ export function MessagesScreen() {
     >
       <>
         <ConversationList />
-        <AddConversationButton />
+        <AddConversationButton
+          setDrawerScreenOptions={setDrawerScreenOptions}
+          drawerScreenOptions={drawerScreenOptions}
+        />
       </>
     </View>
   );

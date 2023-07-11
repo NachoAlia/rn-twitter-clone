@@ -14,7 +14,7 @@ export function SigninScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={[
+      style={[
         styles.contentContainer,
         {
           backgroundColor: theme

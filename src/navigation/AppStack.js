@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SigninScreen, SignupScreen } from "../screens/Account";
 
@@ -7,6 +7,7 @@ import { AccountDrawer } from "./AccountDrawer";
 import { screen } from "../utils";
 import { AppNavigation } from "./AppNavigation";
 import { AccountStack } from "./AccountStack";
+
 const Stack = createNativeStackNavigator();
 
 export function AppStack() {

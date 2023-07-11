@@ -2,7 +2,9 @@ import { StyleSheet } from "react-native";
 import { color } from "../../../utils";
 
 export const styles = StyleSheet.create({
-  contentContainer: {},
+  contentContainer: {
+    flex: 1,
+  },
   image: {
     resizeMode: "contain",
     width: "100%",

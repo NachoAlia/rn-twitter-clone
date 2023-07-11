@@ -10,8 +10,8 @@ import { styles } from "./SignupScreen.styles";
 export function SignupScreen() {
   const theme = useThemaContext();
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={[
+    <View
+      style={[
         styles.contentContainer,
         {
           backgroundColor: theme
@@ -20,23 +20,25 @@ export function SignupScreen() {
         },
       ]}
     >
-      <Image
-        source={require("../../../../assets/icons/logo_only_owl.png")}
-        style={styles.image}
-      />
-      <View style={styles.content}>
-        <Text
-          style={[
-            styles.title,
-            {
-              color: theme ? color.light.text : color.dark.text,
-            },
-          ]}
-        >
-          Sign Up
-        </Text>
-        <SignupForm />
-      </View>
-    </KeyboardAwareScrollView>
+      <KeyboardAwareScrollView>
+        <Image
+          source={require("../../../../assets/icons/logo_only_owl.png")}
+          style={styles.image}
+        />
+        <View style={styles.content}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: theme ? color.light.text : color.dark.text,
+              },
+            ]}
+          >
+            Sign Up
+          </Text>
+          <SignupForm />
+        </View>
+      </KeyboardAwareScrollView>
+    </View>
   );
 }

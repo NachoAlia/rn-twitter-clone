@@ -26,10 +26,10 @@ export function Post({ dataPost }) {
   };
 
   const goImage = () => {
-    navigation.navigate(screen.post.tab, {
+    /* navigation.navigate(screen.post.tab, {
       screen: screen.post.image,
       params: { dataPost },
-    });
+    });*/
   };
 
   return (
@@ -37,14 +37,18 @@ export function Post({ dataPost }) {
       <View style={styles.container}>
         <View style={styles.photoUser}>
           <Avatar
-            source={require("../../../../assets/icons/default_user_photo.png")}
+            source={
+              dataPost.photoProfile_url
+                ? { uri: dataPost.photoProfile_url }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
             size="medium"
             rounded
           />
         </View>
 
         <View style={styles.containerData}>
-          {dataPost.thread ? (
+          {dataPost.thread_tweet_id ? (
             <View
               style={[
                 styles.threadBar,
@@ -66,7 +70,7 @@ export function Post({ dataPost }) {
                   { color: thema ? color.light.text : color.dark.text },
                 ]}
               >
-                {dataPost.nicknameUser}
+                dataPost.nicknameUser
               </Text>
 
               <Text
@@ -79,7 +83,7 @@ export function Post({ dataPost }) {
                   },
                 ]}
               >
-                @{dataPost.nameUser}
+                @{dataPost.username}
               </Text>
             </View>
             <Text
@@ -92,7 +96,7 @@ export function Post({ dataPost }) {
                 },
               ]}
             >
-              {timePost(dataPost.createdAt)}
+              {timePost(dataPost.created_at)}
             </Text>
           </View>
 
@@ -103,15 +107,15 @@ export function Post({ dataPost }) {
                 { color: thema ? color.light.text : color.dark.text },
               ]}
             >
-              {dataPost.postBody}
+              {dataPost.body}
             </Text>
             <TouchableOpacity style={styles.postButton} onPress={goPost} />
 
-            {dataPost.image ? (
+            {dataPost.photoTweet_url ? (
               <View style={styles.imagePost}>
                 <TouchableOpacity onPress={goImage}>
                   <ImageAuto
-                    uri={dataPost.image}
+                    uri={dataPost.photoTweet_url}
                     desiredWidth={Dimensions.get("window").width * 0.75}
                   />
                 </TouchableOpacity>
@@ -119,18 +123,18 @@ export function Post({ dataPost }) {
             ) : (
               <></>
             )}
-            {dataPost.repost.nicknameUser ? (
+            {/*dataPost.repost.nicknameUser ? (
               <Repost dataPost={dataPost.repost} />
             ) : (
               <></>
-            )}
+            )*/}
             <View style={{ marginTop: 10 }}>
               <PostButtonBar dataPost={dataPost} />
             </View>
           </View>
         </View>
       </View>
-      {dataPost.thread ? (
+      {dataPost.thread_tweet_id ? (
         <View style={styles.threadStyle}>
           <View style={styles.threadUser}>
             <Avatar

@@ -19,7 +19,11 @@ export function HeaderComment({ dataPost }) {
         ]}
       />
       <Avatar
-        source={require("../../../../assets/icons/default_user_photo.png")}
+        source={
+          dataPost.photoProfile_url
+            ? { uri: dataPost.photoProfile_url }
+            : require("../../../../assets/icons/default_user_photo.png")
+        }
         size="medium"
         rounded
       />
@@ -30,7 +34,7 @@ export function HeaderComment({ dataPost }) {
             { color: thema ? color.light.text : color.dark.text },
           ]}
         >
-          {dataPost.nicknameUser}
+          {dataPost.username}
         </Text>
         <Text
           style={[
@@ -38,7 +42,7 @@ export function HeaderComment({ dataPost }) {
             { color: thema ? color.light.text : color.dark.text },
           ]}
         >
-          {dataPost.postBody}
+          {dataPost.body}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Text
@@ -54,7 +58,7 @@ export function HeaderComment({ dataPost }) {
             Respondiendo a{" "}
           </Text>
           <Text style={[styles.originUser, { color: color.light.corporate }]}>
-            @{dataPost.nameUser}
+            @{dataPost.username}
           </Text>
         </View>
       </View>

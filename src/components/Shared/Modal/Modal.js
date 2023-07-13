@@ -1,5 +1,5 @@
 import React from "react";
-import { Overlay } from "@rneui/base";
+import { Overlay } from "react-native-elements";
 import { styles } from "./Modal.styles";
 
 export function Modal({ show, close, children }) {

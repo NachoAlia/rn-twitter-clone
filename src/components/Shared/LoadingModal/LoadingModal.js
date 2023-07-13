@@ -1,9 +1,9 @@
 import React from "react";
 import { View, ActivityIndicator } from "react-native";
-import { Overlay, Text } from "@rneui/base";
+import { Overlay, Text } from "react-native-elements";
 import { styles } from "./LoadingModal.styles";
 
-export function LoadingModal({ show, text }) {
+export function LoadingModal({ show = false, text }) {
   return (
     <Overlay isVisible={show} overlayStyle={styles.overlay}>
       <View style={styles.view}>
@@ -13,7 +13,3 @@ export function LoadingModal({ show, text }) {
     </Overlay>
   );
 }
-
-LoadingModal.defaultProps = {
-  show: false,
-};

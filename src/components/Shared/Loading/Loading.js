@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ActivityIndicator } from "react-native";
-import { Text } from "@rneui/base";
+import { Text } from "react-native-elements";
 import { styles } from "./Loading.styles";
 
 export function Loading({ show, text }) {

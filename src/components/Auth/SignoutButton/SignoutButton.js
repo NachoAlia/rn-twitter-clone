@@ -59,7 +59,7 @@ export function SignoutButton() {
             color: theme ? color.light.text : color.dark.text,
           }}
         >
-          SignOut
+          Sign Out
         </Text>
       </TouchableOpacity>
       <Modal show={showModal} close={() => setShowModal(false)}>

@@ -4,7 +4,6 @@ import { ButtonNewPost } from "../../../components";
 import { Post } from "../../../components/Posts";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
-import { SignoutButton } from "../../../components/Auth/SignoutButton";
 
 export function HomeScreen() {
   const thema = useThemaContext();
@@ -79,7 +78,6 @@ export function HomeScreen() {
         backgroundColor: thema ? color.light.background : color.dark.background,
       }}
     >
-      <SignoutButton />
       <ScrollView>
         <Post dataPost={dataPost[0]} />
         <Post dataPost={dataPost[1]} />

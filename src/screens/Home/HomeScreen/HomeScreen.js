@@ -13,25 +13,21 @@ export function HomeScreen() {
   const thema = useThemaContext();
   const dataPosts = usePostsContext();
 
-  if (dataPosts) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: thema
-            ? color.light.background
-            : color.dark.background,
-        }}
-      >
-        <ScrollView>
-          <FlatList
-            data={dataPosts}
-            renderItem={({ item }) => <Post dataPost={item} />}
-            keyExtractor={(item) => item.id}
-          />
-        </ScrollView>
-        <ButtonNewPost />
-      </View>
-    );
-  }
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      }}
+    >
+      {dataPosts && (
+        <FlatList
+          data={dataPosts}
+          renderItem={({ item }) => <Post idPost={item.id} />}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+      <ButtonNewPost />
+    </View>
+  );
 }

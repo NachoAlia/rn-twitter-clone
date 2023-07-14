@@ -16,6 +16,8 @@ import { domainUrl } from "../../../config/host";
 export function AddCommentScreen(props) {
   const { route } = props;
 
+  const reload = route.params.reload;
+
   const [canBePost, setCanBePost] = useState(true);
   const navigation = useNavigation();
 
@@ -47,7 +49,7 @@ export function AddCommentScreen(props) {
           },
           body: formData,
         });
-
+        reload();
         navigation.goBack();
       } catch (error) {
         console.log(error);

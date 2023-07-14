@@ -8,20 +8,20 @@ import { useThemaContext } from "../../../ThemeProvider";
 import { domainUrl } from "../../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../../context";
 
-export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
+export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
   const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
 
   const { currentUser } = useContext(UserContext);
 
   const thema = useThemaContext();
-  const reloadpost = usereloadPostContext();
+
   const navigation = useNavigation();
 
   const addComment = () => {
     navigation.navigate(screen.post.tab, {
       screen: screen.post.addComment,
-      params: { dataPost },
+      params: { dataPost, reload },
     });
   };
 
@@ -39,7 +39,7 @@ export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
 
     if (response.ok) {
       setIsLike(true);
-      reloadpost();
+      reload((prevState) => !prevState);
     }
   };
 

@@ -44,6 +44,11 @@ export function NewPostScreen() {
           body: formData,
         });
         reloadpost();
+
+        formik.resetForm();
+        setImage(null);
+        setCanBePost(true);
+
         navigation.goBack();
       } catch (error) {
         console.log(error);
@@ -135,6 +140,7 @@ export function NewPostScreen() {
             thema ? color.light.textSecondary : color.dark.textSecondary
           }
           onChangeText={(text) => formik.setFieldValue("content", text)}
+          value={formik.values.content}
         />
         {formik.values.image ? (
           <View style={styles.imagePost}>

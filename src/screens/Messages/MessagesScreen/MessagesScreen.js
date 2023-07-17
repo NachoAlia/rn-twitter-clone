@@ -67,6 +67,7 @@ export function MessagesScreen() {
     <View
       style={{
         backgroundColor: thema ? color.light.background : color.dark.background,
+        flex: 1,
       }}
     >
       <>

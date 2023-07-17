@@ -3,8 +3,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppStack } from "./src/navigation/AppStack";
 import { LogBox } from "react-native";
 import { ThemaProvider } from "./src/components/ThemeProvider";
-import { DrawerProvider, TabBarProvider, UserProvider } from "./src/context";
-import { PostsProvider, UserProvider } from "./src/context";
+import {
+  DrawerProvider,
+  TabBarProvider,
+  PostsProvider,
+  UserProvider,
+} from "./src/context";
 import Toast from "react-native-toast-message";
 
 LogBox.ignoreAllLogs();

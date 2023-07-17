@@ -10,8 +10,7 @@ export function ConversationList() {
   const conversations = [
     {
       id: 1,
-      avatarUri:
-        "https://w7.pngwing.com/pngs/129/292/png-transparent-female-avatar-girl-face-woman-user-flat-classy-users-icon.png",
+      avatarUri: "https://m.media-amazon.com/images/I/61NnbaTmgGL.png",
       userName: "NachoAlia",
       mentionName: "@NachoAlia",
       fecha: new Date(),
@@ -19,113 +18,25 @@ export function ConversationList() {
     {
       id: 2,
       avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
+        "https://thumbs.dreamstime.com/b/avatar-cartoon-wallpaper-girl-232239549.jpg",
+      userName: "AnotherUser1",
+      mentionName: "@AnotherUser1",
       fecha: new Date(),
     },
     {
       id: 3,
       avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNY-OQz4XFu7084J2itchn3tomNBYgJzVvxJyivw6n01_AY-I4QTKCH622MfAHrkUgFY&usqp=CAU",
+      userName: "AnotherUser2",
+      mentionName: "@AnotherUser2",
       fecha: new Date(),
     },
     {
       id: 4,
       avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 5,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 6,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 7,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 8,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 9,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 10,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 11,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 12,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 13,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 14,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
-      fecha: new Date(),
-    },
-    {
-      id: 15,
-      avatarUri:
-        "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
-      userName: "NachoAlia2",
-      mentionName: "@NachoAlia2",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFJAN3z2QdyT9ZjG58XO3MLk7y1wBYNOx3uvv0xCp6Adu9BliZcxdi5oQ8aPjqYWxlex8&usqp=CAU",
+      userName: "AnotherUser3",
+      mentionName: "@AnotherUser3",
       fecha: new Date(),
     },
   ];

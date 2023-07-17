@@ -26,6 +26,8 @@ const notificationStack = {
 const messagesStack = {
   tab: "MessagesTab",
   messages: "Messages",
+  newConversation: "NewConversation",
+  concreteConversation: "ConcreteConversation",
 };
 
 const accountStack = {

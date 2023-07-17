@@ -1,12 +1,11 @@
+import React, { useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Button, Icon, Image } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 
 import { AppNavigation } from "./AppNavigation";
-//import { AccountScreen } from "../screens/Account";
 
 import { DrawerUserInfo } from "../components/DrawerContent/DrawerUserInfo";
 
@@ -18,11 +17,13 @@ import { color } from "../utils";
 import { AccountStack } from "./AccountStack";
 import { BookmarkStack } from "./BookmarkStack";
 import { PostStack } from "./PostStack";
+import { DrawerContext } from "../context";
 
 const Drawer = createDrawerNavigator();
 
 export function AccountDrawer() {
-  const navigation = useNavigation();
+  const { drawerScreenOptions, setDrawerNavigation } =
+    useContext(DrawerContext);
   const thema = useThemaContext();
 
   const renderAccount = () => {
@@ -71,6 +72,15 @@ export function AccountDrawer() {
       drawerContent={() => renderAccount()}
       screenOptions={{
         headerTintColor: thema ? color.light.corporate : color.dark.corporate,
+        title: (
+          <Image
+            source={require("../../assets/icons/logo_owl.png")}
+            style={{ width: 80, height: 30, resizeMode: "center" }}
+          />
+        ),
+        headerTitleAlign: "center",
+        headerTitleStyle: { width: "100%" },
+        ...drawerScreenOptions,
       }}
     >
       <Drawer.Screen
@@ -78,13 +88,7 @@ export function AccountDrawer() {
         component={AppNavigation}
         options={{
           drawerItemStyle: { color: color.light.corporate },
-          title: (
-            <Image
-              source={require("../../assets/icons/logo_owl.png")}
-              style={{ width: 80, height: 30, resizeMode: "center" }}
-            />
-          ),
-          headerTitleAlign: "center",
+
           headerStyle: {
             backgroundColor: thema
               ? color.light.background

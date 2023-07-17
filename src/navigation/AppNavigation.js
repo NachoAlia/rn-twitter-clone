@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon, View } from "react-native-elements";
 
@@ -11,10 +11,12 @@ import { AccountStack } from "./AccountStack";
 import { screen, color } from "../utils";
 import { useThemaContext } from "../components/ThemeProvider";
 import { PostStack } from "./PostStack";
+import { TabBarContext } from "../context";
 
 const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
+  const { tabBarScreenOptions } = useContext(TabBarContext);
   const thema = useThemaContext();
   return (
     <Tab.Navigator
@@ -22,12 +24,18 @@ export function AppNavigation() {
         tabBarActiveTintColor: color.light.corporate,
         tabBarInactiveTintColor: color.light.alternative,
         tabBarIcon: ({ color, size }) => screenOptions(route, color, size),
+        tabBarShowLabel: false,
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: thema
             ? color.light.background
             : color.dark.background,
+          borderTopColor: color.light.corporate,
+          borderTopWidth: 1,
         },
+
+        ...tabBarScreenOptions,
       })}
     >
       <Tab.Screen
@@ -66,9 +74,11 @@ function screenOptions(route, color, size) {
   let iconName;
   if (route.name === screen.home.tab) {
     iconName = "home-outline";
+    size = 28;
   }
   if (route.name === screen.search.tab) {
     iconName = "magnify";
+    size = 28;
   }
   if (route.name === screen.notifications.tab) {
     iconName = "bell-outline";

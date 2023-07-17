@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
 
 import { styles } from "./AddConversationItem.styles";
-import { color } from "../../../utils";
+import { color, screen } from "../../../utils";
 
 import { useThemaContext } from "../../ThemeProvider";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerContext } from "../../../context";
 
 export function AddConversationItem({ item }) {
+  const { setDrawerScreenOptions } = useContext(DrawerContext);
   const thema = useThemaContext();
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={[
         styles.container,
         { borderBottomColor: color.light.textSecondary },
       ]}
-      onPress={() => console.log(item.id)}
+      onPress={() => {
+        setDrawerScreenOptions(null);
+        navigation.navigate(screen.messages.tab, {
+          screen: screen.messages.concreteConversation,
+          params: { item: item },
+        });
+      }}
     >
       <Avatar
         size={"small"}

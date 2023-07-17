@@ -4,7 +4,7 @@ import { ConversationList } from "../../../components/Messages/ConversationList"
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { DrawerContext, DrawerProvider } from "../../../context";
+import { DrawerContext } from "../../../context";
 import { Icon, Input } from "react-native-elements";
 import { AddConversationButton } from "../../../components/Messages/AddConversationButton";
 
@@ -12,7 +12,6 @@ export function MessagesScreen() {
   const { setDrawerScreenOptions, drawerScreenOptions } =
     useContext(DrawerContext);
   const thema = useThemaContext();
-  const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {

@@ -10,7 +10,7 @@ import { IconsButton, ImageAuto, color, screen } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
-import { UserContext } from "../../../context";
+import { UserContext, usereloadPostContext } from "../../../context";
 
 export function NewPostScreen() {
   const [canBePost, setCanBePost] = useState(true);
@@ -18,7 +18,7 @@ export function NewPostScreen() {
   const navigation = useNavigation();
 
   const { currentUser } = useContext(UserContext);
-
+  const reloadpost = usereloadPostContext();
   const thema = useThemaContext();
 
   const formik = useFormik({
@@ -43,6 +43,11 @@ export function NewPostScreen() {
           },
           body: formData,
         });
+        reloadpost();
+
+        formik.resetForm();
+        setImage(null);
+        setCanBePost(true);
 
         navigation.goBack();
       } catch (error) {
@@ -85,7 +90,6 @@ export function NewPostScreen() {
   const getNewFileFormat = (uri) => {
     const newImageUri = "file:///" + uri.split("file:/").join("");
     const filename = uri.split("/").pop();
-    console.log(filename);
     const file = {
       uri: newImageUri,
       type: "image/jpeg",
@@ -116,7 +120,11 @@ export function NewPostScreen() {
       ]}
     >
       <Avatar
-        source={require("../../../../assets/icons/default_user_photo.png")}
+        source={
+          currentUser.photoProfile_url
+            ? { uri: currentUser.photoProfile_url }
+            : require("../../../../assets/icons/default_user_photo.png")
+        }
         size="large"
         rounded
       />
@@ -132,6 +140,7 @@ export function NewPostScreen() {
             thema ? color.light.textSecondary : color.dark.textSecondary
           }
           onChangeText={(text) => formik.setFieldValue("content", text)}
+          value={formik.values.content}
         />
         {formik.values.image ? (
           <View style={styles.imagePost}>

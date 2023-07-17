@@ -12,6 +12,7 @@ import { initialValues, validationSchema } from "./SigninForm.data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../../../context";
 import { useThemaContext } from "../../ThemeProvider";
+import { LoadingModal } from "../../Shared";
 import { color } from "../../../utils";
 import { styles } from "./SigninForm.styles";
 
@@ -20,6 +21,7 @@ export function SigninForm() {
   const theme = useThemaContext();
   const { onLoginSuccess } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const showHiddenPassword = () => setShowPassword((prevState) => !prevState);
 
@@ -59,6 +61,7 @@ export function SigninForm() {
 
       if (token) {
         try {
+          setShowModal(true);
           const response = await Signin("", ""); // Enviamos valores vacíos ya que no necesitamos email y contraseña en este caso
           onLoginSuccess(response);
 
@@ -70,6 +73,7 @@ export function SigninForm() {
           });
 
           navigation.replace(screen.account.index);
+          setShowModal(false);
         } catch (error) {
           console.log(error);
 
@@ -124,6 +128,7 @@ export function SigninForm() {
         onPress={formik.handleSubmit}
         loading={formik.isSubmitting}
       />
+      <LoadingModal show={showModal} text={"Signing in..."} />
     </View>
   );
 }

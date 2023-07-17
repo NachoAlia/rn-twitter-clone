@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Avatar, Button, Image, Input, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
@@ -10,22 +10,46 @@ import { IconsButton, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { HeaderComment } from "../../../components/Posts";
+import { UserContext } from "../../../context";
+import { domainUrl } from "../../../config/host";
 
 export function AddCommentScreen(props) {
   const { route } = props;
+
+  const reload = route.params.reload;
+
   const [canBePost, setCanBePost] = useState(true);
   const navigation = useNavigation();
 
   const thema = useThemaContext();
+  const { currentUser } = useContext(UserContext);
+
+  const dataPost = route.params.dataPost;
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
-    onSubmit: async (formValue) => {
+    onSubmit: async (formValues) => {
       try {
-        console.log(formValue);
+        const route = `/tweets/${dataPost.id}/tweet_comments?user_id=${currentUser.id}`;
+        const apiUrl = `${domainUrl}${route}`;
 
+        const formData = new FormData();
+
+        formData.append("tweet_comment[body]", formValues.content);
+        if (formValues.image) {
+          formData.append("tweet_comment[photoTweetComment]", formValues.image);
+        }
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        });
+        reload();
         navigation.goBack();
       } catch (error) {
         console.log(error);
@@ -81,11 +105,15 @@ export function AddCommentScreen(props) {
         },
       ]}
     >
-      <HeaderComment dataPost={route.params.dataPost} />
+      <HeaderComment dataPost={dataPost} />
       <View style={{ flexDirection: "row", height: 150 }}>
         <View>
           <Avatar
-            source={require("../../../../assets/icons/default_user_photo.png")}
+            source={
+              currentUser.photoProfile_url
+                ? { uri: currentUser.photoProfile_url }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
             size="medium"
             rounded
           />

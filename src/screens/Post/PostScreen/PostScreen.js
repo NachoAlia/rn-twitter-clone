@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export function PostScreen(props) {
   const { route } = props;
-  const data = route.params.dataPost;
+  const dataPost = route.params.dataPost;
 
   const navigation = useNavigation();
 
@@ -46,7 +46,11 @@ export function PostScreen(props) {
       <View style={styles.container}>
         <View style={styles.title}>
           <Avatar
-            source={require("../../../../assets/icons/default_user_photo.png")}
+            source={
+              dataPost.photoProfile_url
+                ? { uri: dataPost.photoProfile_url }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
             size="medium"
             rounded
           />
@@ -57,7 +61,7 @@ export function PostScreen(props) {
                 { color: thema ? color.light.text : color.dark.text },
               ]}
             >
-              {data.nicknameUser}
+              nicknameUser
             </Text>
             <Text
               style={[
@@ -69,7 +73,7 @@ export function PostScreen(props) {
                 },
               ]}
             >
-              @{data.nameUser}
+              @{dataPost.username}
             </Text>
           </View>
         </View>
@@ -80,12 +84,12 @@ export function PostScreen(props) {
               { color: thema ? color.light.text : color.dark.text },
             ]}
           >
-            {data.postBody}
+            {dataPost.body}
           </Text>
-          {data.image ? (
+          {dataPost.photoTweet_url ? (
             <View style={styles.image}>
               <ImageAuto
-                uri={data.image}
+                uri={dataPost.photoTweet_url}
                 desiredWidth={Dimensions.get("window").width * 0.92}
               />
             </View>
@@ -93,9 +97,9 @@ export function PostScreen(props) {
             <></>
           )}
         </View>
-        {data.repost.nicknameUser ? (
+        {dataPost.repost ? (
           <View style={styles.containerElement}>
-            <Repost dataPost={data.repost} />
+            <Repost dataPost={dataPost.repost} />
           </View>
         ) : (
           <></>
@@ -111,7 +115,7 @@ export function PostScreen(props) {
               },
             ]}
           >
-            {date(data.createdAt)}
+            {date(dataPost.created_at)}
           </Text>
         </View>
         <View
@@ -180,7 +184,7 @@ export function PostScreen(props) {
             },
           ]}
         />
-        <PostButtonBar dataPost={data} amount={false} size={30} />
+        <PostButtonBar dataPost={dataPost} amount={false} size={30} />
         <View
           style={[
             styles.horizontalBar,
@@ -201,7 +205,7 @@ export function PostScreen(props) {
         ]}
       />
       <FlatList
-        data={data.comment}
+        data={dataPost.comments}
         renderItem={({ item }) => <Post dataPost={item} />}
         keyExtractor={(item) => item.id}
       />

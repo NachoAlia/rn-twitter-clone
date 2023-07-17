@@ -1,32 +1,63 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import { Button, Image, Text } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./PostButtonBar.style";
 import { IconsButton, color, screen } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
+import { domainUrl } from "../../../../config/host";
+import { UserContext, usereloadPostContext } from "../../../../context";
 
-export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
+export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
   const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
 
-  const navigation = useNavigation();
+  const { currentUser } = useContext(UserContext);
 
   const thema = useThemaContext();
+
+  const navigation = useNavigation();
 
   const addComment = () => {
     navigation.navigate(screen.post.tab, {
       screen: screen.post.addComment,
-      params: { dataPost },
+      params: { dataPost, reload },
     });
   };
 
-  const giveLike = () => {
-    setIsLike(true);
+  const giveLike = async () => {
+    const route = `/tweets/${dataPost.id}/likes`;
+    const apiUrl = `${domainUrl}${route}`;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      body: JSON.stringify({ user_id: currentUser.id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      setIsLike(true);
+      reload((prevState) => !prevState);
+    }
   };
 
-  const removeLike = () => {
-    setIsLike(false);
+  const removeLike = async () => {
+    const route = `/tweets/${dataPost.id}/likes`;
+    const apiUrl = `${domainUrl}${route}`;
+
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      body: JSON.stringify({ user_id: currentUser.id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      setIsLike(false);
+    }
   };
 
   const giveBookmark = () => {
@@ -51,7 +82,7 @@ export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
               },
             ]}
           >
-            {dataPost.comment.length}
+            {dataPost.comments.length}
           </Text>
         ) : (
           <></>
@@ -93,7 +124,7 @@ export function PostButtonBar({ dataPost, amount = true, size = 20 }) {
               },
             ]}
           >
-            0
+            {dataPost.likes.length}
           </Text>
         ) : (
           <></>

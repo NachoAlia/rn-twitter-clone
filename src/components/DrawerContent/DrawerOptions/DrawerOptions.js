@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { screen } from "../../../utils/screenName";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
+import { SignoutButton } from "../../Auth";
 export function DrawerOptions() {
   const navigation = useNavigation();
   const thema = useThemaContext();
@@ -91,6 +92,7 @@ export function DrawerOptions() {
           </View>
         );
       })}
+      <SignoutButton />
     </View>
   );
 }

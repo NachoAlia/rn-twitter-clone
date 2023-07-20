@@ -30,10 +30,15 @@ export function AddConversationItem({ item }) {
     >
       <Avatar
         size={"small"}
-        source={{ uri: item.profile_url }}
+        source={
+          item.photoProfile_url
+            ? { uri: item.photoProfile_url }
+            : require("../../../../assets/icons/default_user_photo.png")
+        }
         rounded
         containerStyle={{ alignSelf: "center" }}
       />
+
       <View style={{ flexDirection: "column", marginLeft: 10 }}>
         <Text
           style={{

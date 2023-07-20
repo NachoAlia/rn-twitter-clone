@@ -1,5 +1,5 @@
-import React, { useContext, useLayoutEffect, useState } from "react";
-import { View } from "react-native";
+import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
+import { View, Text } from "react-native";
 import { styles } from "./AddConversationScreen.styles";
 import { useNavigation } from "@react-navigation/native";
 import { Icon, Input } from "react-native-elements";
@@ -8,9 +8,11 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { color } from "../../../utils";
 import { AddConversationItem } from "../../../components/Messages/AddConversationItem/AddConversationItem";
+import { domainUrl } from "../../../config/host";
 
 export function AddConversationScreen() {
   const [filter, setFilter] = useState(null);
+  const [data, setData] = useState([]);
   const thema = useThemaContext();
   const navigation = useNavigation();
   const { tabBarScreenOptions, setTabBarScreenOptions } =
@@ -84,6 +86,22 @@ export function AddConversationScreen() {
     };
   }, [drawerScreenOptions, thema]);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch(`${domainUrl}/users`);
+      const users = await response.json();
+
+      const userPromises = users.map(async (element) => {
+        const userResponse = await fetch(`${domainUrl}/users/${element.id}`);
+        return await userResponse.json();
+      });
+
+      const userData = await Promise.all(userPromises);
+      setData(userData);
+    };
+    fetchUsers();
+  }, [navigation]);
+
   return (
     <View
       style={{
@@ -117,14 +135,15 @@ export function AddConversationScreen() {
       <FlatList
         data={
           filter
-            ? DATA.filter((item) =>
+            ? data.filter((item) =>
                 item.username.toLowerCase().includes(filter.toLowerCase())
               )
-            : DATA
+            : data
         }
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <AddConversationItem item={item} />}
       />
+      <Text>{data.length}</Text>
     </View>
   );
 }

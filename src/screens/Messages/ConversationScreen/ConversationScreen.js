@@ -41,7 +41,11 @@ export function ConversationScreen() {
             />
           </TouchableOpacity>
           <Avatar
-            source={{ uri: item.profile_url }}
+            source={
+              item.photoProfile_url
+                ? { uri: item.photoProfile_url }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
             rounded
             size={"small"}
             containerStyle={{ marginLeft: 15 }}
@@ -80,7 +84,7 @@ export function ConversationScreen() {
         <MessagesList />
       </View>
 
-      <SendMessageForm />
+      <SendMessageForm userReceiver={item} />
     </View>
   );
 }

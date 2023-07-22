@@ -81,7 +81,7 @@ export function ConversationScreen() {
       }}
     >
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <MessagesList />
+        <MessagesList userReceiver={item} />
       </View>
 
       <SendMessageForm userReceiver={item} />

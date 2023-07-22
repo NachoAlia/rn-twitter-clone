@@ -33,4 +33,28 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 5,
   },
+  photoMensaje: {
+    width: 100,
+    height: 100,
+  },
+  containerPhotoMessageSender: {
+    alignSelf: "flex-end",
+    borderWidth: 1,
+    overflow: "hidden",
+    borderBottomStartRadius: 20,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    marginHorizontal: 10,
+    borderColor: color.light.corporate,
+  },
+  containerPhotoMessageReceiver: {
+    alignSelf: "flex-start",
+    borderWidth: 1,
+    overflow: "hidden",
+    borderBottomEndRadius: 20,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    marginHorizontal: 10,
+    borderColor: color.light.corporate,
+  },
 });

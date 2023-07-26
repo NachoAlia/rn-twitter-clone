@@ -8,12 +8,13 @@ import { styles } from "./ImageScreen.style";
 
 export function ImageScreen(props) {
   const { route } = props;
+  const isLiked = route.params.isLiked;
 
   const navigation = useNavigation();
 
   const thema = useThemaContext();
 
-  const data = route.params.dataPost;
+  const dataPost = route.params.dataPost;
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => {},
@@ -45,7 +46,7 @@ export function ImageScreen(props) {
         ]}
       >
         <ImageAuto
-          uri={data.image}
+          uri={dataPost.photoTweet_url}
           radius={false}
           desiredWidth={Dimensions.get("window").width}
         />
@@ -58,7 +59,7 @@ export function ImageScreen(props) {
             : color.dark.background,
         }}
       >
-        <PostButtonBar dataPost={route.params.dataPost} size={30} />
+        <PostButtonBar dataPost={dataPost} isLiked={isLiked} size={30} />
       </View>
     </>
   );

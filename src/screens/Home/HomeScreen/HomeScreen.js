@@ -16,9 +16,9 @@ export function HomeScreen() {
   const dataPosts = usePostsContext();
   const reloadpost = usereloadPostContext();
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    reloadpost();
+    await reloadpost();
     setRefreshing(false);
   };
   return (
@@ -32,7 +32,6 @@ export function HomeScreen() {
         <FlatList
           data={dataPosts}
           renderItem={({ item }) => <Post idPost={item.id} />}
-          enable
           keyExtractor={(item) => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions, ScrollView, FlatList } from "react-native";
 import { Avatar } from "react-native-elements";
 import { styles } from "./PostScreen.style";
@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export function PostScreen(props) {
   const { route } = props;
+  const isLiked = route.params.isLiked;
   const dataPost = route.params.dataPost;
 
   const navigation = useNavigation();
@@ -136,7 +137,7 @@ export function PostScreen(props) {
                 { color: thema ? color.light.text : color.dark.text },
               ]}
             >
-              0
+              {dataPost.retweet_count}
             </Text>
             <Text
               style={[
@@ -158,7 +159,7 @@ export function PostScreen(props) {
                 { color: thema ? color.light.text : color.dark.text },
               ]}
             >
-              0
+              {dataPost.likes_count}
             </Text>
             <Text
               style={[
@@ -184,7 +185,12 @@ export function PostScreen(props) {
             },
           ]}
         />
-        <PostButtonBar dataPost={dataPost} amount={false} size={30} />
+        <PostButtonBar
+          dataPost={dataPost}
+          isLiked={isLiked}
+          amount={false}
+          size={30}
+        />
         <View
           style={[
             styles.horizontalBar,
@@ -206,7 +212,7 @@ export function PostScreen(props) {
       />
       <FlatList
         data={dataPost.comments}
-        renderItem={({ item }) => <Post dataPost={item} />}
+        renderItem={({ item }) => <Post idPost={item.id} isLiked={isLiked} />}
         keyExtractor={(item) => item.id}
       />
     </ScrollView>

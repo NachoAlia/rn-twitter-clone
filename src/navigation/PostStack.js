@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddCommentScreen, NewPostScreen, PostScreen } from "../screens/Post";
 import { screen } from "../utils";
 import { ImageScreen } from "../screens/Post/ImageScreen";
+import { AddRepostScreen } from "../screens/Post/AddRepostScreen/AddRepostScreen";
 const Stack = createNativeStackNavigator();
 
 export function PostStack() {
@@ -37,6 +38,13 @@ export function PostStack() {
         component={AddCommentScreen}
         options={{
           title: "Nueva Comentario",
+        }}
+      />
+      <Stack.Screen
+        name={screen.post.addRepost}
+        component={AddRepostScreen}
+        options={{
+          title: "Republicacion",
         }}
       />
     </Stack.Navigator>

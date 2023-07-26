@@ -32,6 +32,7 @@ export function HomeScreen() {
         <FlatList
           data={dataPosts}
           renderItem={({ item }) => <Post idPost={item.id} />}
+          enable
           keyExtractor={(item) => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

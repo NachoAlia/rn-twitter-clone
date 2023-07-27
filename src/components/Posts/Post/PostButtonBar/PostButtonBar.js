@@ -7,10 +7,18 @@ import { IconsButton, color, screen } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
 import { domainUrl } from "../../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../../context";
+import { RepostsModal } from "../../Reposts";
 
-export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
-  const [isLike, setIsLike] = useState(false);
+export function PostButtonBar({
+  dataPost,
+  amount = true,
+  size = 20,
+  reload,
+  isLiked,
+}) {
+  const [isLike, setIsLike] = useState(isLiked);
   const [isBookmark, setIsBookmark] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { currentUser } = useContext(UserContext);
 
@@ -23,6 +31,10 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
       screen: screen.post.addComment,
       params: { dataPost, reload },
     });
+  };
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
   };
 
   const giveLike = async () => {
@@ -44,19 +56,20 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
   };
 
   const removeLike = async () => {
-    const route = `/tweets/${dataPost.id}/likes`;
+    const idlike = dataPost.likes.find(
+      (item) => item.user_id === currentUser.id
+    );
+
+    const route = `/tweets/${dataPost.id}/likes/${idlike.id}`;
     const apiUrl = `${domainUrl}${route}`;
 
     const response = await fetch(apiUrl, {
       method: "DELETE",
-      body: JSON.stringify({ user_id: currentUser.id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
 
     if (response.ok) {
       setIsLike(false);
+      reload((prevState) => !prevState);
     }
   };
 
@@ -67,6 +80,7 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
   const removeBookmark = () => {
     setIsBookmark(false);
   };
+
   return (
     <View style={styles.barPost}>
       <View style={styles.barElement}>
@@ -82,14 +96,14 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
               },
             ]}
           >
-            {dataPost.comments.length}
+            {dataPost.comments_count}
           </Text>
         ) : (
           <></>
         )}
       </View>
       <View style={styles.barElement}>
-        <IconsButton name={"repost"} size={size} />
+        <IconsButton name={"repost"} size={size} onPress={toggleOverlay} />
         {amount ? (
           <Text
             style={[
@@ -101,11 +115,16 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
               },
             ]}
           >
-            0
+            {dataPost.retweet_count}
           </Text>
         ) : (
           <></>
         )}
+        <RepostsModal
+          visible={visible}
+          onBackdropPress={toggleOverlay}
+          dataPost={dataPost}
+        />
       </View>
       <View style={styles.barElement}>
         {isLike ? (
@@ -124,7 +143,7 @@ export function PostButtonBar({ dataPost, amount = true, size = 20, reload }) {
               },
             ]}
           >
-            {dataPost.likes.length}
+            {dataPost.likes_count}
           </Text>
         ) : (
           <></>

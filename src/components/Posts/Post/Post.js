@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Dimensions,
@@ -13,18 +13,30 @@ import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
 import { useThemaContext } from "../../ThemeProvider";
 import { domainUrl } from "../../../config/host";
+import { UserContext } from "../../../context";
 
 export function Post({ idPost }) {
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
+
   const thema = useThemaContext();
+
+  const { currentUser } = useContext(UserContext);
+
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = () => {
       fetch(`${domainUrl}/tweets/${idPost}`)
         .then((response) => response.json())
-        .then((data) => setDataPost(data))
+        .then((data) => {
+          setIsLiked(
+            data.likes.some((like) => like.user_id === currentUser.id)
+          );
+          setDataPost(data);
+        })
+
         .catch((error) => console.error(error));
     };
 
@@ -34,15 +46,15 @@ export function Post({ idPost }) {
   const goPost = () => {
     navigation.navigate(screen.post.tab, {
       screen: screen.post.post,
-      params: { dataPost },
+      params: { dataPost, isLiked },
     });
   };
 
   const goImage = () => {
-    /* navigation.navigate(screen.post.tab, {
+    navigation.navigate(screen.post.tab, {
       screen: screen.post.image,
-      params: { dataPost },
-    });*/
+      params: { dataPost, isLiked },
+    });
   };
 
   return (
@@ -137,13 +149,17 @@ export function Post({ idPost }) {
               ) : (
                 <></>
               )}
-              {/*dataPost.repost.nicknameUser ? (
-              <Repost dataPost={dataPost.repost} />
-            ) : (
-              <></>
-            )*/}
+              {dataPost.retweet ? (
+                <Repost dataPost={dataPost.retweet} />
+              ) : (
+                <></>
+              )}
               <View style={{ marginTop: 10 }}>
-                <PostButtonBar dataPost={dataPost} reload={setReload} />
+                <PostButtonBar
+                  dataPost={dataPost}
+                  reload={setReload}
+                  isLiked={isLiked}
+                />
               </View>
             </View>
           </View>

@@ -10,10 +10,10 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
   },
-  postTitle: { flexDirection: "row", justifyContent: "space-between" },
+  postTitle: { flexDirection: "row", alignItems: "center" },
   titleDate: {
-    fontSize: 12,
-    paddingHorizontal: 5,
+    fontSize: 15,
+    justifyContent: "flex-end",
     alignSelf: "center",
   },
   nicknameUser: { fontWeight: "bold", fontSize: 17 },

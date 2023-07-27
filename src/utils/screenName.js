@@ -1,17 +1,14 @@
 const homeStack = {
   tab: "HomeTab",
   home: "Home",
-  post: "Post",
-  image: "Image",
-  newPost: "NewPost",
-  addComment: "AddComment",
 };
 const PostStack = {
-  tab: "postTab",
+  tab: "PostTab",
   post: "Post",
   image: "Image",
   newPost: "NewPost",
   addComment: "AddComment",
+  addRepost: "AddRepost",
 };
 const searchStack = {
   tab: "SearchTab",

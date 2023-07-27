@@ -8,6 +8,7 @@ import {
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import { color, ImageAuto, screen, timePost } from "../../../utils";
+import { GoToUserProfile } from "../../../utils/GoToUserProfile";
 import { useNavigation } from "@react-navigation/native";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
@@ -70,6 +71,7 @@ export function Post({ idPost }) {
               }
               size="medium"
               rounded
+              onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
             />
           </View>
 
@@ -96,7 +98,7 @@ export function Post({ idPost }) {
                     { color: thema ? color.light.text : color.dark.text },
                   ]}
                 >
-                  dataPost.nicknameUser
+                  {dataPost.nickname}
                 </Text>
 
                 <Text

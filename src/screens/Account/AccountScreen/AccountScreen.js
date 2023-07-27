@@ -10,7 +10,7 @@ import { InfoUser } from "../../../components/Account/InfoUser/InfoUser";
 import { styles } from "./AccountScreen.styles";
 import { color } from "../../../utils";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { screen } from "../../../utils/screenName";
 
 import { UserContext } from "../../../context/UserProvider";
@@ -19,6 +19,13 @@ export function AccountScreen() {
   const navigation = useNavigation();
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
+
+  const route = useRoute();
+  const id =
+    route.params && route.params.user_id
+      ? route.params.user_id
+      : currentUser.id;
+  console.log(id);
 
   useEffect(() => {
     navigation.setOptions({

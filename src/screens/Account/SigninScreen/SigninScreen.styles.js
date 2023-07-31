@@ -9,18 +9,15 @@ export const styles = StyleSheet.create({
     resizeMode: "contain",
     width: "100%",
     height: 300,
-    marginTop: "12%",
-  },
-  title: {
-    fontSize: 80,
-    // color: color.light.text,
-    // color: color.light.contrast,
-    textAlign: "center",
+    marginTop: "25%",
+    // marginVertical: "15%",
+    marginBottom: "6%",
   },
   content: {
     // marginHorizontal: 24,
   },
   textRegister: {
+    fontSize: 17,
     marginTop: 15,
     marginHorizontal: 10,
     textAlign: "center",

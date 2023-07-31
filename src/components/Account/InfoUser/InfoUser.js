@@ -1,37 +1,30 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import {
   Avatar,
-  Button,
   Text,
   Image,
   Icon,
   Tooltip,
 } from "react-native-elements";
 import { styles } from "./InfoUser.styles";
-import { useNavigation } from "@react-navigation/native";
-import { screen } from "../../../utils/screenName";
 
 import { useThemaContext } from "../../ThemeProvider";
-import { UserContext } from "../../../context/UserProvider";
 import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
+import { ProfileButtons } from "../ProfileButtons";
 
-export function InfoUser() {
+
+export function InfoUser({ userData, isCurrent }) {
   const thema = useThemaContext();
-  const navigation = useNavigation();
-  const { currentUser } = useContext(UserContext);
-  const createdAt = new Date(currentUser.created_at);
-  const goToEditProfile = () => {
-    navigation.navigate(screen.account.editProfile);
-  };
+  const createdAt = new Date(userData.created_at);
   return (
     <View style={styles.content}>
       <View style={styles.containerUserInfo}>
         <View style={styles.containerProfileCover}>
-          {currentUser.photoCover_url ? (
+          {userData.photoCover_url ? (
             <Image
-              source={{ uri: currentUser.photoCover_url }}
+              source={{ uri: userData.photoCover_url }}
               style={{ width: "100%", height: 135, resizeMode: "cover" }}
             />
           ) : (
@@ -54,12 +47,12 @@ export function InfoUser() {
       </View>
       <View style={styles.containerMediumHeader}>
         <View>
-          {currentUser.photoProfile_url ? (
+          {userData.photoProfile_url ? (
             <Avatar
               size="large"
               rounded
               containerStyle={styles.containerProfileAvatar}
-              source={{ uri: currentUser.photoProfile_url }}
+              source={{ uri: userData.photoProfile_url }}
             />
           ) : (
             <Avatar
@@ -69,35 +62,45 @@ export function InfoUser() {
               source={require("../../../../assets/icons/default_user_photo.png")}
             />
           )}
-          <Button
-            title="edit profile"
-            buttonStyle={styles.buttonEditProfile}
-            containerStyle={styles.containerButtonEditProfile}
-            titleStyle={styles.buttonEditProfileTitle}
-            onPress={goToEditProfile}
-          />
-          <Text
-            style={[
-              styles.userName,
-              {
-                color: thema ? color.light.text : color.dark.text,
-              },
-            ]}
-          >
-            {currentUser ? currentUser.username : "UserName"}
-          </Text>
-          <Text
-            style={[
-              styles.mentionUserName,
-              {
-                color: thema
-                  ? color.light.textSecondary
-                  : color.dark.textSecondary,
-              },
-            ]}
-          >
-            {currentUser ? `@${currentUser.username}` : "@UserName"}
-          </Text>
+
+          <View style={styles.containerNameAndBtns} >
+
+            <View style={styles.containerName}>
+              <Text
+                style={[
+                  styles.userName,
+                  {
+                    color: thema ? color.light.text : color.dark.text,
+                  },
+                ]}
+              >
+                {userData ? userData.username : "UserName"}
+              </Text>
+              <Text
+                style={[
+                  styles.mentionUserName,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                {userData ? `@${userData.username}` : "@UserName"}
+              </Text>
+            </View>
+
+            <ProfileButtons
+              isCurrentUser={isCurrent}
+              isFollowing={false}
+              onFollow={() => {
+                console.log("follow");
+              }}
+              onNotifications={() => {
+                console.log("notifications");
+              }}
+            />
+          </View>
           <ScrollView style={{ maxHeight: 70, marginBottom: 30 }}>
             <Text
               style={[
@@ -107,7 +110,7 @@ export function InfoUser() {
                 },
               ]}
             >
-              {currentUser.biography ? currentUser.biography : ""}
+              {userData.biography ? userData.biography : ""}
             </Text>
           </ScrollView>
 
@@ -128,12 +131,12 @@ export function InfoUser() {
                 name="map-marker-outline"
                 iconStyle={styles.userLocationIcon}
               />
-              {currentUser.localization ? (
+              {userData.localization ? (
                 <Tooltip
                   withOverlay={false}
                   popover={
                     <Text style={{ color: "#fff" }}>
-                      {currentUser.localization}
+                      {userData.localization}
                     </Text>
                   }
                   backgroundColor={color.light.corporate}
@@ -151,11 +154,11 @@ export function InfoUser() {
                 iconStyle={styles.userWebSiteIcon}
               />
 
-              {currentUser.website ? (
+              {userData.website ? (
                 <Tooltip
                   withOverlay={false}
                   popover={
-                    <Text style={{ color: "#fff" }}>{currentUser.website}</Text>
+                    <Text style={{ color: "#fff" }}>{userData.website}</Text>
                   }
                   backgroundColor={color.light.corporate}
                 >

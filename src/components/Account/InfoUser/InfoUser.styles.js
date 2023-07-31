@@ -36,19 +36,11 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#fff",
   },
-  containerButtonEditProfile: {
-    position: "absolute",
-    width: 100,
-    top: 50,
-    right: 35,
-    borderRadius: 20,
-  },
-  buttonEditProfile: {
-    backgroundColor: color.light.alternative,
-  },
-  buttonEditProfileTitle: {
-    color: "black",
-    fontSize: 14,
+  containerNameAndBtns: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: "baseline",
+    width: "90%"
   },
   profileUserInfo: {
     width: "100%",

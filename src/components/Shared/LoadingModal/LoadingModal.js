@@ -10,6 +10,7 @@ export function LoadingModal({ show = false, text }) {
   return (
     <Overlay
       isVisible={show}
+      backdropStyle={styles.backdrop}
       overlayStyle={[
         styles.overlay,
         {

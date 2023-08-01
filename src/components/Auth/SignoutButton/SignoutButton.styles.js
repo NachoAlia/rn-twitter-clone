@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   containerModal: {
     margin: -5,
-    padding: 10,
+    padding: 25,
     borderRadius: 15,
   },
   buttonContainer: {
@@ -11,8 +11,9 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
   },
   text: {
-    fontSize: 22,
+    fontSize: 26,
     textAlign: "center",
+    flexWrap: "wrap",
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#c19659",
     borderRadius: 15,
-    marginVertical: 10,
+    marginTop: 15,
   },
   btnAceptCancel: {
     color: "#c19659",

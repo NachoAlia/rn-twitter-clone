@@ -8,6 +8,7 @@ export function Modal({ show, close, children }) {
       isVisible={show}
       overlayStyle={styles.overlay}
       onBackdropPress={close}
+      backdropStyle={styles.backdrop}
     >
       {children}
     </Overlay>

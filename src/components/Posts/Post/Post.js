@@ -8,6 +8,7 @@ import {
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import { color, ImageAuto, screen, timePost } from "../../../utils";
+import { GoToUserProfile } from "../../../utils/GoToUserProfile";
 import { useNavigation } from "@react-navigation/native";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
@@ -61,15 +62,17 @@ export function Post({ idPost }) {
     <>
       {dataPost && (
         <View style={styles.container}>
-          <Avatar
-            source={
-              dataPost.photoProfile_url
-                ? { uri: dataPost.photoProfile_url }
-                : require("../../../../assets/icons/default_user_photo.png")
-            }
-            size="medium"
-            rounded
-          />
+          <View style={styles.photoUser}>
+            <Avatar
+              source={
+                dataPost.photoProfile_url
+                  ? { uri: dataPost.photoProfile_url }
+                  : require("../../../../assets/icons/default_user_photo.png")
+              }
+              size="medium"
+              rounded
+            />
+          </View>
 
           <View style={styles.containerData}>
             {dataPost.thread_tweet_id ? (
@@ -94,7 +97,7 @@ export function Post({ idPost }) {
                     { color: thema ? color.light.text : color.dark.text },
                   ]}
                 >
-                  nicknameUser
+                  dataPost.nicknameUser
                 </Text>
                 <Text
                   style={[

@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
   },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.8)", // Ajusta el valor de transparencia aquí (0.5 en este ejemplo)
+  },
   view: {
     flex: 1,
     alignItems: "center",

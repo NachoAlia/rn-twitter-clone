@@ -28,16 +28,6 @@ export function SigninScreen() {
         style={styles.image}
       />
       <View style={styles.content}>
-        <Text
-          style={[
-            styles.title,
-            {
-              color: theme ? color.light.text : color.dark.text,
-            },
-          ]}
-        >
-          Sign in
-        </Text>
         <SigninForm />
 
         <Text

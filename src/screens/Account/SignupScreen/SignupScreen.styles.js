@@ -8,13 +8,10 @@ export const styles = StyleSheet.create({
     resizeMode: "contain",
     width: "100%",
     height: 210,
-    marginTop: "12%",
+    marginTop: "25%",
+    marginBottom: "5%",
   },
   content: {
-    marginHorizontal: 40,
-  },
-  title: {
-    fontSize: 80,
-    textAlign: "center",
+    marginHorizontal: 30,
   },
 });

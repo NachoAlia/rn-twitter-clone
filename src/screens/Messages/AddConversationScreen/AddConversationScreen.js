@@ -20,32 +20,6 @@ export function AddConversationScreen() {
   const { drawerScreenOptions, setDrawerScreenOptions } =
     useContext(DrawerContext);
 
-  DATA = [
-    {
-      id: 1,
-      username: "NachoAlia 💖",
-      profile_url: "https://m.media-amazon.com/images/I/61NnbaTmgGL.png",
-    },
-    {
-      id: 2,
-      username: "AnotherUser1",
-      profile_url:
-        "https://thumbs.dreamstime.com/b/avatar-cartoon-wallpaper-girl-232239549.jpg",
-    },
-    {
-      id: 3,
-      username: "AnotherUser2",
-      profile_url:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNY-OQz4XFu7084J2itchn3tomNBYgJzVvxJyivw6n01_AY-I4QTKCH622MfAHrkUgFY&usqp=CAU",
-    },
-    {
-      id: 4,
-      username: "AnotherUser3",
-      profile_url:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFJAN3z2QdyT9ZjG58XO3MLk7y1wBYNOx3uvv0xCp6Adu9BliZcxdi5oQ8aPjqYWxlex8&usqp=CAU",
-    },
-  ];
-
   useLayoutEffect(() => {
     const updatedDrawerOptions = {
       ...drawerScreenOptions,
@@ -70,7 +44,7 @@ export function AddConversationScreen() {
       swipeEnabled: false,
     };
     if (!drawerScreenOptions) {
-      setDrawerScreenOptions(updatedDrawerOptions);
+      setDrawerScreenOptions({ headerShown: false });
     }
 
     const updatedTabBarOptions = {
@@ -143,7 +117,6 @@ export function AddConversationScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <AddConversationItem item={item} />}
       />
-      <Text>{data.length}</Text>
     </View>
   );
 }

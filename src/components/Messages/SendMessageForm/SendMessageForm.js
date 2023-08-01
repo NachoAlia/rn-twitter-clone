@@ -16,7 +16,7 @@ export const SendMessageForm = React.memo((props) => {
   const [textMessage, setTextMessage] = useState(null);
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
-  const { userReceiver } = props;
+  const { userReceiver, conversation } = props;
   const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
@@ -52,9 +52,10 @@ export const SendMessageForm = React.memo((props) => {
 
         data.append("message[body]", formValue.body || "");
         data.append("message[photoMessage]", formValue.photoMessage || "");
-
+        //`${domainUrl}/users/${currentUser.id}/messages/${userReceiver.id}/send_message`
+        ///api/v1/users/:user_id/conversations/:conversation_id/messages/send_message(
         await fetch(
-          `${domainUrl}/users/${currentUser.id}/messages/${userReceiver.id}/send_message`,
+          `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages/send_message`,
           {
             method: "POST",
             body: data,

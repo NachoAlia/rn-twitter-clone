@@ -25,6 +25,7 @@ export function MessagesStack() {
         options={{
           title: "Mensaje directo",
           headerTitleAlign: "left",
+          headerShown: true,
         }}
       />
       <Stack.Screen
@@ -33,6 +34,7 @@ export function MessagesStack() {
         options={{
           title: "Chat",
           headerTitleAlign: "left",
+          headerShown: true,
         }}
       />
     </Stack.Navigator>

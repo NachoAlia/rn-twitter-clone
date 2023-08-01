@@ -16,28 +16,30 @@ import { Message } from "../Message/Message";
 import { domainUrl } from "../../../config/host";
 import { color } from "../../../utils";
 
-export function MessagesList({ userReceiver }) {
+export function MessagesList(props) {
   const [messages, setMessages] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(true);
   const { currentUser } = useContext(UserContext);
+
+  const { userReceiver, conversation } = props;
   const flatListRef = useRef();
 
   useLayoutEffect(() => {
     setUpdateMessages(true);
     const fetchData = async () => {
       const response = await fetch(
-        `${domainUrl}/users/${currentUser.id}/messages/${userReceiver.id}/getCurrentConversation`,
+        `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages`,
         {
           method: "GET",
         }
       );
       const result = await response.json();
       setMessages(result);
+      console.log(result);
       setUpdateMessages(false);
     };
-
     fetchData();
-    // scrollToBottom();
+    scrollToBottom();
   }, []);
 
   useEffect(() => {}, [messages]);

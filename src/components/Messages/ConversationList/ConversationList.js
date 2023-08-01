@@ -1,60 +1,43 @@
-import React from "react";
-import { View, Text, FlatList, VirtualizedList } from "react-native";
+import React, { useState, useLayoutEffect, useContext } from "react";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { styles } from "./ConversationList.styles";
 import { Conversation } from "../Conversation/Conversation";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 
+import { UserContext } from "../../../context";
+import { domainUrl } from "../../../config/host";
+import { useNavigation } from "@react-navigation/native";
+
 export function ConversationList() {
   const thema = useThemaContext();
-  const conversations = [
-    {
-      id: 1,
-      avatarUri: "https://m.media-amazon.com/images/I/61NnbaTmgGL.png",
-      userName: "NachoAlia",
-      mentionName: "@NachoAlia",
-      fecha: new Date(),
-    },
-    {
-      id: 2,
-      avatarUri:
-        "https://thumbs.dreamstime.com/b/avatar-cartoon-wallpaper-girl-232239549.jpg",
-      userName: "AnotherUser1",
-      mentionName: "@AnotherUser1",
-      fecha: new Date(),
-    },
-    {
-      id: 3,
-      avatarUri:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNY-OQz4XFu7084J2itchn3tomNBYgJzVvxJyivw6n01_AY-I4QTKCH622MfAHrkUgFY&usqp=CAU",
-      userName: "AnotherUser2",
-      mentionName: "@AnotherUser2",
-      fecha: new Date(),
-    },
-    {
-      id: 4,
-      avatarUri:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFJAN3z2QdyT9ZjG58XO3MLk7y1wBYNOx3uvv0xCp6Adu9BliZcxdi5oQ8aPjqYWxlex8&usqp=CAU",
-      userName: "AnotherUser3",
-      mentionName: "@AnotherUser3",
-      fecha: new Date(),
-    },
-  ];
-  const getItem = (data, index) => {
-    return data[index];
-  };
-  const getItemCount = () => conversations.length;
+  const { currentUser } = useContext(UserContext);
+  const navigation = useNavigation();
+  const [conversations, setConversations] = useState(null);
 
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${domainUrl}/users/${currentUser.id}/conversations/index`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await response.json();
+      setConversations(result);
+    };
+
+    fetchData();
+  }, [navigation]);
+  if (conversations === null) {
+    return <ActivityIndicator />;
+  }
   return (
-    <VirtualizedList
-      keyExtractor={(item) => item.id.toString()}
+    <FlatList
       data={conversations}
-      getItem={getItem}
-      getItemCount={getItemCount}
       renderItem={({ item }) => <Conversation chatbox={item} />}
-      style={{
-        marginTop: 20,
-      }}
+      keyExtractor={(item) => item.id}
+      style={{ marginTop: 30 }}
     />
   );
 }

@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
-import { color } from "../../../utils";
+import { color, screen } from "../../../utils";
 import { useThemaContext } from "../../ThemeProvider";
+import { DrawerContext, TabBarContext, UserContext } from "../../../context";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 export function Conversation(props) {
   const thema = useThemaContext();
+  const { tabBarScreenOptions, setTabBarScreenOptions } =
+    useContext(TabBarContext);
+  const { drawerScreenOptions, setDrawerScreenOptions } =
+    useContext(DrawerContext);
   const { chatbox } = props;
+  const { currentUser } = useContext(UserContext);
+  const navigation = useNavigation();
+
+  const conversationTimestamp = new Date(
+    chatbox?.updated_at
+  ).toLocaleDateString("en-ES", {
+    day: "2-digit",
+    month: "short",
+  });
+
+  const getUserConversation = () =>
+    chatbox.user_receiver.id == currentUser.id
+      ? chatbox.user_sender
+      : chatbox.user_receiver;
+
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => {
+        setDrawerScreenOptions(null);
+        setTabBarScreenOptions(null);
+        navigation.navigate(screen.messages.tab, {
+          screen: screen.messages.concreteConversation,
+          params: { conversation: chatbox },
+        });
+      }}
       style={{
         flex: 1,
         alignItems: "center",
@@ -28,8 +58,16 @@ export function Conversation(props) {
           <Avatar
             rounded
             size={"medium"}
-            source={{
-              uri: chatbox.avatarUri,
+            source={
+              getUserConversation().photo_profile_url
+                ? {
+                    uri: getUserConversation().photo_profile_url,
+                  }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
+            avatarStyle={{
+              borderWidth: 1.5,
+              borderColor: color.light.corporate,
             }}
           />
           <View style={{ marginLeft: 10, flex: 1 }}>
@@ -38,9 +76,10 @@ export function Conversation(props) {
                 style={{
                   fontWeight: "bold",
                   color: thema ? color.light.text : color.dark.text,
+                  fontSize: 14,
                 }}
               >
-                {chatbox.userName}
+                {getUserConversation().username}
               </Text>
               <Text
                 style={{
@@ -50,7 +89,7 @@ export function Conversation(props) {
                     : color.dark.textSecondary,
                 }}
               >
-                {chatbox.mentionName}
+                {"@" + getUserConversation().username.slice(0, 10) + "..."}
               </Text>
               <View style={{ flex: 1 }}>
                 <Text style={{ marginLeft: 5, alignSelf: "flex-end" }}>
@@ -59,8 +98,11 @@ export function Conversation(props) {
                       color: thema
                         ? color.light.textSecondary
                         : color.dark.textSecondary,
+                      fontSize: 13,
                     }}
-                  >{`${chatbox.fecha.getDate()}/${chatbox.fecha.getMonth()}/${chatbox.fecha.getFullYear()}`}</Text>
+                  >
+                    {conversationTimestamp}
+                  </Text>
                 </Text>
               </View>
             </View>
@@ -69,13 +111,14 @@ export function Conversation(props) {
                 color: thema
                   ? color.light.textSecondary
                   : color.dark.textSecondary,
+                fontSize: 15,
               }}
             >
-              Ultimo mensaje
+              {chatbox.last_message}
             </Text>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

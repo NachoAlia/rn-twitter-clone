@@ -8,11 +8,15 @@ import { color, screen } from "../../../utils";
 import { useThemaContext } from "../../ThemeProvider";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { DrawerContext } from "../../../context";
+import { DrawerContext, TabBarContext, UserContext } from "../../../context";
+import { domainUrl } from "../../../config/host";
 
 export function AddConversationItem({ item }) {
+  //item es user receiver
   const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const { setTabBarScreenOptions } = useContext(TabBarContext);
   const thema = useThemaContext();
+  const { currentUser } = useContext(UserContext);
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -20,12 +24,25 @@ export function AddConversationItem({ item }) {
         styles.container,
         { borderBottomColor: color.light.textSecondary },
       ]}
-      onPress={() => {
+      onPress={async () => {
         setDrawerScreenOptions(null);
-        navigation.navigate(screen.messages.tab, {
-          screen: screen.messages.concreteConversation,
-          params: { item: item },
-        });
+        setTabBarScreenOptions(null);
+        try {
+          const response = await fetch(
+            `${domainUrl}/users/${currentUser.id}/conversations/${item.id}/create`,
+            {
+              method: "POST",
+            }
+          );
+          const conversation = await response.json();
+          console.log(conversation);
+          navigation.navigate(screen.messages.tab, {
+            screen: screen.messages.concreteConversation,
+            params: { conversation: conversation },
+          });
+        } catch (error) {
+          console.error("Error al crear la conversación:", error);
+        }
       }}
     >
       <Avatar
@@ -55,7 +72,7 @@ export function AddConversationItem({ item }) {
             color: color.light.textSecondary,
           }}
         >
-          @{item.username}
+          @{item.username + item.id}
         </Text>
       </View>
     </TouchableOpacity>

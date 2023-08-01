@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { styles } from "./DrawerOptions.styles";
 import { useNavigation } from "@react-navigation/native";
 import { screen } from "../../../utils/screenName";
 import { useThemaContext } from "../../ThemeProvider";
-import { color } from "../../../utils";
+import { color, GoToUserProfile } from "../../../utils";
 import { SignoutButton } from "../../Auth";
+import { UserContext } from '../../../context/UserProvider'
+
 export function DrawerOptions() {
+  const { currentUser } = useContext(UserContext);
   const navigation = useNavigation();
   const thema = useThemaContext();
 
@@ -20,7 +23,7 @@ export function DrawerOptions() {
         iconSize: 32,
         iconColorLeft: "#ccc",
         bottomDivider: false,
-        onPress: () => navigation.navigate(screen.account.account),
+        onPress: () => GoToUserProfile(navigation, currentUser.id),
       },
       {
         title: "Explore",

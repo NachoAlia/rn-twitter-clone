@@ -2,28 +2,26 @@ import { StyleSheet } from "react-native";
 import { color } from "../../../utils";
 
 export const styles = StyleSheet.create({
-  container: { paddingVertical: 15, flexDirection: "row" },
-  photoUser: { paddingHorizontal: 10 },
-  containerData: { width: "80%" },
+  container: { padding: 15, flexDirection: "row" },
+  containerData: { flex: 1, paddingLeft: 15 },
   postTitle: { flexDirection: "row" },
   title: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
   },
-  nicknameUser: { fontWeight: "bold", fontSize: 17 },
+  nicknameUser: { fontWeight: "bold", fontSize: 16 },
   nameUser: {
-    fontSize: 17,
-    paddingHorizontal: 5,
+    fontSize: 15,
+    paddingLeft: 5,
   },
   titleDate: {
     fontSize: 12,
-    paddingHorizontal: 5,
     alignSelf: "center",
   },
-  containerInfo: { padding: 10 },
-  text: { textAlign: "justify" },
-  imagePost: { marginVertical: 10, alignItems: "center" },
+  containerInfo: { marginVertical: 15 },
+  body: { marginBottom: 15 },
+  text: { textAlign: "justify", fontSize: 15 },
+  imagePost: { alignItems: "center" },
 
   postStyle: { flexDirection: "row" },
   threadStyle: {
@@ -33,9 +31,7 @@ export const styles = StyleSheet.create({
   },
   threadUser: { paddingHorizontal: 20 },
   threadText: { color: color.light.corporate, fontWeight: "bold" },
-  spreaderBar: {
-    height: 1,
-  },
+  spreaderBar: { marginHorizontal: 15, height: 1 },
   postButton: { height: "90%", width: "107%", position: "absolute" },
   threadBar: {
     marginTop: 55,

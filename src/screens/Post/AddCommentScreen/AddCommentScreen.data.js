@@ -9,7 +9,7 @@ export function initialValues() {
 
 export function validationSchema() {
   return Yup.object({
-    content: Yup.string().required("Campo obligatorio"),
+    content: Yup.string(),
     image: Yup.string(),
   });
 }

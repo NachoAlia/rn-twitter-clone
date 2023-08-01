@@ -61,17 +61,15 @@ export function Post({ idPost }) {
     <>
       {dataPost && (
         <View style={styles.container}>
-          <View style={styles.photoUser}>
-            <Avatar
-              source={
-                dataPost.photoProfile_url
-                  ? { uri: dataPost.photoProfile_url }
-                  : require("../../../../assets/icons/default_user_photo.png")
-              }
-              size="medium"
-              rounded
-            />
-          </View>
+          <Avatar
+            source={
+              dataPost.photoProfile_url
+                ? { uri: dataPost.photoProfile_url }
+                : require("../../../../assets/icons/default_user_photo.png")
+            }
+            size="medium"
+            rounded
+          />
 
           <View style={styles.containerData}>
             {dataPost.thread_tweet_id ? (
@@ -96,9 +94,8 @@ export function Post({ idPost }) {
                     { color: thema ? color.light.text : color.dark.text },
                   ]}
                 >
-                  dataPost.nicknameUser
+                  nicknameUser
                 </Text>
-
                 <Text
                   style={[
                     styles.nameUser,
@@ -127,14 +124,21 @@ export function Post({ idPost }) {
             </View>
 
             <View style={styles.containerInfo}>
-              <Text
-                style={[
-                  styles.text,
-                  { color: thema ? color.light.text : color.dark.text },
-                ]}
-              >
-                {dataPost.body}
-              </Text>
+              {dataPost.body ? (
+                <View style={styles.body}>
+                  <Text
+                    style={[
+                      styles.text,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataPost.body}
+                  </Text>
+                </View>
+              ) : (
+                <></>
+              )}
+
               <TouchableOpacity style={styles.postButton} onPress={goPost} />
 
               {dataPost.photoTweet_url ? (

@@ -29,7 +29,7 @@ export function PostButtonBar({
   const addComment = () => {
     navigation.navigate(screen.post.tab, {
       screen: screen.post.addComment,
-      params: { dataPost, reload },
+      params: { dataPost },
     });
   };
 

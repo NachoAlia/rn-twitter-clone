@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View } from "react-native";
-import { Avatar, Button, Image, Input, Text } from "react-native-elements";
+import { Dimensions, View } from "react-native";
+import { Avatar, Button, Input, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./AddCommentScreen.data";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./AddCommentScreen.style";
-import { IconsButton, color } from "../../../utils";
+import { IconsButton, ImageAuto, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { HeaderComment } from "../../../components/Posts";
@@ -16,9 +16,8 @@ import { domainUrl } from "../../../config/host";
 export function AddCommentScreen(props) {
   const { route } = props;
 
-  const reload = route.params.reload;
-
-  const [canBePost, setCanBePost] = useState(true);
+  const [canNotBePost, setCanNotBePost] = useState(true);
+  const [image, setImage] = useState(null);
   const navigation = useNavigation();
 
   const thema = useThemaContext();
@@ -49,7 +48,7 @@ export function AddCommentScreen(props) {
           },
           body: formData,
         });
-        reload();
+
         navigation.goBack();
       } catch (error) {
         console.log(error);
@@ -72,7 +71,7 @@ export function AddCommentScreen(props) {
           buttonStyle={styles.containerButtonPost}
           onPress={formik.handleSubmit}
           loading={formik.isSubmitting}
-          disabled={formik.values.content.length == 0 && canBePost}
+          disabled={formik.values.content.length == 0 && canNotBePost}
           disabledStyle={styles.containerButtonPostDisabled}
         />
       ),
@@ -80,19 +79,23 @@ export function AddCommentScreen(props) {
         backgroundColor: thema ? color.light.background : color.dark.background,
       },
     });
-  }, [thema, canBePost, formik]);
+  }, [thema, canNotBePost, formik]);
 
   const goBack = () => {
-    navigation.goBack();
+    navigation.navigate(screen.home.tab, {
+      screen: screen.home.home,
+    });
   };
 
   const openGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      allowsEditing: false,
     });
-    formik.setFieldValue("image", result.assets[0].uri);
-    setCanBePost(false);
+    setImage(result.assets[0].uri);
+    let file = getNewFileFormat(result.assets[0].uri);
+    formik.setFieldValue("image", file);
+    setCanNotBePost(false);
   };
   return (
     <View
@@ -131,10 +134,12 @@ export function AddCommentScreen(props) {
             onChangeText={(text) => formik.setFieldValue("content", text)}
           />
           {formik.values.image ? (
-            <Image
-              style={styles.imagePost}
-              source={require("../../../../assets/icons/picture_not_found.png")}
-            />
+            <View style={styles.imagePost}>
+              <ImageAuto
+                uri={image}
+                desiredWidth={Dimensions.get("window").width * 0.7}
+              />
+            </View>
           ) : (
             <></>
           )}

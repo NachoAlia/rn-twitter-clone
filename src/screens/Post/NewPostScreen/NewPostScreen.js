@@ -13,7 +13,7 @@ import { domainUrl } from "../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../context";
 
 export function NewPostScreen() {
-  const [canBePost, setCanBePost] = useState(true);
+  const [canNotBePost, setCanNotBePost] = useState(true);
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
 
@@ -47,7 +47,7 @@ export function NewPostScreen() {
 
         formik.resetForm();
         setImage(null);
-        setCanBePost(true);
+        setCanNotBePost(true);
 
         navigation.goBack();
       } catch (error) {
@@ -71,7 +71,7 @@ export function NewPostScreen() {
           buttonStyle={styles.containerButtonPost}
           onPress={formik.handleSubmit}
           loading={formik.isSubmitting}
-          disabled={formik.values.content.length == 0 && canBePost}
+          disabled={formik.values.content.length == 0 && canNotBePost}
           disabledStyle={styles.containerButtonPostDisabled}
         />
       ),
@@ -79,7 +79,7 @@ export function NewPostScreen() {
         backgroundColor: thema ? color.light.background : color.dark.background,
       },
     });
-  }, [thema, canBePost, formik]);
+  }, [thema, canNotBePost, formik]);
 
   const goHome = () => {
     navigation.navigate(screen.home.tab, {
@@ -106,7 +106,7 @@ export function NewPostScreen() {
     setImage(result.assets[0].uri);
     let file = getNewFileFormat(result.assets[0].uri);
     formik.setFieldValue("image", file);
-    setCanBePost(false);
+    setCanNotBePost(false);
   };
   return (
     <View

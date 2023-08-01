@@ -16,7 +16,7 @@ import { Repost } from "../../../components/Posts/Post/Repost";
 export function AddRepostScreen(props) {
   const { route } = props;
 
-  const [canBePost, setCanBePost] = useState(true);
+  const [canNotBePost, setCanNotBePost] = useState(true);
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
 
@@ -36,7 +36,7 @@ export function AddRepostScreen(props) {
         const apiUrl = `${domainUrl}${route}`;
 
         const formData = new FormData();
-        formData.append("retweet[body]", formValue.content);
+        formData.append("retweet[body]", formValue.repost);
         if (formValue.image) {
           formData.append("retweet[photoTweet]", formValue.image);
         }
@@ -48,12 +48,12 @@ export function AddRepostScreen(props) {
           },
           body: formData,
         });
-        reloadpost();
 
         formik.resetForm();
         setImage(null);
-        setCanBePost(true);
+        setCanNotBePost(true);
 
+        reloadpost();
         navigation.goBack();
       } catch (error) {
         console.log(error);
@@ -76,7 +76,7 @@ export function AddRepostScreen(props) {
           buttonStyle={styles.containerButtonPost}
           onPress={formik.handleSubmit}
           loading={formik.isSubmitting}
-          disabled={formik.values.content.length == 0 && canBePost}
+          disabled={formik.values.repost.length == 0 && canNotBePost}
           disabledStyle={styles.containerButtonPostDisabled}
         />
       ),
@@ -84,7 +84,7 @@ export function AddRepostScreen(props) {
         backgroundColor: thema ? color.light.background : color.dark.background,
       },
     });
-  }, [thema, canBePost, formik]);
+  }, [thema, canNotBePost, formik]);
 
   const goHome = () => {
     navigation.navigate(screen.home.tab, {
@@ -111,7 +111,7 @@ export function AddRepostScreen(props) {
     setImage(result.assets[0].uri);
     let file = getNewFileFormat(result.assets[0].uri);
     formik.setFieldValue("image", file);
-    setCanBePost(false);
+    setCanNotBePost(false);
   };
   return (
     <View
@@ -144,8 +144,8 @@ export function AddRepostScreen(props) {
           placeholderTextColor={
             thema ? color.light.textSecondary : color.dark.textSecondary
           }
-          onChangeText={(text) => formik.setFieldValue("content", text)}
-          value={formik.values.content}
+          onChangeText={(text) => formik.setFieldValue("repost", text)}
+          value={formik.values.repost}
         />
         {formik.values.image ? (
           <View style={styles.imagePost}>
@@ -160,7 +160,7 @@ export function AddRepostScreen(props) {
         <View style={styles.repost}>
           <Repost dataPost={dataPost} />
         </View>
-        <CharacterCountBar value={formik.values.content.length} />
+        <CharacterCountBar value={formik.values.repost.length} />
         <View style={styles.barPost}>
           <IconsButton name={"image"} size={30} onPress={openGallery} />
 
@@ -174,7 +174,7 @@ export function AddRepostScreen(props) {
               },
             ]}
           >
-            {formik.values.content.length}/140
+            {formik.values.repost.length}/140
           </Text>
         </View>
       </View>

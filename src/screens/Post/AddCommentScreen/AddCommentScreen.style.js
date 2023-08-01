@@ -38,4 +38,9 @@ export const styles = StyleSheet.create({
     position: "absolute",
     left: 25,
   },
+  imagePost: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
 });

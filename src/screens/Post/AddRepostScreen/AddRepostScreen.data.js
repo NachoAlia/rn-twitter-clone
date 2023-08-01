@@ -2,14 +2,14 @@ import * as Yup from "yup";
 
 export function initialValues() {
   return {
-    content: "",
+    repost: "",
     image: "",
   };
 }
 
 export function validationSchema() {
   return Yup.object({
-    content: Yup.string().required("Campo obligatorio"),
+    repost: Yup.string(),
     image: Yup.string(),
   });
 }

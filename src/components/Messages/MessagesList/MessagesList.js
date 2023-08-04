@@ -8,7 +8,11 @@ import React, {
 import { View, Text, ActivityIndicator } from "react-native";
 import { styles } from "./MessagesList.styles";
 import { FlatList } from "react-native-gesture-handler";
-import { UserContext } from "../../../context";
+import {
+  DirectMessagesContext,
+  DrawerContext,
+  UserContext,
+} from "../../../context";
 
 import { useThemaContext } from "../../ThemeProvider";
 
@@ -19,30 +23,35 @@ import { color } from "../../../utils";
 export function MessagesList(props) {
   const [messages, setMessages] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(true);
+  const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const { shouldUpdateMessages, setShouldUpdateMessages } = useContext(
+    DirectMessagesContext
+  );
   const { currentUser } = useContext(UserContext);
 
   const { userReceiver, conversation } = props;
   const flatListRef = useRef();
 
   useLayoutEffect(() => {
-    setUpdateMessages(true);
-    const fetchData = async () => {
-      const response = await fetch(
-        `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages`,
-        {
-          method: "GET",
-        }
-      );
-      const result = await response.json();
-      setMessages(result);
-      console.log(result);
-      setUpdateMessages(false);
-    };
-    fetchData();
-    scrollToBottom();
-  }, []);
-
-  useEffect(() => {}, [messages]);
+    if (shouldUpdateMessages) {
+      setUpdateMessages(true);
+      const fetchData = async () => {
+        const response = await fetch(
+          `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages`,
+          {
+            method: "GET",
+          }
+        );
+        const result = await response.json();
+        setMessages(result);
+        console.log(result);
+        setUpdateMessages(false);
+      };
+      fetchData();
+      setShouldUpdateMessages(false);
+      scrollToBottom();
+    }
+  }, [shouldUpdateMessages]);
 
   const scrollToBottom = () => {
     if (flatListRef.current && messages?.length > 0) {
@@ -50,7 +59,7 @@ export function MessagesList(props) {
     }
   };
   const footerComponent = () =>
-    updateMessages && (
+    shouldUpdateMessages && (
       <ActivityIndicator size={28} color={color.light.corporate} />
     );
 

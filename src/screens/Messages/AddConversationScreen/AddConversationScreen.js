@@ -17,48 +17,42 @@ export function AddConversationScreen() {
   const navigation = useNavigation();
   const { tabBarScreenOptions, setTabBarScreenOptions } =
     useContext(TabBarContext);
-  const { drawerScreenOptions, setDrawerScreenOptions } =
-    useContext(DrawerContext);
+  const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const [shoulHideDrawerHeader, setShoulHideDrawerHeader] = useState(false);
 
   useLayoutEffect(() => {
-    const updatedDrawerOptions = {
-      ...drawerScreenOptions,
-      headerShown: true,
-      headerLeft: () => (
-        <TouchableOpacity
-          style={{ marginLeft: 20 }}
-          onPress={navigation.goBack}
-        >
-          <Icon
-            type="material-community"
-            name="arrow-left"
-            size={25}
-            color={thema ? color.light.text : color.dark.text}
-          />
-        </TouchableOpacity>
-      ),
-      title: "Mensaje directo",
-      headerTitleAlign: "left",
-      headerTitleStyle: { marginLeft: 10 },
-      headerTintColor: thema ? color.light.text : color.dark.text,
-      swipeEnabled: false,
-    };
-    if (!drawerScreenOptions) {
-      setDrawerScreenOptions({ headerShown: false });
-    }
-
     const updatedTabBarOptions = {
       ...tabBarScreenOptions,
       tabBarStyle: { display: "none" },
     };
-    if (!tabBarScreenOptions) {
+
+    if (!shoulHideDrawerHeader) {
       setTabBarScreenOptions(updatedTabBarOptions);
+      navigation.setOptions({
+        headerTintColor: thema ? color.light.text : color.dark.text,
+        headerStyle: {
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        },
+      });
+      setDrawerScreenOptions({ headerShown: false });
+      setShoulHideDrawerHeader(true);
     }
 
     return () => {
-      setTabBarScreenOptions(null);
+      setDrawerScreenOptions({ headerShown: false });
+      setTabBarScreenOptions(updatedTabBarOptions);
+      navigation.setOptions({
+        headerTintColor: thema ? color.light.text : color.dark.text,
+        headerStyle: {
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        },
+      });
     };
-  }, [drawerScreenOptions, thema]);
+  }, [thema, shoulHideDrawerHeader]);
 
   useEffect(() => {
     const fetchUsers = async () => {

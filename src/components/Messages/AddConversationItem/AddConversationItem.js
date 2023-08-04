@@ -25,8 +25,8 @@ export function AddConversationItem({ item }) {
         { borderBottomColor: color.light.textSecondary },
       ]}
       onPress={async () => {
-        setDrawerScreenOptions(null);
-        setTabBarScreenOptions(null);
+        setDrawerScreenOptions({ headerShown: false });
+        setTabBarScreenOptions({ tabBarStyle: { display: "none" } });
         try {
           const response = await fetch(
             `${domainUrl}/users/${currentUser.id}/conversations/${item.id}/create`,

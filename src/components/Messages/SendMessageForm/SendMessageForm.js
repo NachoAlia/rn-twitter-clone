@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useThemaContext } from "../../ThemeProvider";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./SendMessageForm.data";
-import { UserContext } from "../../../context";
+import { DirectMessagesContext, UserContext } from "../../../context";
 import { domainUrl } from "../../../config/host";
 import { SendImageForm } from "./SendImageForm";
 
@@ -18,7 +18,9 @@ export const SendMessageForm = React.memo((props) => {
   const { currentUser } = useContext(UserContext);
   const { userReceiver, conversation } = props;
   const [photo, setPhoto] = useState(null);
-
+  const { setShouldUpdateConversations, setShouldUpdateMessages } = useContext(
+    DirectMessagesContext
+  );
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
@@ -68,7 +70,8 @@ export const SendMessageForm = React.memo((props) => {
           setPhoto(null);
           formik.setFieldValue("body", "");
           formik.setFieldValue("photoMessage", "");
-          console.log("enviado");
+          setShouldUpdateMessages(true);
+          setShouldUpdateConversations(true);
         });
       } catch (error) {
         console.log(error);
@@ -117,7 +120,11 @@ export const SendMessageForm = React.memo((props) => {
             }
             style={{ borderWidth: 0 }}
             containerStyle={{}}
-            inputContainerStyle={{ borderWidth: 1, borderRadius: 30 }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderRadius: 30,
+              paddingHorizontal: 10,
+            }}
             inputStyle={{
               marginLeft: 5,
               color: thema ? color.light.text : color.dark.text,
@@ -154,6 +161,7 @@ export const SendMessageForm = React.memo((props) => {
               borderBottomWidth: 0,
               borderRadius: 0,
               borderColor: inputActive ? "blue" : "gray",
+              paddingHorizontal: 10,
             }}
             inputStyle={{
               marginLeft: 10,
@@ -169,7 +177,7 @@ export const SendMessageForm = React.memo((props) => {
               alignItems: "center",
               marginBottom: 10,
               marginTop: -10,
-              marginHorizontal: 5,
+              paddingHorizontal: 15,
             }}
           >
             <View

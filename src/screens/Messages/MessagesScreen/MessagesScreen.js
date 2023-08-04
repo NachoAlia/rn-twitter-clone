@@ -1,17 +1,18 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ConversationList } from "../../../components/Messages/ConversationList";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { DrawerContext } from "../../../context";
+import { DrawerContext, TabBarContext } from "../../../context";
 import { Icon, Input } from "react-native-elements";
 import { AddConversationButton } from "../../../components/Messages/AddConversationButton";
 
 export function MessagesScreen() {
+  const thema = useThemaContext();
   const { setDrawerScreenOptions, drawerScreenOptions } =
     useContext(DrawerContext);
-  const thema = useThemaContext();
+  const { setTabBarScreenOptions } = useContext(TabBarContext);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -22,12 +23,15 @@ export function MessagesScreen() {
               position: "absolute",
               maxWidth: "150%",
               marginLeft: -20,
+              alignSelf: "center",
+              flex: 1,
             }}
           >
             <Input
-              placeholder="Buscar mensajes directos"
+              placeholder="Buscar Mensajes Directos"
               inputContainerStyle={{
-                width: "120%",
+                minWidth: "140%",
+                maxWidth: "140%",
                 height: 35,
                 marginTop: 10,
                 borderWidth: 1,
@@ -39,6 +43,7 @@ export function MessagesScreen() {
               style={{
                 textAlign: "center",
                 color: thema ? color.light.text : color.dark.text,
+                fontSize: 15,
               }}
               cursorColor={thema ? color.light.corporate : color.dark.corporate}
             />
@@ -56,7 +61,7 @@ export function MessagesScreen() {
         headerTitleAlign: "flex-start",
         headerTitleStyle: { marginHorizontal: -5 },
       });
-
+      setTabBarScreenOptions({ tabBarVisible: true });
       return () => {
         setDrawerScreenOptions(null);
       };
@@ -68,6 +73,7 @@ export function MessagesScreen() {
       style={{
         backgroundColor: thema ? color.light.background : color.dark.background,
         flex: 1,
+        justifyContent: "center",
       }}
     >
       <>

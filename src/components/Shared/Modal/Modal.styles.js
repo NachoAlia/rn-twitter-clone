@@ -8,6 +8,6 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
   },
   backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.8)", // Ajusta el valor de transparencia aquí (0.5 en este ejemplo)
+    backgroundColor: "rgba(0, 0, 0, 0.85)", // Ajusta el valor de transparencia aquí (0.5 en este ejemplo)
   },
 });

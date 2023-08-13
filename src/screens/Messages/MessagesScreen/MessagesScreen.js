@@ -5,7 +5,7 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { DrawerContext, TabBarContext } from "../../../context";
-import { Icon, Input } from "react-native-elements";
+import { Image, Icon, Input } from "react-native-elements";
 import { AddConversationButton } from "../../../components/Messages/AddConversationButton";
 
 export function MessagesScreen() {
@@ -13,11 +13,19 @@ export function MessagesScreen() {
   const { setDrawerScreenOptions, drawerScreenOptions } =
     useContext(DrawerContext);
   const { setTabBarScreenOptions } = useContext(TabBarContext);
+  const [searchBarActive, setSearchBarActive] = useState(false);
+  const [filter, setFilter] = useState(null);
+  const handleSearchBar = (state) => {
+    if (searchBarActive) {
+      setFilter(null);
+    }
+    setSearchBarActive(!state);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
       setDrawerScreenOptions({
-        title: (
+        title: searchBarActive ? (
           <View
             style={{
               position: "absolute",
@@ -46,26 +54,47 @@ export function MessagesScreen() {
                 fontSize: 15,
               }}
               cursorColor={thema ? color.light.corporate : color.dark.corporate}
+              onChangeText={(text) => {
+                setFilter(text);
+              }}
             />
           </View>
+        ) : (
+          <Image
+            source={require("../../../../assets/icons/logo_owl.png")}
+            style={{ width: 80, height: 30, resizeMode: "center" }}
+          />
         ),
         headerRight: () => (
-          <TouchableOpacity style={{ marginRight: 10 }}>
-            <Icon
-              type="material-community"
-              name="cog-outline"
-              color={color.light.corporate}
-            />
+          <TouchableOpacity
+            style={{ marginRight: 10 }}
+            onPress={() => handleSearchBar(searchBarActive)}
+          >
+            {!searchBarActive ? (
+              <Icon
+                type="material-community"
+                name="comment-search-outline"
+                size={26}
+                color={color.light.corporate}
+              />
+            ) : (
+              <Icon
+                type="material-community"
+                name="comment-search"
+                size={26}
+                color={color.light.corporate}
+              />
+            )}
           </TouchableOpacity>
         ),
-        headerTitleAlign: "flex-start",
+        headerTitleAlign: searchBarActive ? "flex-start" : "center",
         headerTitleStyle: { marginHorizontal: -5 },
       });
       setTabBarScreenOptions({ tabBarVisible: true });
       return () => {
         setDrawerScreenOptions(null);
       };
-    }, [thema])
+    }, [thema, searchBarActive])
   );
 
   return (
@@ -77,7 +106,7 @@ export function MessagesScreen() {
       }}
     >
       <>
-        <ConversationList />
+        <ConversationList searchFilter={filter} />
         <AddConversationButton />
       </>
     </View>

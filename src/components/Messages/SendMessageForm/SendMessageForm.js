@@ -1,5 +1,11 @@
 import React, { useContext, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+  ActivityIndicator,
+} from "react-native";
 import { Input, Icon, Image } from "react-native-elements";
 import { IconsButton, color } from "../../../utils";
 import { styles } from "./SendMessageForm.styles";
@@ -14,9 +20,10 @@ import { SendImageForm } from "./SendImageForm";
 export const SendMessageForm = React.memo((props) => {
   const [inputActive, setInputActive] = useState(false);
   const [textMessage, setTextMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
-  const { userReceiver, conversation } = props;
+  const { conversation } = props;
   const [photo, setPhoto] = useState(null);
   const { setShouldUpdateConversations, setShouldUpdateMessages } = useContext(
     DirectMessagesContext
@@ -50,12 +57,12 @@ export const SendMessageForm = React.memo((props) => {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
+        setIsLoading(true);
         const data = new FormData();
 
         data.append("message[body]", formValue.body || "");
         data.append("message[photoMessage]", formValue.photoMessage || "");
-        //`${domainUrl}/users/${currentUser.id}/messages/${userReceiver.id}/send_message`
-        ///api/v1/users/:user_id/conversations/:conversation_id/messages/send_message(
+
         await fetch(
           `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages/send_message`,
           {
@@ -72,6 +79,7 @@ export const SendMessageForm = React.memo((props) => {
           formik.setFieldValue("photoMessage", "");
           setShouldUpdateMessages(true);
           setShouldUpdateConversations(true);
+          setIsLoading(false);
         });
       } catch (error) {
         console.log(error);
@@ -97,11 +105,15 @@ export const SendMessageForm = React.memo((props) => {
             maxLength={120}
             onFocus={handleInputFocus}
             rightIcon={
-              <IconsButton
-                name="send"
-                size={28}
-                onPress={formik.handleSubmit}
-              />
+              !isLoading ? (
+                <IconsButton
+                  name="send"
+                  size={28}
+                  onPress={formik.handleSubmit}
+                />
+              ) : (
+                <ActivityIndicator color={color.light.corporate} size={26} />
+              )
             }
             leftIcon={
               <View
@@ -192,7 +204,15 @@ export const SendMessageForm = React.memo((props) => {
                 setPhoto={setPhoto}
               />
             </View>
-            <IconsButton name="send" size={28} onPress={formik.handleSubmit} />
+            {!isLoading ? (
+              <IconsButton
+                name="send"
+                size={28}
+                onPress={formik.handleSubmit}
+              />
+            ) : (
+              <ActivityIndicator color={color.light.corporate} size={26} />
+            )}
           </View>
         </View>
       )}

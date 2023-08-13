@@ -12,7 +12,6 @@ import { DrawerContext, TabBarContext, UserContext } from "../../../context";
 import { domainUrl } from "../../../config/host";
 
 export function AddConversationItem({ item }) {
-  //item es user receiver
   const { setDrawerScreenOptions } = useContext(DrawerContext);
   const { setTabBarScreenOptions } = useContext(TabBarContext);
   const thema = useThemaContext();
@@ -35,7 +34,6 @@ export function AddConversationItem({ item }) {
             }
           );
           const conversation = await response.json();
-          console.log(conversation);
           navigation.navigate(screen.messages.tab, {
             screen: screen.messages.concreteConversation,
             params: { conversation: conversation },
@@ -72,7 +70,7 @@ export function AddConversationItem({ item }) {
             color: color.light.textSecondary,
           }}
         >
-          @{item.username + item.id}
+          @{item.username}
         </Text>
       </View>
     </TouchableOpacity>

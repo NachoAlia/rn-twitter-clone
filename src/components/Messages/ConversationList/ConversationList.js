@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useContext } from "react";
+import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,14 +12,13 @@ import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 
 import { DirectMessagesContext, UserContext } from "../../../context";
-import { domainUrl } from "../../../config/host";
-import { useNavigation } from "@react-navigation/native";
+import { domainUrl, cableConsumer } from "../../../config/host";
 import { ConversationOptionsScreen } from "../../../screens/Messages/ConversationOptionsScreen";
 
-export function ConversationList() {
+export function ConversationList(props) {
   const thema = useThemaContext();
+  const { searchFilter } = props;
   const { currentUser } = useContext(UserContext);
-  const navigation = useNavigation();
   const [conversations, setConversations] = useState(null);
   const [showOptions, setShowOptions] = useState(null);
   const [conversationIdOption, setConversationIdOption] = useState(null);
@@ -28,6 +27,7 @@ export function ConversationList() {
 
   useLayoutEffect(() => {
     if (shouldUpdateConversations) {
+      setShouldUpdateConversations(false);
       const fetchData = async () => {
         const response = await fetch(
           `${domainUrl}/users/${currentUser.id}/conversations/index`,
@@ -37,21 +37,72 @@ export function ConversationList() {
         );
         const result = await response.json();
         setConversations(result);
-        setShouldUpdateConversations(false);
       };
 
       fetchData();
     }
-  }, [navigation, shouldUpdateConversations]);
+  }, [shouldUpdateConversations]);
+
+  useEffect(() => {
+    socket = new WebSocket(cableConsumer);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            id: currentUser.id,
+            channel: "ConversationsChannel",
+          }),
+        })
+      );
+    };
+    socket.onclose = () => {
+      //not yet implemented
+    };
+    socket.onerror = (error) => {
+      console.error("Error en la conexión WebSocket: ", error);
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (
+        (data.message && data.message.type === "update_conversation") ||
+        data.type === "welcome"
+      ) {
+        handleReceivedMessage();
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const handleReceivedMessage = () => {
+    setShouldUpdateConversations(true);
+  };
+
   if (conversations === null) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator color={color.light.corporate} size={28} />;
   }
 
   return (
     <>
       {conversations.length > 0 ? (
         <FlatList
-          data={conversations}
+          data={
+            searchFilter
+              ? conversations.filter(
+                  (conversation) =>
+                    conversation.user_receiver.username
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchFilter.toString().toLowerCase()) ||
+                    conversation.last_message
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchFilter.toString().toLowerCase())
+                )
+              : conversations
+          }
           renderItem={({ item }) => (
             <Conversation
               chatbox={item}

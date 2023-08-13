@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   currentUserSender: {
     alignSelf: "flex-end",
     marginRight: 10,
+    marginLeft: 10,
     marginBottom: 0,
     padding: 15,
     borderBottomStartRadius: 20,
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
     backgroundColor: color.light.alternative,
   },
   timeText: {
-    fontSize: 14,
+    fontSize: 12.5,
   },
   stateText: {
     fontSize: 13,

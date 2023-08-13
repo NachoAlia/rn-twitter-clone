@@ -6,8 +6,10 @@ import { Icon } from "react-native-elements";
 import { color } from "../../../utils";
 import { domainUrl } from "../../../config/host";
 import { DirectMessagesContext, UserContext } from "../../../context";
+import { useThemaContext } from "../../../components/ThemeProvider";
 
 export function ConversationOptionsScreen(props) {
+  const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
   const { setShouldUpdateConversations } = useContext(DirectMessagesContext);
   const { showOptions, setShowOptions, conversationIdOption } = props;
@@ -35,13 +37,15 @@ export function ConversationOptionsScreen(props) {
     <Modal show={showOptions} close={setShowOptions}>
       <View
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
           borderRadius: 15,
           margin: -15,
           padding: 5,
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -57,7 +61,7 @@ export function ConversationOptionsScreen(props) {
           <View style={styles.option}>
             <Text style={styles.textOption}>Fijar convesación</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center", marginLeft: 5 }}
           onPress={handleDelete}
@@ -68,7 +72,14 @@ export function ConversationOptionsScreen(props) {
             color={color.light.corporate}
           />
           <View style={styles.option}>
-            <Text style={styles.textOption}>Eliminar conversación</Text>
+            <Text
+              style={[
+                styles.textOption,
+                { color: thema ? color.light.text : color.dark.text },
+              ]}
+            >
+              Eliminar conversación
+            </Text>
           </View>
         </TouchableOpacity>
       </View>

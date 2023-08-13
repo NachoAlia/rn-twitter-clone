@@ -8,33 +8,28 @@ import React, {
 import { View, Text, ActivityIndicator } from "react-native";
 import { styles } from "./MessagesList.styles";
 import { FlatList } from "react-native-gesture-handler";
-import {
-  DirectMessagesContext,
-  DrawerContext,
-  UserContext,
-} from "../../../context";
-
-import { useThemaContext } from "../../ThemeProvider";
+import { DirectMessagesContext, UserContext } from "../../../context";
 
 import { Message } from "../Message/Message";
-import { domainUrl } from "../../../config/host";
+import { domainUrl, cableConsumer } from "../../../config/host";
 import { color } from "../../../utils";
 
 export function MessagesList(props) {
   const [messages, setMessages] = useState(null);
-  const [updateMessages, setUpdateMessages] = useState(true);
-  const { setDrawerScreenOptions } = useContext(DrawerContext);
-  const { shouldUpdateMessages, setShouldUpdateMessages } = useContext(
-    DirectMessagesContext
-  );
+  const {
+    shouldUpdateMessages,
+    setShouldUpdateMessages,
+    setShouldUpdateConversations,
+  } = useContext(DirectMessagesContext);
   const { currentUser } = useContext(UserContext);
-
-  const { userReceiver, conversation } = props;
+  const { conversation } = props;
   const flatListRef = useRef();
+
+  let socket;
 
   useLayoutEffect(() => {
     if (shouldUpdateMessages) {
-      setUpdateMessages(true);
+      setShouldUpdateMessages(false);
       const fetchData = async () => {
         const response = await fetch(
           `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages`,
@@ -44,14 +39,49 @@ export function MessagesList(props) {
         );
         const result = await response.json();
         setMessages(result);
-        console.log(result);
-        setUpdateMessages(false);
       };
       fetchData();
-      setShouldUpdateMessages(false);
+      setShouldUpdateConversations(false);
       scrollToBottom();
     }
   }, [shouldUpdateMessages]);
+
+  useEffect(() => {
+    socket = new WebSocket(cableConsumer);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            id: conversation.id,
+            channel: "MessagesChannel",
+          }),
+        })
+      );
+    };
+    socket.onclose = () => {
+      //not yet implemented
+    };
+    socket.onerror = (error) => {
+      console.error("Error en la conexión WebSocket: ", error);
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (
+        (data.message && data.message.type === "new_message") ||
+        data.type === "welcome"
+      ) {
+        handleReceivedMessage();
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const handleReceivedMessage = () => {
+    setShouldUpdateMessages(true);
+  };
 
   const scrollToBottom = () => {
     if (flatListRef.current && messages?.length > 0) {

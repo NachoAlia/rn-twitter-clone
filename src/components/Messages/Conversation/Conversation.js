@@ -120,7 +120,9 @@ export function Conversation(props) {
                 fontSize: 15,
               }}
             >
-              {chatbox.last_message}
+              {chatbox.last_message?.length > 40
+                ? chatbox.last_message.slice(0, 40) + "..."
+                : chatbox.last_message}
             </Text>
           </View>
         </View>

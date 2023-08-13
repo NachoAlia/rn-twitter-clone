@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import { Icon, Image } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { styles } from "./Message.styles";
 import { UserContext } from "../../../context";
 import { useThemaContext } from "../../ThemeProvider";
@@ -13,6 +13,8 @@ export function Message(props) {
   const messageTimestamp = new Date(item?.created_at).toLocaleTimeString(
     "en-ES",
     {
+      day: "numeric",
+      month: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     }
@@ -93,7 +95,7 @@ export function Message(props) {
         >
           ·
         </Text>
-        {item.user_sender_id == currentUser.id ? (
+        {/* {item.user_sender_id == currentUser.id ? (
           <Text
             style={[
               styles.stateText,
@@ -114,7 +116,7 @@ export function Message(props) {
             style={{ marginLeft: 10 }}
             color={thema ? color.light.textSecondary : color.dark.textSecondary}
           />
-        )}
+        )} */}
       </View>
     </View>
   );

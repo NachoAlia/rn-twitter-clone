@@ -75,8 +75,7 @@ export function SigninForm() {
           navigation.replace(screen.account.index);
           setShowModal(false);
         } catch (error) {
-          console.log(error);
-
+          setShowModal(false);
           Toast.show({
             type: "error",
             position: "bottom",

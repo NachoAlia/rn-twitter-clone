@@ -8,11 +8,14 @@ import { color, screen } from "../../../utils";
 import { useThemaContext } from "../../ThemeProvider";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { DrawerContext } from "../../../context";
+import { DrawerContext, TabBarContext, UserContext } from "../../../context";
+import { domainUrl } from "../../../config/host";
 
 export function AddConversationItem({ item }) {
   const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const { setTabBarScreenOptions } = useContext(TabBarContext);
   const thema = useThemaContext();
+  const { currentUser } = useContext(UserContext);
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -20,20 +23,37 @@ export function AddConversationItem({ item }) {
         styles.container,
         { borderBottomColor: color.light.textSecondary },
       ]}
-      onPress={() => {
-        setDrawerScreenOptions(null);
-        navigation.navigate(screen.messages.tab, {
-          screen: screen.messages.concreteConversation,
-          params: { item: item },
-        });
+      onPress={async () => {
+        setDrawerScreenOptions({ headerShown: false });
+        setTabBarScreenOptions({ tabBarStyle: { display: "none" } });
+        try {
+          const response = await fetch(
+            `${domainUrl}/users/${currentUser.id}/conversations/${item.id}/create`,
+            {
+              method: "POST",
+            }
+          );
+          const conversation = await response.json();
+          navigation.navigate(screen.messages.tab, {
+            screen: screen.messages.concreteConversation,
+            params: { conversation: conversation },
+          });
+        } catch (error) {
+          console.error("Error al crear la conversación:", error);
+        }
       }}
     >
       <Avatar
         size={"small"}
-        source={{ uri: item.profile_url }}
+        source={
+          item.photoProfile_url
+            ? { uri: item.photoProfile_url }
+            : require("../../../../assets/icons/default_user_photo.png")
+        }
         rounded
         containerStyle={{ alignSelf: "center" }}
       />
+
       <View style={{ flexDirection: "column", marginLeft: 10 }}>
         <Text
           style={{

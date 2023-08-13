@@ -16,6 +16,9 @@ export function AddConversationButton() {
       style={styles.addConversationButton}
       onPress={() => {
         setIsLoading(true);
+        navigation.setOptions({
+          tabBarStyle: { display: "none" },
+        });
         setTimeout(() => {
           setIsLoading(false);
           navigation.navigate(screen.messages.newConversation);

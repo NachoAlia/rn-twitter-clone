@@ -34,7 +34,6 @@ export function AppNavigation() {
           borderTopColor: color.light.corporate,
           borderTopWidth: 1,
         },
-
         ...tabBarScreenOptions,
       })}
     >

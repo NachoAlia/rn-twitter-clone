@@ -22,7 +22,8 @@ export function MessagesList(props) {
     setShouldUpdateConversations,
   } = useContext(DirectMessagesContext);
   const { currentUser } = useContext(UserContext);
-  const { conversation } = props;
+  const { conversation, imageChat } = props;
+
   const flatListRef = useRef();
 
   let socket;
@@ -98,7 +99,7 @@ export function MessagesList(props) {
       <FlatList
         ref={flatListRef}
         data={messages}
-        renderItem={({ item }) => <Message item={item} />}
+        renderItem={({ item }) => <Message item={item} imageChat={imageChat} />}
         keyExtractor={(item) => item.id}
         onLayout={scrollToBottom}
         onContentSizeChange={scrollToBottom}

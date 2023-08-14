@@ -9,17 +9,16 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  nicknameUser: { fontWeight: "bold", fontSize: 16 },
+  nicknameUser: { fontSize: 16 },
   nameUser: {
-    fontSize: 15,
-    paddingLeft: 5,
+    fontSize: 16,
   },
   titleDate: {
     fontSize: 12,
     alignSelf: "center",
   },
-  containerInfo: { marginVertical: 15 },
-  body: { marginBottom: 15 },
+  containerInfo: { marginVertical: 20 },
+  body: { marginBottom: 20 },
   text: { textAlign: "justify", fontSize: 15 },
   imagePost: { alignItems: "center" },
 
@@ -31,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   threadUser: { paddingHorizontal: 20 },
   threadText: { color: color.light.corporate, fontWeight: "bold" },
-  spreaderBar: { marginHorizontal: 15, height: 1 },
+  spreaderBar: { marginHorizontal: 20, height: 1 },
   postButton: { height: "90%", width: "107%", position: "absolute" },
   threadBar: {
     marginTop: 55,

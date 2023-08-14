@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   image: { marginTop: 15, alignItems: "center" },
   containerElement: { marginTop: 15 },
   horizontalBar: {
-    width: "100%",
+    marginHorizontal: 20,
     height: 1,
     marginVertical: 15,
   },

@@ -20,13 +20,14 @@ export function Repost({ dataPost }) {
           size="small"
           rounded
         />
+
         <Text
           style={[
             styles.nicknameUser,
             { color: thema ? color.light.text : color.dark.text },
           ]}
         >
-          dataPost.nicknameUser
+          {dataPost.nickname}
         </Text>
         <Text
           style={[

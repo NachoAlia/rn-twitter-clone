@@ -1,10 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  View,
-  Dimensions,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, Dimensions, TouchableOpacity } from "react-native";
 import { Avatar, Button, Image, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import { color, ImageAuto, screen, timePost } from "../../../utils";
@@ -42,7 +37,48 @@ export function Post({ idPost }) {
     };
 
     fetchData();
-  }, [reload]);
+
+    const socket = new WebSocket(`ws://192.168.0.104:3000/cable/`);
+
+    // Escuchar los eventos del WebSocket
+    socket.onopen = () => {
+      const subscriptionParams = {
+        command: "subscribe",
+        identifier: JSON.stringify({
+          channel: "TweetChannel",
+          tweet_id: dataPost.id,
+        }),
+      };
+      socket.send(JSON.stringify(subscriptionParams));
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      // Si es un mensaje de tu canal, actualiza los datos
+      if (data.identifier === JSON.stringify({ channel: "TweetChannel" })) {
+        const message = JSON.parse(data.message);
+        if (message.type === "data" && message.cableReady) {
+          console.log(message);
+          // Actualiza el estado de tu componente con los datos recibidos
+          setDataPost(message.payload);
+        }
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error("Error WebSocket:", error);
+    };
+
+    socket.onclose = (event) => {
+      console.log("Conexión WebSocket cerrada:", event.reason);
+    };
+
+    return () => {
+      // Cerrar la conexión WebSocket al desmontar el componente
+      socket.close();
+    };
+  }, []);
 
   const goPost = () => {
     navigation.navigate(screen.post.tab, {
@@ -97,7 +133,7 @@ export function Post({ idPost }) {
                     { color: thema ? color.light.text : color.dark.text },
                   ]}
                 >
-                  dataPost.nicknameUser
+                  {dataPost.nickname}
                 </Text>
                 <Text
                   style={[
@@ -161,7 +197,7 @@ export function Post({ idPost }) {
               ) : (
                 <></>
               )}
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: 20 }}>
                 <PostButtonBar
                   dataPost={dataPost}
                   reload={setReload}

@@ -82,8 +82,9 @@ export function AddCommentScreen(props) {
   }, [thema, canNotBePost, formik]);
 
   const goBack = () => {
-    navigation.navigate(screen.home.tab, {
-      screen: screen.home.home,
+    navigation.navigate(screen.post.tab, {
+      screen: screen.post.post,
+      params: { dataPost },
     });
   };
 

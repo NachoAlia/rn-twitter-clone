@@ -62,7 +62,7 @@ export function PostScreen(props) {
                 { color: thema ? color.light.text : color.dark.text },
               ]}
             >
-              nicknameUser
+              {dataPost.nickname}
             </Text>
             <Text
               style={[
@@ -202,14 +202,6 @@ export function PostScreen(props) {
           ]}
         />
       </View>
-      <View
-        style={[
-          styles.horizontalBar,
-          {
-            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
-          },
-        ]}
-      />
       <FlatList
         data={dataPost.comments}
         renderItem={({ item }) => <Post idPost={item.id} isLiked={isLiked} />}

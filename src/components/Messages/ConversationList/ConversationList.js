@@ -1,60 +1,144 @@
-import React from "react";
-import { View, Text, FlatList, VirtualizedList } from "react-native";
+import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import { styles } from "./ConversationList.styles";
 import { Conversation } from "../Conversation/Conversation";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 
-export function ConversationList() {
+import { DirectMessagesContext, UserContext } from "../../../context";
+import { domainUrl, cableConsumer } from "../../../config/host";
+import { ConversationOptionsScreen } from "../../../screens/Messages/ConversationOptionsScreen";
+
+export function ConversationList(props) {
   const thema = useThemaContext();
-  const conversations = [
-    {
-      id: 1,
-      avatarUri: "https://m.media-amazon.com/images/I/61NnbaTmgGL.png",
-      userName: "NachoAlia",
-      mentionName: "@NachoAlia",
-      fecha: new Date(),
-    },
-    {
-      id: 2,
-      avatarUri:
-        "https://thumbs.dreamstime.com/b/avatar-cartoon-wallpaper-girl-232239549.jpg",
-      userName: "AnotherUser1",
-      mentionName: "@AnotherUser1",
-      fecha: new Date(),
-    },
-    {
-      id: 3,
-      avatarUri:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNY-OQz4XFu7084J2itchn3tomNBYgJzVvxJyivw6n01_AY-I4QTKCH622MfAHrkUgFY&usqp=CAU",
-      userName: "AnotherUser2",
-      mentionName: "@AnotherUser2",
-      fecha: new Date(),
-    },
-    {
-      id: 4,
-      avatarUri:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFJAN3z2QdyT9ZjG58XO3MLk7y1wBYNOx3uvv0xCp6Adu9BliZcxdi5oQ8aPjqYWxlex8&usqp=CAU",
-      userName: "AnotherUser3",
-      mentionName: "@AnotherUser3",
-      fecha: new Date(),
-    },
-  ];
-  const getItem = (data, index) => {
-    return data[index];
+  const { searchFilter } = props;
+  const { currentUser } = useContext(UserContext);
+  const [conversations, setConversations] = useState(null);
+  const [showOptions, setShowOptions] = useState(null);
+  const [conversationIdOption, setConversationIdOption] = useState(null);
+  const { shouldUpdateConversations, setShouldUpdateConversations } =
+    useContext(DirectMessagesContext);
+
+  useLayoutEffect(() => {
+    if (shouldUpdateConversations) {
+      setShouldUpdateConversations(false);
+      const fetchData = async () => {
+        const response = await fetch(
+          `${domainUrl}/users/${currentUser.id}/conversations/index`,
+          {
+            method: "GET",
+          }
+        );
+        const result = await response.json();
+        setConversations(result);
+      };
+
+      fetchData();
+    }
+  }, [shouldUpdateConversations]);
+
+  useEffect(() => {
+    socket = new WebSocket(cableConsumer);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            id: currentUser.id,
+            channel: "ConversationsChannel",
+          }),
+        })
+      );
+    };
+    socket.onclose = () => {
+      //not yet implemented
+    };
+    socket.onerror = (error) => {
+      console.error("Error en la conexión WebSocket: ", error);
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (
+        (data.message && data.message.type === "update_conversation") ||
+        data.type === "welcome"
+      ) {
+        handleReceivedMessage();
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const handleReceivedMessage = () => {
+    setShouldUpdateConversations(true);
   };
-  const getItemCount = () => conversations.length;
+
+  if (conversations === null) {
+    return <ActivityIndicator color={color.light.corporate} size={28} />;
+  }
 
   return (
-    <VirtualizedList
-      keyExtractor={(item) => item.id.toString()}
-      data={conversations}
-      getItem={getItem}
-      getItemCount={getItemCount}
-      renderItem={({ item }) => <Conversation chatbox={item} />}
-      style={{
-        marginTop: 20,
-      }}
-    />
+    <>
+      {conversations.length > 0 ? (
+        <FlatList
+          data={
+            searchFilter
+              ? conversations.filter(
+                  (conversation) =>
+                    conversation.user_receiver.username
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchFilter.toString().toLowerCase()) ||
+                    conversation.last_message
+                      .toString()
+                      .toLowerCase()
+                      .includes(searchFilter.toString().toLowerCase())
+                )
+              : conversations
+          }
+          renderItem={({ item }) => (
+            <Conversation
+              chatbox={item}
+              setShowOptions={setShowOptions}
+              setConversationIdOption={setConversationIdOption}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={shouldUpdateConversations}
+              onRefresh={() => setShouldUpdateConversations(true)}
+            />
+          }
+          style={{ marginTop: 30 }}
+        />
+      ) : (
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              color: color.light.corporate,
+              fontSize: 16,
+            }}
+          >
+            Aun no tienes ninguna conversación
+          </Text>
+        </View>
+      )}
+      {showOptions && (
+        <ConversationOptionsScreen
+          showOptions={showOptions}
+          setShowOptions={setShowOptions}
+          conversationIdOption={conversationIdOption}
+          setShouldUpdateConversations={setShouldUpdateConversations}
+        />
+      )}
+    </>
   );
 }

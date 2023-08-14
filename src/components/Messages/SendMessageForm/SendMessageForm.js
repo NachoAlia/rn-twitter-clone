@@ -1,16 +1,33 @@
-import React, { useRef, useState } from "react";
-import { View, Text, TouchableOpacity, Keyboard } from "react-native";
+import React, { useContext, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+  ActivityIndicator,
+} from "react-native";
 import { Input, Icon, Image } from "react-native-elements";
 import { IconsButton, color } from "../../../utils";
 import { styles } from "./SendMessageForm.styles";
 import { useEffect } from "react";
 import { useThemaContext } from "../../ThemeProvider";
+import { useFormik } from "formik";
+import { initialValues, validationSchema } from "./SendMessageForm.data";
+import { DirectMessagesContext, UserContext } from "../../../context";
+import { domainUrl } from "../../../config/host";
+import { SendImageForm } from "./SendImageForm";
 
-export function SendMessageForm() {
+export const SendMessageForm = React.memo((props) => {
   const [inputActive, setInputActive] = useState(false);
   const [textMessage, setTextMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
   const thema = useThemaContext();
-
+  const { currentUser } = useContext(UserContext);
+  const { conversation } = props;
+  const [photo, setPhoto] = useState(null);
+  const { setShouldUpdateConversations, setShouldUpdateMessages } = useContext(
+    DirectMessagesContext
+  );
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
@@ -34,6 +51,42 @@ export function SendMessageForm() {
     setInputActive(false);
   };
 
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validationSchema(),
+    validateOnChange: false,
+    onSubmit: async (formValue) => {
+      try {
+        setIsLoading(true);
+        const data = new FormData();
+
+        data.append("message[body]", formValue.body || "");
+        data.append("message[photoMessage]", formValue.photoMessage || "");
+
+        await fetch(
+          `${domainUrl}/users/${currentUser.id}/conversations/${conversation.id}/messages/send_message`,
+          {
+            method: "POST",
+            body: data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        ).then(() => {
+          setTextMessage(null);
+          setPhoto(null);
+          formik.setFieldValue("body", "");
+          formik.setFieldValue("photoMessage", "");
+          setShouldUpdateMessages(true);
+          setShouldUpdateConversations(true);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
   return (
     <View>
       {!inputActive ? (
@@ -51,7 +104,17 @@ export function SendMessageForm() {
             disabled={true}
             maxLength={120}
             onFocus={handleInputFocus}
-            rightIcon={<IconsButton name="send" size={28} />}
+            rightIcon={
+              !isLoading ? (
+                <IconsButton
+                  name="send"
+                  size={28}
+                  onPress={formik.handleSubmit}
+                />
+              ) : (
+                <ActivityIndicator color={color.light.corporate} size={26} />
+              )
+            }
             leftIcon={
               <View
                 style={{
@@ -60,25 +123,20 @@ export function SendMessageForm() {
                   alignItems: "center",
                 }}
               >
-                <Icon
-                  type="material-community"
-                  name="image-outline"
-                  color={"#828282"}
-                  size={28}
-                  containerStyle={{ marginLeft: 5 }}
-                />
-                <Icon
-                  type="material-community"
-                  name="file-gif-box"
-                  color={"#828282"}
-                  size={28}
-                  containerStyle={{}}
+                <SendImageForm
+                  formik={formik}
+                  currentPhoto={photo}
+                  setPhoto={setPhoto}
                 />
               </View>
             }
             style={{ borderWidth: 0 }}
             containerStyle={{}}
-            inputContainerStyle={{ borderWidth: 1, borderRadius: 30 }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderRadius: 30,
+              paddingHorizontal: 10,
+            }}
             inputStyle={{
               marginLeft: 5,
               color: thema ? color.light.text : color.dark.text,
@@ -101,7 +159,11 @@ export function SendMessageForm() {
             numberOfLines={3}
             autoFocus={true}
             value={textMessage}
-            onChangeText={(text) => setTextMessage(text)}
+            onChangeText={(text) => {
+              setTextMessage(text);
+              formik.setFieldValue("body", text);
+            }}
+            errorMessage={formik.errors.body}
             onPointerCancel={handleInputBlur}
             onBlur={handleInputBlur}
             cursorColor={thema ? color.light.corporate : color.dark.corporate}
@@ -111,9 +173,10 @@ export function SendMessageForm() {
               borderBottomWidth: 0,
               borderRadius: 0,
               borderColor: inputActive ? "blue" : "gray",
+              paddingHorizontal: 10,
             }}
             inputStyle={{
-              marginLeft: 5,
+              marginLeft: 10,
               flex: 1,
               marginTop: 10,
               color: thema ? color.light.text : color.dark.text,
@@ -126,7 +189,7 @@ export function SendMessageForm() {
               alignItems: "center",
               marginBottom: 10,
               marginTop: -10,
-              marginHorizontal: 5,
+              paddingHorizontal: 15,
             }}
           >
             <View
@@ -135,25 +198,24 @@ export function SendMessageForm() {
                 marginLeft: 5,
               }}
             >
-              <Icon
-                type="material-community"
-                name="image-outline"
-                size={28}
-                color={"#828282"}
-                containerStyle={{ marginRight: 0 }}
-              />
-              <Icon
-                type="material-community"
-                name="file-gif-box"
-                size={28}
-                color={"#828282"}
-                containerStyle={{ marginRight: 10 }}
+              <SendImageForm
+                formik={formik}
+                currentPhoto={photo}
+                setPhoto={setPhoto}
               />
             </View>
-            <IconsButton name="send" size={28} />
+            {!isLoading ? (
+              <IconsButton
+                name="send"
+                size={28}
+                onPress={formik.handleSubmit}
+              />
+            ) : (
+              <ActivityIndicator color={color.light.corporate} size={26} />
+            )}
           </View>
         </View>
       )}
     </View>
   );
-}
+});

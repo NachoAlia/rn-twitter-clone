@@ -7,14 +7,16 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { IconsButton, color, screen } from "../../../utils";
 import { Button } from "react-native-elements";
 import { MessagesList } from "../../../components/Messages/MessagesList/MessagesList";
-import { SendMessageForm } from "../../../components/Messages";
+import { ChatImageModal, SendMessageForm } from "../../../components/Messages";
 
 export function ConversationScreen() {
   const { conversation } = useRoute().params;
+  const { setDrawerScreenOptions } = useContext(DrawerContext);
+  const thema = useThemaContext();
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [imageUriModal, setImageUriModal] = useState(null);
   const item = conversation.user_receiver;
   const navigation = useNavigation();
-  const thema = useThemaContext();
-  const { setDrawerScreenOptions } = useContext(DrawerContext);
 
   const [shoulHideDrawerHeader, setShoulHideDrawerHeader] = useState(false);
   const headerLeftComponent = () => (
@@ -92,10 +94,19 @@ export function ConversationScreen() {
       }}
     >
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <MessagesList userReceiver={item} conversation={conversation} />
+        <MessagesList
+          userReceiver={item}
+          conversation={conversation}
+          imageChat={{ setImageUriModal, setShowImageModal }}
+        />
       </View>
 
       <SendMessageForm userReceiver={item} conversation={conversation} />
+      <ChatImageModal
+        showImage={showImageModal}
+        setShowImage={setShowImageModal}
+        chatImageUri={imageUriModal}
+      />
     </View>
   );
 }

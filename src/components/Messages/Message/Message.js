@@ -5,11 +5,14 @@ import { styles } from "./Message.styles";
 import { UserContext } from "../../../context";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
+import { ChatImageModal } from "../ChatImageModal";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 export function Message(props) {
-  const { item } = props;
+  const { item, imageChat } = props;
   const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
-
+  //imageChat={{ setImageUriModal, setShowImageModal }}
   const messageTimestamp = new Date(item?.created_at).toLocaleTimeString(
     "en-ES",
     {
@@ -19,86 +22,70 @@ export function Message(props) {
       minute: "2-digit",
     }
   );
-
+  const handleOpenImage = () => {
+    imageChat.setImageUriModal(item.photoMessage_url);
+    imageChat.setShowImageModal(true);
+  };
   return (
-    <View style={styles.container}>
-      {item.photoMessage_url && (
-        <View
-          style={[
-            item.user_sender_id === currentUser.id
-              ? styles.containerPhotoMessageSender
-              : styles.containerPhotoMessageReceiver,
-          ]}
-        >
-          <Image
-            source={{ uri: item.photoMessage_url }}
-            style={styles.photoMensaje}
-          />
-        </View>
-      )}
-      {item.body && (
-        <View
-          style={
-            item.user_sender_id === currentUser.id
-              ? styles.currentUserSender
-              : [
-                  styles.currentUserReceiver,
-                  {
-                    backgroundColor: thema
-                      ? "#FAEBDB"
-                      : color.dark.textSecondary,
-                  },
-                ]
-          }
-        >
-          <Text
+    <>
+      <View style={styles.container}>
+        {item.photoMessage_url && (
+          <View
             style={[
               item.user_sender_id === currentUser.id
-                ? { color: color.dark.text }
-                : { color: thema ? color.light.text : color.dark.text },
-              { fontSize: 15 },
+                ? styles.containerPhotoMessageSender
+                : styles.containerPhotoMessageReceiver,
             ]}
           >
-            {item.body}
-          </Text>
-        </View>
-      )}
-      <View
-        style={[
-          item.user_sender_id == currentUser.id
-            ? { alignSelf: "flex-end", marginRight: 10 }
-            : { alignSelf: "flex-start", marginLeft: 10 },
-          {
-            flexDirection: "row",
-            alignItems: "center",
-          },
-        ]}
-      >
-        <Text
+            <TouchableOpacity onPress={handleOpenImage}>
+              <Image
+                source={{ uri: item.photoMessage_url }}
+                style={styles.photoMensaje}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+        {item.body && (
+          <View
+            style={
+              item.user_sender_id === currentUser.id
+                ? styles.currentUserSender
+                : [
+                    styles.currentUserReceiver,
+                    {
+                      backgroundColor: thema
+                        ? "#FAEBDB"
+                        : color.dark.textSecondary,
+                    },
+                  ]
+            }
+          >
+            <Text
+              style={[
+                item.user_sender_id === currentUser.id
+                  ? { color: color.dark.text }
+                  : { color: thema ? color.light.text : color.dark.text },
+                { fontSize: 15 },
+              ]}
+            >
+              {item.body}
+            </Text>
+          </View>
+        )}
+        <View
           style={[
-            styles.timeText,
+            item.user_sender_id == currentUser.id
+              ? { alignSelf: "flex-end", marginRight: 10 }
+              : { alignSelf: "flex-start", marginLeft: 10 },
             {
-              color: thema
-                ? color.light.textSecondary
-                : color.dark.textSecondary,
+              flexDirection: "row",
+              alignItems: "center",
             },
           ]}
         >
-          {messageTimestamp}
-        </Text>
-        <Text
-          style={{
-            color: thema ? color.light.textSecondary : color.dark.textSecondary,
-            fontWeight: "bold",
-            marginLeft: 5,
-          }}
-        >
-          ·
-        </Text>
-        {/* {item.user_sender_id == currentUser.id ? (
           <Text
             style={[
-              styles.stateText,
+              styles.timeText,
               {
                 color: thema
                   ? color.light.textSecondary
@@ -106,10 +93,34 @@ export function Message(props) {
               },
             ]}
           >
-            Visto
+            {messageTimestamp}
           </Text>
-        ) : (
-          <Icon
+          <Text
+            style={{
+              color: thema
+                ? color.light.textSecondary
+                : color.dark.textSecondary,
+              fontWeight: "bold",
+              marginLeft: 5,
+            }}
+          >
+            ·
+          </Text>
+          {/* {item.user_sender_id == currentUser.id ? (
+          <Text
+          style={[
+            styles.stateText,
+              {
+                color: thema
+                ? color.light.textSecondary
+                : color.dark.textSecondary,
+              },
+            ]}
+          >
+          Visto
+          </Text>
+          ) : (
+            <Icon
             type="material-community"
             name="heart-outline"
             size={19}
@@ -117,7 +128,8 @@ export function Message(props) {
             color={thema ? color.light.textSecondary : color.dark.textSecondary}
           />
         )} */}
+        </View>
       </View>
-    </View>
+    </>
   );
 }

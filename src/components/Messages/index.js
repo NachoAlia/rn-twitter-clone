@@ -5,3 +5,4 @@ export * from "./AddConversationItem";
 export * from "./Message";
 export * from "./MessagesList";
 export * from "./SendMessageForm";
+export * from "./ChatImageModal";

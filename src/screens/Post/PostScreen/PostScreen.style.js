@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
   image: { marginTop: 15, alignItems: "center" },
   containerElement: { marginTop: 15 },
   horizontalBar: {
-    marginHorizontal: 20,
+    marginHorizontal: 5,
     height: 1,
-    marginVertical: 15,
+    marginVertical: 20,
   },
 });

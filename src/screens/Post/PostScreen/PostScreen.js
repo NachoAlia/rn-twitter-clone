@@ -185,12 +185,8 @@ export function PostScreen(props) {
             },
           ]}
         />
-        <PostButtonBar
-          dataPost={dataPost}
-          isLiked={isLiked}
-          amount={false}
-          size={30}
-        />
+
+        <PostButtonBar idPost={dataPost.id} amount={false} size={30} />
         <View
           style={[
             styles.horizontalBar,

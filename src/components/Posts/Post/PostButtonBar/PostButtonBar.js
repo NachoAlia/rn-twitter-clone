@@ -1,28 +1,74 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Image, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./PostButtonBar.style";
 import { IconsButton, color, screen } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
-import { domainUrl } from "../../../../config/host";
+import { domainUrl, cableConsumer } from "../../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../../context";
 import { RepostsModal } from "../../Reposts";
 
-export function PostButtonBar({
-  dataPost,
-  amount = true,
-  size = 20,
-  reload,
-  isLiked,
-}) {
-  const [isLike, setIsLike] = useState(isLiked);
+export function PostButtonBar({ idPost, amount = true, size = 20 }) {
+  const [dataPost, setDataPost] = useState(null);
+  const [reload, setReload] = useState(true);
+  const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const { currentUser } = useContext(UserContext);
 
   const thema = useThemaContext();
+
+  useEffect(() => {
+    const fetchData = () => {
+      fetch(`${domainUrl}/tweets/${idPost}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setIsLike(data.likes.some((like) => like.user_id === currentUser.id));
+          setDataPost(data);
+        })
+
+        .catch((error) => console.error(error));
+    };
+
+    fetchData();
+  }, [reload]);
+
+  useEffect(() => {
+    const socket = new WebSocket(cableConsumer);
+
+    socket.onopen = () => {
+      const subscriptionParams = {
+        command: "subscribe",
+        identifier: JSON.stringify({
+          tweet_id: idPost,
+          channel: "TweetChannel",
+        }),
+      };
+      socket.send(JSON.stringify(subscriptionParams));
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.message === "tweet_updated") {
+        console.log(data);
+        setReload((prevState) => !prevState);
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error("Error WebSocket:", error);
+    };
+
+    socket.onclose = () => {
+      console.log("Conexión WebSocket cerrada:");
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   const navigation = useNavigation();
 
@@ -51,7 +97,6 @@ export function PostButtonBar({
 
     if (response.ok) {
       setIsLike(true);
-      reload((prevState) => !prevState);
     }
   };
 
@@ -69,7 +114,6 @@ export function PostButtonBar({
 
     if (response.ok) {
       setIsLike(false);
-      reload((prevState) => !prevState);
     }
   };
 
@@ -82,87 +126,99 @@ export function PostButtonBar({
   };
 
   return (
-    <View style={styles.barPost}>
-      <View style={styles.barElement}>
-        <IconsButton name={"comment"} size={size} onPress={addComment} />
-        {amount ? (
-          <Text
-            style={[
-              styles.text,
-              {
-                color: thema
-                  ? color.light.textSecondary
-                  : color.dark.textSecondary,
-              },
-            ]}
-          >
-            {dataPost.comments_count}
-          </Text>
-        ) : (
-          <></>
-        )}
-      </View>
-      <View style={styles.barElement}>
-        <IconsButton name={"repost"} size={size} onPress={toggleOverlay} />
-        {amount ? (
-          <Text
-            style={[
-              styles.text,
-              {
-                color: thema
-                  ? color.light.textSecondary
-                  : color.dark.textSecondary,
-              },
-            ]}
-          >
-            {dataPost.retweet_count}
-          </Text>
-        ) : (
-          <></>
-        )}
-        <RepostsModal
-          visible={visible}
-          onBackdropPress={toggleOverlay}
-          dataPost={dataPost}
-        />
-      </View>
-      <View style={styles.barElement}>
-        {isLike ? (
-          <IconsButton name={"like"} size={size} onPress={removeLike} />
-        ) : (
-          <IconsButton name={"like_border"} size={size} onPress={giveLike} />
-        )}
-        {amount ? (
-          <Text
-            style={[
-              styles.text,
-              {
-                color: thema
-                  ? color.light.textSecondary
-                  : color.dark.textSecondary,
-              },
-            ]}
-          >
-            {dataPost.likes_count}
-          </Text>
-        ) : (
-          <></>
-        )}
-      </View>
-      <View style={styles.barElement}>
-        {isBookmark ? (
-          <IconsButton name={"bookmark"} size={size} onPress={removeBookmark} />
-        ) : (
-          <IconsButton
-            name={"bookmark_border"}
-            size={size}
-            onPress={giveBookmark}
-          />
-        )}
-      </View>
-      <View style={styles.barElement}>
-        <IconsButton name={"share"} size={size} />
-      </View>
-    </View>
+    <>
+      {dataPost && (
+        <View style={styles.barPost}>
+          <View style={styles.barElement}>
+            <IconsButton name={"comment"} size={size} onPress={addComment} />
+            {amount ? (
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                {dataPost.comments_count}
+              </Text>
+            ) : (
+              <></>
+            )}
+          </View>
+          <View style={styles.barElement}>
+            <IconsButton name={"repost"} size={size} onPress={toggleOverlay} />
+            {amount ? (
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                {dataPost.retweet_count}
+              </Text>
+            ) : (
+              <></>
+            )}
+            <RepostsModal
+              visible={visible}
+              onBackdropPress={toggleOverlay}
+              dataPost={dataPost}
+            />
+          </View>
+          <View style={styles.barElement}>
+            {isLike ? (
+              <IconsButton name={"like"} size={size} onPress={removeLike} />
+            ) : (
+              <IconsButton
+                name={"like_border"}
+                size={size}
+                onPress={giveLike}
+              />
+            )}
+            {amount ? (
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                {dataPost.likes_count}
+              </Text>
+            ) : (
+              <></>
+            )}
+          </View>
+          <View style={styles.barElement}>
+            {isBookmark ? (
+              <IconsButton
+                name={"bookmark"}
+                size={size}
+                onPress={removeBookmark}
+              />
+            ) : (
+              <IconsButton
+                name={"bookmark_border"}
+                size={size}
+                onPress={giveBookmark}
+              />
+            )}
+          </View>
+          <View style={styles.barElement}>
+            <IconsButton name={"share"} size={size} />
+          </View>
+        </View>
+      )}
+    </>
   );
 }

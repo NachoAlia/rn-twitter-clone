@@ -59,7 +59,7 @@ export function ImageScreen(props) {
             : color.dark.background,
         }}
       >
-        <PostButtonBar dataPost={dataPost} isLiked={isLiked} size={30} />
+        <PostButtonBar idPost={dataPost.id} size={30} />
       </View>
     </>
   );

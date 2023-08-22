@@ -20,7 +20,7 @@ import { SearchUserById } from "../../../config/api/Profile";
 export function AccountScreen() {
   const navigation = useNavigation();
   const thema = useThemaContext();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, updateInfo } = useContext(UserContext);
 
   const route = useRoute();
 
@@ -42,7 +42,7 @@ export function AccountScreen() {
     };
 
     fetchUserDetails();
-  }, [profileUID]);
+  }, [profileUID, updateInfo]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,13 +56,19 @@ export function AccountScreen() {
           onPress={() => navigation.navigate(screen.home.tab)}
         />
       ),
-      headerTitle: userData ? userData.username : currentUser.username,
+      headerTitle: userData
+        ? userData.nickname
+          ? userData.nickname
+          : "@" + userData.username
+        : currentUser.nickname
+        ? currentUser.nickname
+        : "@" + currentUser.username,
       headerTintColor: thema ? color.light.text : color.dark.text,
       headerStyle: {
         backgroundColor: thema ? color.light.background : color.dark.background,
       },
     });
-  }, [thema, userData]);
+  }, [thema, userData, updateInfo]);
   return (
     <View
       style={[

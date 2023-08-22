@@ -80,6 +80,7 @@ export function AccountDrawer() {
         ),
         headerTitleAlign: "center",
         headerTitleStyle: { width: "100%" },
+
         ...drawerScreenOptions,
       }}
     >

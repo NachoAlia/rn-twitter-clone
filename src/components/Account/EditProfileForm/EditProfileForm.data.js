@@ -3,6 +3,7 @@ import * as Yup from "yup";
 export function initialValues() {
   return {
     userName: "",
+    nickName: "",
     biography: "",
     localization: "",
     website: "",

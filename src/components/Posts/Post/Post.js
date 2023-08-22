@@ -98,7 +98,7 @@ export function Post({ idPost }) {
                     { color: thema ? color.light.text : color.dark.text },
                   ]}
                 >
-                  {dataPost.nickname}
+                  {dataPost.nickname ? dataPost.nickname : dataPost.username}
                 </Text>
 
                 <Text

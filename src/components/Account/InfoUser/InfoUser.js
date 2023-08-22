@@ -1,19 +1,12 @@
 import React from "react";
 import { View } from "react-native";
-import {
-  Avatar,
-  Text,
-  Image,
-  Icon,
-  Tooltip,
-} from "react-native-elements";
+import { Avatar, Text, Image, Icon, Tooltip } from "react-native-elements";
 import { styles } from "./InfoUser.styles";
 
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProfileButtons } from "../ProfileButtons";
-
 
 export function InfoUser({ userData, isCurrent }) {
   const thema = useThemaContext();
@@ -63,8 +56,7 @@ export function InfoUser({ userData, isCurrent }) {
             />
           )}
 
-          <View style={styles.containerNameAndBtns} >
-
+          <View style={styles.containerNameAndBtns}>
             <View style={styles.containerName}>
               <Text
                 style={[
@@ -74,7 +66,7 @@ export function InfoUser({ userData, isCurrent }) {
                   },
                 ]}
               >
-                {userData ? userData.username : "UserName"}
+                {userData?.nickname ? userData.nickname : userData.username}
               </Text>
               <Text
                 style={[
@@ -86,7 +78,7 @@ export function InfoUser({ userData, isCurrent }) {
                   },
                 ]}
               >
-                {userData ? `@${userData.username}` : "@UserName"}
+                {userData?.username ? `@${userData.username}` : "@UserName"}
               </Text>
             </View>
 

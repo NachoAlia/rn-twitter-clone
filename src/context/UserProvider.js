@@ -36,6 +36,7 @@ export const UserProvider = ({ children }) => {
         currentUser,
         currentToken,
         setUpdateInfo,
+        updateInfo,
         onLoginSuccess,
         onLogoutAction,
       }}

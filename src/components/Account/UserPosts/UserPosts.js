@@ -1,20 +1,54 @@
-import React from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, Text } from "react-native";
 import { useThemaContext } from "../../ThemeProvider";
+import { Post } from "../../../components/Posts";
+import { domainUrl } from "../../../config/host";
 import { color } from "../../../utils";
 
-export function UserPosts() {
+export function UserPosts(props) {
   const thema = useThemaContext();
+  const { userData, postCounter } = props;
+  const [postIds, setPostIds] = useState(null);
+  const [shouldUpdateList, setShouldUpdateList] = useState(true);
+
+  useLayoutEffect(() => {
+    setShouldUpdateList(false);
+    setPostIds(null);
+    const fetchData = async () => {
+      const response = await fetch(
+        `${domainUrl}/tweets/tweets_for_user/${userData.id}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await response.json();
+      setPostIds(result);
+      postCounter.setCountPosts(result.length);
+    };
+    fetchData();
+  }, [shouldUpdateList, userData.id]);
+
   return (
-    <View style={{ alignItems: "center", marginTop: 40 }}>
-      <Text
-        style={{
-          color: thema ? color.light.text : color.dark.text,
-          fontSize: 20,
-        }}
-      >
-        UserPosts
-      </Text>
+    <View
+      style={{
+        marginTop: 0,
+        alignSelf: "center",
+        marginLeft: 0,
+      }}
+    >
+      {postIds?.length > 0 ? (
+        postIds?.map((post) => <Post idPost={post.id} key={post.id} />)
+      ) : (
+        <Text
+          style={{
+            alignSelf: "center",
+            marginTop: "20%",
+            color: color.light.corporate,
+          }}
+        >
+          Aun no has creado ningun post
+        </Text>
+      )}
     </View>
   );
 }

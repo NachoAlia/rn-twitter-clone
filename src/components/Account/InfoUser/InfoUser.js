@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { Avatar, Text, Image, Icon, Tooltip } from "react-native-elements";
+import {
+  Avatar,
+  Text,
+  Image,
+  Icon,
+  Tooltip,
+  colors,
+} from "react-native-elements";
 import { styles } from "./InfoUser.styles";
 
 import { useThemaContext } from "../../ThemeProvider";
@@ -8,7 +15,7 @@ import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProfileButtons } from "../ProfileButtons";
 
-export function InfoUser({ userData, isCurrent }) {
+export function InfoUser({ userData, isCurrent, postCounter }) {
   const thema = useThemaContext();
   const createdAt = new Date(userData.created_at);
   return (
@@ -121,6 +128,11 @@ export function InfoUser({ userData, isCurrent }) {
               <Icon
                 type="material-community"
                 name="map-marker-outline"
+                color={
+                  userData?.localization
+                    ? color.light.corporate
+                    : color.light.textSecondary
+                }
                 iconStyle={styles.userLocationIcon}
               />
               {userData.localization ? (
@@ -133,7 +145,9 @@ export function InfoUser({ userData, isCurrent }) {
                   }
                   backgroundColor={color.light.corporate}
                 >
-                  <Text style={styles.userLocation}>Location</Text>
+                  <Text style={styles.userLocation}>
+                    {userData.localization}
+                  </Text>
                 </Tooltip>
               ) : (
                 <Text style={styles.userLocation}>Location</Text>
@@ -143,6 +157,11 @@ export function InfoUser({ userData, isCurrent }) {
               <Icon
                 type="material-community"
                 name="link"
+                color={
+                  userData.website
+                    ? color.light.corporate
+                    : color.light.textSecondary
+                }
                 iconStyle={styles.userWebSiteIcon}
               />
 
@@ -154,7 +173,7 @@ export function InfoUser({ userData, isCurrent }) {
                   }
                   backgroundColor={color.light.corporate}
                 >
-                  <Text style={styles.userWebsite}>Link/Website</Text>
+                  <Text style={styles.userWebsite}>{userData.website}</Text>
                 </Tooltip>
               ) : (
                 <Text style={styles.userWebsite}>Link/Website</Text>
@@ -164,6 +183,9 @@ export function InfoUser({ userData, isCurrent }) {
               <Icon
                 type="material-community"
                 name="calendar-blank-outline"
+                color={
+                  createdAt ? color.light.corporate : color.light.textSecondary
+                }
                 iconStyle={styles.userDateIcon}
               />
               {createdAt && (
@@ -199,11 +221,11 @@ export function InfoUser({ userData, isCurrent }) {
                 style={[
                   styles.userTweetCountNumber,
                   {
-                    color: thema ? color.light.text : color.dark.text,
+                    color: thema ? color.light.corporate : color.dark.corporate,
                   },
                 ]}
               >
-                1M
+                {postCounter.countPosts}
               </Text>
               <Text style={styles.userTweetCount}>Posts</Text>
             </View>
@@ -212,11 +234,11 @@ export function InfoUser({ userData, isCurrent }) {
                 style={[
                   styles.userFollowersNumber,
                   {
-                    color: thema ? color.light.text : color.dark.text,
+                    color: thema ? color.light.corporate : color.dark.corporate,
                   },
                 ]}
               >
-                822
+                0
               </Text>
               <Text style={styles.userFollowers}>Followers</Text>
             </View>
@@ -225,17 +247,25 @@ export function InfoUser({ userData, isCurrent }) {
                 style={[
                   styles.userFollowingNumber,
                   {
-                    color: thema ? color.light.text : color.dark.text,
+                    color: thema ? color.light.corporate : color.dark.corporate,
                   },
                 ]}
               >
-                1.2K
+                0
               </Text>
               <Text style={styles.userFollowing}>Following</Text>
             </View>
           </View>
         </View>
       </View>
+      <View
+        style={{
+          borderBottomColor: color.light.corporate,
+          borderBottomWidth: 1,
+          marginBottom: 15,
+          borderTopRadius: 10,
+        }}
+      />
     </View>
   );
 }

@@ -7,7 +7,7 @@ import { screen } from "../../../utils/screenName";
 import { useThemaContext } from "../../ThemeProvider";
 import { color, GoToUserProfile } from "../../../utils";
 import { SignoutButton } from "../../Auth";
-import { UserContext } from '../../../context/UserProvider'
+import { UserContext } from "../../../context/UserProvider";
 
 export function DrawerOptions() {
   const { currentUser } = useContext(UserContext);
@@ -25,22 +25,22 @@ export function DrawerOptions() {
         bottomDivider: false,
         onPress: () => GoToUserProfile(navigation, currentUser.id),
       },
-      {
-        title: "Explore",
-        iconType: "material-community",
-        iconNameLeft: "magnify",
-        iconSize: 32,
-        bottomDivider: false,
-        onPress: () => console.log("holi1"),
-      },
-      {
-        title: "List",
-        iconType: "material-community",
-        iconNameLeft: "clipboard-outline",
-        iconSize: 32,
-        bottomDivider: false,
-        onPress: () => console.log("asd"),
-      },
+      // {
+      //   title: "Explore",
+      //   iconType: "material-community",
+      //   iconNameLeft: "magnify",
+      //   iconSize: 32,
+      //   bottomDivider: false,
+      //   onPress: () => console.log("holi1"),
+      // },
+      // {
+      //   title: "List",
+      //   iconType: "material-community",
+      //   iconNameLeft: "clipboard-outline",
+      //   iconSize: 32,
+      //   bottomDivider: false,
+      //   onPress: () => console.log("asd"),
+      // },
       {
         title: "Bookmark",
         iconType: "material-community",
@@ -49,22 +49,22 @@ export function DrawerOptions() {
         bottomDivider: false,
         onPress: () => navigation.navigate(screen.bookmark.tab),
       },
-      {
-        title: "Settings",
-        iconType: "material-community",
-        iconNameLeft: "cog-outline",
-        iconSize: 32,
-        bottomDivider: true,
-        onPress: () => console.log("asd"),
-      },
-      {
-        title: "Help Center",
-        iconType: "material-community",
-        iconNameLeft: "chat-question-outline",
-        iconSize: 32,
-        bottomDivider: false,
-        onPress: () => console.log("asd"),
-      },
+      // {
+      //   title: "Settings",
+      //   iconType: "material-community",
+      //   iconNameLeft: "cog-outline",
+      //   iconSize: 32,
+      //   bottomDivider: true,
+      //   onPress: () => console.log("asd"),
+      // },
+      // {
+      //   title: "Help Center",
+      //   iconType: "material-community",
+      //   iconNameLeft: "chat-question-outline",
+      //   iconSize: 32,
+      //   bottomDivider: false,
+      //   onPress: () => console.log("asd"),
+      // },
     ];
   };
 

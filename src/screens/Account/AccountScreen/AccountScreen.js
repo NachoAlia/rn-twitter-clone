@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, Text } from "react-native-elements";
 import { UserButtonGroup } from "../../../components/Account/UserButtonGroup/UserButtonGroup";
 import { ScrollView } from "react-native-gesture-handler";
 import { useThemaContext } from "../../../components/ThemeProvider";
@@ -16,12 +16,13 @@ import { screen } from "../../../utils/screenName";
 import { UserContext } from "../../../context/UserProvider";
 
 import { SearchUserById } from "../../../config/api/Profile";
+import { UserPosts } from "../../../components/Account";
 
 export function AccountScreen() {
   const navigation = useNavigation();
   const thema = useThemaContext();
-  const { currentUser } = useContext(UserContext);
-
+  const { currentUser, updateInfo } = useContext(UserContext);
+  const [countPosts, setCountPosts] = useState(null);
   const route = useRoute();
 
   const profileUID =
@@ -42,7 +43,7 @@ export function AccountScreen() {
     };
 
     fetchUserDetails();
-  }, [profileUID]);
+  }, [profileUID, updateInfo]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,13 +57,19 @@ export function AccountScreen() {
           onPress={() => navigation.navigate(screen.home.tab)}
         />
       ),
-      headerTitle: userData ? userData.username : currentUser.username,
+      headerTitle: userData
+        ? userData.nickname
+          ? userData.nickname
+          : "@" + userData.username
+        : currentUser.nickname
+        ? currentUser.nickname
+        : "@" + currentUser.username,
       headerTintColor: thema ? color.light.text : color.dark.text,
       headerStyle: {
         backgroundColor: thema ? color.light.background : color.dark.background,
       },
     });
-  }, [thema, userData]);
+  }, [thema, userData, updateInfo]);
   return (
     <View
       style={[
@@ -79,10 +86,17 @@ export function AccountScreen() {
           <InfoUser
             userData={userData}
             isCurrent={currentUser.id === userData?.id}
+            postCounter={{ countPosts, setCountPosts }}
           />
         )}
 
-        <UserButtonGroup />
+        {/* <UserButtonGroup /> */}
+        {userData && (
+          <UserPosts
+            userData={userData}
+            postCounter={{ countPosts, setCountPosts }}
+          />
+        )}
       </ScrollView>
     </View>
   );

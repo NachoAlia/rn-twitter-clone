@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignSelf: "baseline",
-    width: "90%"
+    width: "90%",
   },
   profileUserInfo: {
     width: "100%",
@@ -66,15 +66,19 @@ export const styles = StyleSheet.create({
   infoUser: {
     width: "100%",
     marginBottom: 15,
-    marginLeft: -10,
+    marginLeft: -50,
+    alignSelf: "center",
     flexDirection: "row",
+    paddingHorizontal: 15,
   },
   userLocationContainer: {
     flexDirection: "row",
     width: WIDTH / 3 - 25,
+    paddingHorizontal: 15,
+    marginLeft: -15,
   },
   userLocationIcon: {
-    color: color.light.textSecondary,
+    //color: color.light.textSecondary,
   },
   userLocation: {
     fontSize: 15,
@@ -83,9 +87,11 @@ export const styles = StyleSheet.create({
   userWebSiteContainer: {
     flexDirection: "row",
     width: WIDTH / 3,
+    marginHorizontal: 5,
+    paddingHorizontal: 5,
   },
   userWebSiteIcon: {
-    color: color.light.textSecondary,
+    //color: color.light.textSecondary,
   },
   userWebsite: {
     fontSize: 15,
@@ -94,9 +100,10 @@ export const styles = StyleSheet.create({
   userDateContainer: {
     width: WIDTH / 3,
     flexDirection: "row",
+    marginLeft: 10,
   },
   userDateIcon: {
-    color: color.light.textSecondary,
+    //color: color.light.textSecondary,
   },
   userDate: {
     fontSize: 15,
@@ -109,7 +116,6 @@ export const styles = StyleSheet.create({
   userTweetCountNumber: {
     marginRight: 5,
     fontSize: 15,
-    fontWeight: "bold",
   },
   userTweetCount: {
     color: color.light.textSecondary,
@@ -121,7 +127,6 @@ export const styles = StyleSheet.create({
   userFollowersNumber: {
     marginRight: 5,
     fontSize: 15,
-    fontWeight: "bold",
   },
   userFollowers: {
     color: color.light.textSecondary,
@@ -133,7 +138,6 @@ export const styles = StyleSheet.create({
   userFollowingNumber: {
     marginRight: 5,
     fontSize: 15,
-    fontWeight: "bold",
   },
   userFollowing: {
     color: color.light.textSecondary,

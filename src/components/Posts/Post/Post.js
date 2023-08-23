@@ -112,7 +112,6 @@ export function Post({ idPost }) {
               ) : (
                 <></>
               )}
-
               <View style={styles.title}>
                 <View style={styles.postTitle}>
                   <Text
@@ -123,6 +122,7 @@ export function Post({ idPost }) {
                   >
                     {dataPost.nickname}
                   </Text>
+
                   <Text
                     style={[
                       styles.nameUser,
@@ -133,10 +133,7 @@ export function Post({ idPost }) {
                       },
                     ]}
                   >
-                    @
-                    {dataPost.body || dataPost.photoTweet_url
-                      ? dataPost.username
-                      : dataPost.retweet.username}
+                    @{dataPost.username}
                   </Text>
                 </View>
                 <Text

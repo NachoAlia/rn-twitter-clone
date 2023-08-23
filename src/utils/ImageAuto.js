@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Image } from "react-native-elements";
+import { color } from "./color";
 
-export function ImageAuto({ uri, desiredWidth, radius = true }) {
+export function ImageAuto({ uri, desiredWidth, radius = true, border = 0.5 }) {
   const [autoHeight, setAutoHeight] = useState(0);
 
   Image.getSize(uri, (width, height) => {
@@ -14,6 +15,8 @@ export function ImageAuto({ uri, desiredWidth, radius = true }) {
         width: desiredWidth,
         height: autoHeight,
         borderRadius: radius ? 15 : 0,
+        borderWidth: border,
+        borderColor: color.light.alternative,
       }}
     />
   );

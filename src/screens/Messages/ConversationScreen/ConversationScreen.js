@@ -60,7 +60,8 @@ export function ConversationScreen() {
         headerTintColor: thema ? color.light.text : color.dark.text,
         swipeEnabled: false,
 
-        tabBarStyle: { display: "none" },
+        tabBarVisible: false,
+        headerShown: false,
       });
       setShoulHideDrawerHeader(true);
     }

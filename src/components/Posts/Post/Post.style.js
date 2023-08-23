@@ -3,6 +3,7 @@ import { color } from "../../../utils";
 
 export const styles = StyleSheet.create({
   container: { padding: 15, flexDirection: "row" },
+  containerTight: { paddingHorizontal: 15, flexDirection: "row" },
   containerData: { flex: 1, paddingLeft: 15 },
   postTitle: { flexDirection: "row" },
   title: {

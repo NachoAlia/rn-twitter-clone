@@ -3,8 +3,13 @@ import { color } from "../../../utils";
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
     flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   originUserTitle: { fontWeight: "bold", fontSize: 18 },
   originBody: { paddingHorizontal: 10 },

@@ -5,17 +5,26 @@ import { useNavigation } from "@react-navigation/native";
 import { styles } from "./PostButtonBar.style";
 import { IconsButton, color, screen } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
+import { Modal } from "../../../Shared";
 import { domainUrl, cableConsumer } from "../../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../../context";
 import { RepostsModal } from "../../Reposts";
+import { AddRepostScreen, AddCommentScreen } from "../../../../screens/Post/";
 
-export function PostButtonBar({ idPost, amount = true, size = 20 }) {
+export function PostButtonBar({
+  idPost,
+  amount = true,
+  size = 20,
+  recharge = false,
+  reloadPost = null,
+}) {
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  const [showModalRepost, setShowModalRepost] = useState(false);
+  const [showModalComment, setShowModalComment] = useState(false);
   const { currentUser } = useContext(UserContext);
 
   const thema = useThemaContext();
@@ -52,8 +61,10 @@ export function PostButtonBar({ idPost, amount = true, size = 20 }) {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.message === "tweet_updated") {
-        console.log(data);
         setReload((prevState) => !prevState);
+        if (recharge == true) {
+          reloadPost((prevState) => !prevState);
+        }
       }
     };
 
@@ -72,12 +83,11 @@ export function PostButtonBar({ idPost, amount = true, size = 20 }) {
 
   const navigation = useNavigation();
 
-  const addComment = () => {
-    navigation.navigate(screen.post.tab, {
-      screen: screen.post.addComment,
-      params: { dataPost },
-    });
-  };
+  const onCloseOpenModalRepost = () =>
+    setShowModalRepost((prevState) => !prevState);
+
+  const onCloseOpenModalComment = () =>
+    setShowModalComment((prevState) => !prevState);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -130,7 +140,11 @@ export function PostButtonBar({ idPost, amount = true, size = 20 }) {
       {dataPost && (
         <View style={styles.barPost}>
           <View style={styles.barElement}>
-            <IconsButton name={"comment"} size={size} onPress={addComment} />
+            <IconsButton
+              name={"comment"}
+              size={size}
+              onPress={onCloseOpenModalComment}
+            />
             {amount ? (
               <Text
                 style={[
@@ -149,6 +163,24 @@ export function PostButtonBar({ idPost, amount = true, size = 20 }) {
             )}
           </View>
           <View style={styles.barElement}>
+            <Modal
+              fullScreen={true}
+              show={showModalComment}
+              close={onCloseOpenModalComment}
+              style={{
+                flex: 1,
+                width: "100%",
+                borderRadius: 0,
+                backgroundColor: thema
+                  ? color.light.background
+                  : color.dark.background,
+              }}
+            >
+              <AddCommentScreen
+                close={onCloseOpenModalComment}
+                data={dataPost}
+              />
+            </Modal>
             <IconsButton name={"repost"} size={size} onPress={toggleOverlay} />
             {amount ? (
               <Text
@@ -170,7 +202,23 @@ export function PostButtonBar({ idPost, amount = true, size = 20 }) {
               visible={visible}
               onBackdropPress={toggleOverlay}
               dataPost={dataPost}
+              citeCase={onCloseOpenModalRepost}
             />
+            <Modal
+              fullScreen={true}
+              show={showModalRepost}
+              close={onCloseOpenModalRepost}
+              style={{
+                flex: 1,
+                width: "100%",
+                borderRadius: 0,
+                backgroundColor: thema
+                  ? color.light.background
+                  : color.dark.background,
+              }}
+            >
+              <AddRepostScreen close={onCloseOpenModalRepost} data={dataPost} />
+            </Modal>
           </View>
           <View style={styles.barElement}>
             {isLike ? (

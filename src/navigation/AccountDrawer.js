@@ -112,14 +112,6 @@ export function AccountDrawer() {
           headerShown: false,
         }}
       />
-      <Drawer.Screen
-        name={screen.post.tab}
-        component={PostStack}
-        options={{
-          swipeEnabled: false,
-          headerShown: false,
-        }}
-      />
     </Drawer.Navigator>
   );
 }

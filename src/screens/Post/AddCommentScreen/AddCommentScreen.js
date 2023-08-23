@@ -13,9 +13,7 @@ import { HeaderComment } from "../../../components/Posts";
 import { UserContext } from "../../../context";
 import { domainUrl } from "../../../config/host";
 
-export function AddCommentScreen(props) {
-  const { route } = props;
-
+export function AddCommentScreen({ close, data }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
@@ -23,7 +21,7 @@ export function AddCommentScreen(props) {
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
 
-  const dataPost = route.params.dataPost;
+  const dataPost = data;
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -49,44 +47,12 @@ export function AddCommentScreen(props) {
           body: formData,
         });
 
-        navigation.goBack();
+        close();
       } catch (error) {
         console.log(error);
       }
     },
   });
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => {},
-      headerLeft: () =>
-        thema ? (
-          <IconsButton name={"arrow_dark"} size={25} onPress={goBack} />
-        ) : (
-          <IconsButton name={"arrow_light"} size={25} onPress={goBack} />
-        ),
-      headerRight: () => (
-        <Button
-          title="Responder"
-          buttonStyle={styles.containerButtonPost}
-          onPress={formik.handleSubmit}
-          loading={formik.isSubmitting}
-          disabled={formik.values.content.length == 0 && canNotBePost}
-          disabledStyle={styles.containerButtonPostDisabled}
-        />
-      ),
-      headerStyle: {
-        backgroundColor: thema ? color.light.background : color.dark.background,
-      },
-    });
-  }, [thema, canNotBePost, formik]);
-
-  const goBack = () => {
-    navigation.navigate(screen.post.tab, {
-      screen: screen.post.post,
-      params: { dataPost },
-    });
-  };
 
   const openGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -109,6 +75,21 @@ export function AddCommentScreen(props) {
         },
       ]}
     >
+      <View style={styles.header}>
+        {thema ? (
+          <IconsButton name={"arrow_dark"} size={25} onPress={close} />
+        ) : (
+          <IconsButton name={"arrow_light"} size={25} onPress={close} />
+        )}
+        <Button
+          title="Responder"
+          buttonStyle={styles.containerButtonPost}
+          onPress={formik.handleSubmit}
+          loading={formik.isSubmitting}
+          disabled={formik.values.content.length == 0 && canNotBePost}
+          disabledStyle={styles.containerButtonPostDisabled}
+        />
+      </View>
       <HeaderComment dataPost={dataPost} />
       <View style={{ flexDirection: "row", height: 150 }}>
         <View>
@@ -126,7 +107,9 @@ export function AddCommentScreen(props) {
           <Input
             placeholder={"¡Publica tu respuesta!"}
             multiline
+            numberOfLines={5}
             maxLength={140}
+            textAlignVertical="top"
             inputContainerStyle={styles.textArea}
             inputStyle={{ color: thema ? color.light.text : color.dark.text }}
             placeholderTextColor={
@@ -144,25 +127,25 @@ export function AddCommentScreen(props) {
           ) : (
             <></>
           )}
-        </View>
-      </View>
-      <View>
-        <CharacterCountBar value={formik.values.content.length} />
-        <View style={styles.barPost}>
-          <IconsButton name={"image"} size={30} onPress={openGallery} />
+          <View>
+            <CharacterCountBar value={formik.values.content.length} />
+            <View style={styles.barPost}>
+              <IconsButton name={"image"} size={30} onPress={openGallery} />
 
-          <Text
-            style={[
-              styles.valuesAmount,
-              {
-                color: thema
-                  ? color.light.textSecondary
-                  : color.dark.textSecondary,
-              },
-            ]}
-          >
-            {formik.values.content.length}/140
-          </Text>
+              <Text
+                style={[
+                  styles.valuesAmount,
+                  {
+                    color: thema
+                      ? color.light.textSecondary
+                      : color.dark.textSecondary,
+                  },
+                ]}
+              >
+                {formik.values.content.length}/140
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>

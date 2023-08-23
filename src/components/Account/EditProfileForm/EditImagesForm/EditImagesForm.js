@@ -81,54 +81,24 @@ export function EditImagesForm(props) {
         onPress={updatePhotoCover}
       >
         {formik.values.photoCover ? (
-          <View style={{ backgroundColor: "black" }}>
-            <Image
-              source={{ uri: formik.values.photoCover.uri }}
-              style={{
-                width: "100%",
-                height: 170,
-                resizeMode: "cover",
-                opacity: 0.5,
-              }}
-            />
-            <View
-              style={{ position: "absolute", alignSelf: "center", top: "50%" }}
-            >
-              <Icon
-                type="material-community"
-                name="camera-plus-outline"
-                size={35}
-                color={"#ffff"}
-                style={[styles.addProfileCoverIcon]}
-              />
-            </View>
-          </View>
+          <Icon
+            type="material-community"
+            name="check-bold"
+            size={32}
+            color={"#ffff"}
+          />
         ) : (
           <>
             {currentUser.photoCover ? (
-              <View style={{ backgroundColor: "black" }}>
-                <Image
-                  source={{ uri: currentUser.photoCover_url }}
-                  style={{
-                    width: "100%",
-                    height: 170,
-                    resizeMode: "cover",
-                    opacity: 0.7,
-                  }}
-                />
-              </View>
+              <Image
+                source={{ uri: currentUser.photoCover_url }}
+                style={{ width: "100%", height: 170, resizeMode: "cover" }}
+              />
             ) : (
-              <View style={{ backgroundColor: "black" }}>
-                <Image
-                  source={require("../../../../../assets/icons/picture_not_found.png")}
-                  style={{
-                    width: "100%",
-                    height: 170,
-                    resizeMode: "cover",
-                    opacity: 0.7,
-                  }}
-                />
-              </View>
+              <Image
+                source={require("../../../../../assets/icons/picture_not_found.png")}
+                style={{ width: "100%", height: 170, resizeMode: "cover" }}
+              />
             )}
             <View
               style={{
@@ -157,30 +127,12 @@ export function EditImagesForm(props) {
         onPress={updatePhotoProfile}
       >
         {formik.values.photoProfile ? (
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flex: 1,
-            }}
-          >
-            <Avatar
-              rounded
-              size="large"
-              source={{ uri: formik.values.photoProfile.uri }}
-              avatarStyle={{ opacity: 0.7 }}
-              containerStyle={{ flex: 1 }}
-            />
-            <View style={{ position: "absolute" }}>
-              <Icon
-                type="material-community"
-                name="camera-plus-outline"
-                size={25}
-                color={"#ffff"}
-                style={styles.addProfileCoverIcon}
-              />
-            </View>
-          </View>
+          <Icon
+            type="material-community"
+            name="check-bold"
+            size={25}
+            color={"#ffff"}
+          />
         ) : (
           <>
             {currentUser.photoProfile ? (
@@ -188,16 +140,12 @@ export function EditImagesForm(props) {
                 rounded
                 size="large"
                 source={{ uri: currentUser.photoProfile_url }}
-                containerStyle={{ backgroundColor: "black" }}
-                avatarStyle={{ opacity: 0.7 }}
               />
             ) : (
               <Avatar
                 rounded
                 size="large"
                 source={require("../../../../../assets/icons/default_user_photo.png")}
-                containerStyle={{ backgroundColor: "black" }}
-                avatarStyle={{ opacity: 0.7 }}
               />
             )}
             <View style={{ position: "absolute" }}>

@@ -21,22 +21,12 @@ export function EditInfoForm(props) {
             backgroundColor: thema
               ? color.light.background
               : color.dark.background,
-            padding: 10,
           },
         ]}
       >
         <Input
-          placeholder="Your NickName"
-          label="NickName"
-          defaultValue={currentUser?.nickname}
-          containerStyle={styles.input}
-          inputStyle={{ color: thema ? color.light.text : color.dark.text }}
-          onChangeText={(text) => formik.setFieldValue("nickName", text)}
-          errorMessage={formik.errors.userName}
-        />
-        <Input
           placeholder="Name"
-          label="@UserName"
+          label="UserName"
           defaultValue={currentUser?.username}
           containerStyle={styles.input}
           inputStyle={{ color: thema ? color.light.text : color.dark.text }}

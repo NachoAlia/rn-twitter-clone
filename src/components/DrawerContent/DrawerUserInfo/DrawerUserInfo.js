@@ -32,7 +32,7 @@ export function DrawerUserInfo() {
           { color: thema ? color.light.text : color.dark.text },
         ]}
       >
-        {currentUser?.nickname ? currentUser.nickname : currentUser.username}
+        {currentUser ? currentUser.username : "userName"}
       </Text>
       <Text
         style={[
@@ -42,9 +42,9 @@ export function DrawerUserInfo() {
           },
         ]}
       >
-        {currentUser ? "@" + currentUser.username : "@userName"}
+        {currentUser ? currentUser.email : "@userName"}
       </Text>
-      {/* <View style={styles.containerInfo}>
+      <View style={styles.containerInfo}>
         <View style={styles.containerFollowers}>
           <Text
             style={[
@@ -89,7 +89,7 @@ export function DrawerUserInfo() {
             Following
           </Text>
         </View>
-      </View> */}
+      </View>
     </View>
   );
 }

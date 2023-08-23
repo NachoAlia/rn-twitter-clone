@@ -11,22 +11,20 @@ import { IconsButton, color } from "../../../utils";
 import { styles } from "./SendMessageForm.styles";
 import { useEffect } from "react";
 import { useThemaContext } from "../../ThemeProvider";
-import { setIn, useFormik } from "formik";
+import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./SendMessageForm.data";
 import { DirectMessagesContext, UserContext } from "../../../context";
 import { domainUrl } from "../../../config/host";
 import { SendImageForm } from "./SendImageForm";
-import { EmojiView } from "../EmojiView";
 
 export const SendMessageForm = React.memo((props) => {
   const [inputActive, setInputActive] = useState(false);
-  const [textMessage, setTextMessage] = useState("");
+  const [textMessage, setTextMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [photo, setPhoto] = useState(null);
-  const [emojiSelectorActive, setEmojiSelectorActive] = useState(false);
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
   const { conversation } = props;
+  const [photo, setPhoto] = useState(null);
   const { setShouldUpdateConversations, setShouldUpdateMessages } = useContext(
     DirectMessagesContext
   );
@@ -35,14 +33,9 @@ export const SendMessageForm = React.memo((props) => {
       "keyboardDidHide",
       handleKeyboardDidHide
     );
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      handleKeyboardDidShow
-    );
 
     return () => {
       keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
     };
   }, []);
 
@@ -57,23 +50,6 @@ export const SendMessageForm = React.memo((props) => {
   const handleKeyboardDidHide = () => {
     setInputActive(false);
   };
-  const handleEmojiSelectorInactive = () => {
-    setEmojiSelectorActive(false);
-    textInputRef.focus();
-  };
-
-  const handleEmojiSelectorActive = () => {
-    setEmojiSelectorActive(true);
-    Keyboard.dismiss();
-  };
-  const handleKeyboardDidShow = () => {
-    setEmojiSelectorActive(false);
-  };
-
-  const handleSetText = (text) => {
-    setTextMessage(text);
-    formik.setFieldValue("body", text);
-  };
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -81,7 +57,6 @@ export const SendMessageForm = React.memo((props) => {
     validateOnChange: false,
     onSubmit: async (formValue) => {
       try {
-        handleEmojiSelectorInactive();
         setIsLoading(true);
         const data = new FormData();
 
@@ -98,7 +73,7 @@ export const SendMessageForm = React.memo((props) => {
             },
           }
         ).then(() => {
-          setTextMessage("");
+          setTextMessage(null);
           setPhoto(null);
           formik.setFieldValue("body", "");
           formik.setFieldValue("photoMessage", "");
@@ -114,94 +89,132 @@ export const SendMessageForm = React.memo((props) => {
 
   return (
     <View>
-      <View
-        style={{
-          borderWidth: 1,
-          margin: 10,
-          borderRadius: 30,
-          borderColor: "#828282",
-        }}
-      >
-        <Input
-          placeholder="Escribe un mensaje"
-          ref={(ref) => (textInputRef = ref)}
-          multiline={true}
-          maxLength={120}
-          numberOfLines={3}
-          autoFocus={true}
-          value={textMessage}
-          onChangeText={handleSetText}
-          errorMessage={formik.errors.body}
-          onPointerCancel={handleInputBlur}
-          onBlur={handleInputBlur}
-          cursorColor={thema ? color.light.corporate : color.dark.corporate}
-          style={{ borderWidth: 0 }}
-          containerStyle={{ borderWidth: 0, borderRadius: 0 }}
-          inputContainerStyle={{
-            borderBottomWidth: 0,
-            borderRadius: 0,
-            borderColor: inputActive ? "blue" : "gray",
-            paddingHorizontal: 5,
-          }}
-          inputStyle={{
-            marginLeft: 10,
-            flex: 1,
-            marginTop: 5,
-            marginBottom: 10,
-            color: thema ? color.light.text : color.dark.text,
-          }}
-        />
+      {!inputActive ? (
+        <TouchableOpacity onPress={() => setInputActive(true)}>
+          <Input
+            placeholder="Escribe un mensaje"
+            value={
+              textMessage
+                ? textMessage.replace(/\n/g, "").slice(0, 25) +
+                  (textMessage ? "..." : "")
+                : ""
+            }
+            multiline={true}
+            numberOfLines={1}
+            disabled={true}
+            maxLength={120}
+            onFocus={handleInputFocus}
+            rightIcon={
+              !isLoading ? (
+                <IconsButton
+                  name="send"
+                  size={28}
+                  onPress={formik.handleSubmit}
+                />
+              ) : (
+                <ActivityIndicator color={color.light.corporate} size={26} />
+              )
+            }
+            leftIcon={
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginLeft: 5,
+                  alignItems: "center",
+                }}
+              >
+                <SendImageForm
+                  formik={formik}
+                  currentPhoto={photo}
+                  setPhoto={setPhoto}
+                />
+              </View>
+            }
+            style={{ borderWidth: 0 }}
+            containerStyle={{}}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderRadius: 30,
+              paddingHorizontal: 10,
+            }}
+            inputStyle={{
+              marginLeft: 5,
+              color: thema ? color.light.text : color.dark.text,
+            }}
+          />
+        </TouchableOpacity>
+      ) : (
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
-            marginTop: -35,
-            paddingHorizontal: 15,
+            borderWidth: 1,
+            margin: 10,
+            borderRadius: 30,
+            borderColor: "#828282",
           }}
         >
+          <Input
+            placeholder="Escribe un mensaje"
+            multiline={true}
+            maxLength={120}
+            numberOfLines={3}
+            autoFocus={true}
+            value={textMessage}
+            onChangeText={(text) => {
+              setTextMessage(text);
+              formik.setFieldValue("body", text);
+            }}
+            errorMessage={formik.errors.body}
+            onPointerCancel={handleInputBlur}
+            onBlur={handleInputBlur}
+            cursorColor={thema ? color.light.corporate : color.dark.corporate}
+            style={{ borderWidth: 0 }}
+            containerStyle={{ borderWidth: 0, borderRadius: 0 }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              borderRadius: 0,
+              borderColor: inputActive ? "blue" : "gray",
+              paddingHorizontal: 10,
+            }}
+            inputStyle={{
+              marginLeft: 10,
+              flex: 1,
+              marginTop: 10,
+              color: thema ? color.light.text : color.dark.text,
+            }}
+          />
           <View
             style={{
               flexDirection: "row",
-              marginLeft: 0,
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10,
+              marginTop: -10,
+              paddingHorizontal: 15,
             }}
           >
-            <SendImageForm
-              formik={formik}
-              currentPhoto={photo}
-              setPhoto={setPhoto}
-            />
-            <TouchableOpacity onPress={() => {}}>
-              {!emojiSelectorActive ? (
-                <Icon
-                  type="material-community"
-                  name="emoticon-lol-outline"
-                  color="#828282"
-                  size={28}
-                  onPress={handleEmojiSelectorActive}
-                />
-              ) : (
-                <Icon
-                  type="material-community"
-                  name="keyboard"
-                  color="#828282"
-                  size={28}
-                  onPress={handleEmojiSelectorInactive}
-                />
-              )}
-            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                marginLeft: 5,
+              }}
+            >
+              <SendImageForm
+                formik={formik}
+                currentPhoto={photo}
+                setPhoto={setPhoto}
+              />
+            </View>
+            {!isLoading ? (
+              <IconsButton
+                name="send"
+                size={28}
+                onPress={formik.handleSubmit}
+              />
+            ) : (
+              <ActivityIndicator color={color.light.corporate} size={26} />
+            )}
           </View>
-          {!isLoading ? (
-            <IconsButton name="send" size={28} onPress={formik.handleSubmit} />
-          ) : (
-            <ActivityIndicator color={color.light.corporate} size={26} />
-          )}
         </View>
-      </View>
-
-      {emojiSelectorActive && (
-        <EmojiView textMessage={textMessage} setTextMessage={handleSetText} />
       )}
     </View>
   );

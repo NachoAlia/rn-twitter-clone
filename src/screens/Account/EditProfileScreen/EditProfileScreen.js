@@ -31,7 +31,7 @@ export function EditProfileScreen() {
     onSubmit: async (formValue) => {
       try {
         const data = new FormData();
-        data.append("user[nickname]", formValue.nickName || "");
+
         data.append("user[username]", formValue.userName || "");
         data.append("user[biography]", formValue.biography || "");
         data.append("user[localization]", formValue.localization || "");

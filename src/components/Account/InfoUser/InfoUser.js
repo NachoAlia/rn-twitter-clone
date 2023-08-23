@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import {
   Avatar,
@@ -6,7 +6,6 @@ import {
   Image,
   Icon,
   Tooltip,
-  colors,
 } from "react-native-elements";
 import { styles } from "./InfoUser.styles";
 
@@ -15,7 +14,8 @@ import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProfileButtons } from "../ProfileButtons";
 
-export function InfoUser({ userData, isCurrent, postCounter }) {
+
+export function InfoUser({ userData, isCurrent }) {
   const thema = useThemaContext();
   const createdAt = new Date(userData.created_at);
   return (
@@ -63,7 +63,8 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
             />
           )}
 
-          <View style={styles.containerNameAndBtns}>
+          <View style={styles.containerNameAndBtns} >
+
             <View style={styles.containerName}>
               <Text
                 style={[
@@ -73,7 +74,7 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                   },
                 ]}
               >
-                {userData?.nickname ? userData.nickname : userData.username}
+                {userData ? userData.username : "UserName"}
               </Text>
               <Text
                 style={[
@@ -85,7 +86,7 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                   },
                 ]}
               >
-                {userData?.username ? `@${userData.username}` : "@UserName"}
+                {userData ? `@${userData.username}` : "@UserName"}
               </Text>
             </View>
 
@@ -128,11 +129,6 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
               <Icon
                 type="material-community"
                 name="map-marker-outline"
-                color={
-                  userData?.localization
-                    ? color.light.corporate
-                    : color.light.textSecondary
-                }
                 iconStyle={styles.userLocationIcon}
               />
               {userData.localization ? (
@@ -145,9 +141,7 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                   }
                   backgroundColor={color.light.corporate}
                 >
-                  <Text style={styles.userLocation}>
-                    {userData.localization}
-                  </Text>
+                  <Text style={styles.userLocation}>Location</Text>
                 </Tooltip>
               ) : (
                 <Text style={styles.userLocation}>Location</Text>
@@ -157,11 +151,6 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
               <Icon
                 type="material-community"
                 name="link"
-                color={
-                  userData.website
-                    ? color.light.corporate
-                    : color.light.textSecondary
-                }
                 iconStyle={styles.userWebSiteIcon}
               />
 
@@ -173,7 +162,7 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                   }
                   backgroundColor={color.light.corporate}
                 >
-                  <Text style={styles.userWebsite}>{userData.website}</Text>
+                  <Text style={styles.userWebsite}>Link/Website</Text>
                 </Tooltip>
               ) : (
                 <Text style={styles.userWebsite}>Link/Website</Text>
@@ -183,9 +172,6 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
               <Icon
                 type="material-community"
                 name="calendar-blank-outline"
-                color={
-                  createdAt ? color.light.corporate : color.light.textSecondary
-                }
                 iconStyle={styles.userDateIcon}
               />
               {createdAt && (
@@ -221,11 +207,11 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                 style={[
                   styles.userTweetCountNumber,
                   {
-                    color: thema ? color.light.corporate : color.dark.corporate,
+                    color: thema ? color.light.text : color.dark.text,
                   },
                 ]}
               >
-                {postCounter.countPosts}
+                1M
               </Text>
               <Text style={styles.userTweetCount}>Posts</Text>
             </View>
@@ -234,11 +220,11 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                 style={[
                   styles.userFollowersNumber,
                   {
-                    color: thema ? color.light.corporate : color.dark.corporate,
+                    color: thema ? color.light.text : color.dark.text,
                   },
                 ]}
               >
-                0
+                822
               </Text>
               <Text style={styles.userFollowers}>Followers</Text>
             </View>
@@ -247,25 +233,17 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
                 style={[
                   styles.userFollowingNumber,
                   {
-                    color: thema ? color.light.corporate : color.dark.corporate,
+                    color: thema ? color.light.text : color.dark.text,
                   },
                 ]}
               >
-                0
+                1.2K
               </Text>
               <Text style={styles.userFollowing}>Following</Text>
             </View>
           </View>
         </View>
       </View>
-      <View
-        style={{
-          borderBottomColor: color.light.corporate,
-          borderBottomWidth: 1,
-          marginBottom: 15,
-          borderTopRadius: 10,
-        }}
-      />
     </View>
   );
 }

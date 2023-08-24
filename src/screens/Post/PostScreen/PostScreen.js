@@ -13,9 +13,10 @@ import { cableConsumer, domainUrl } from "../../../config/host";
 
 export function PostScreen(props) {
   const { route } = props;
-  const idPost = route.params.dataPost.id;
+  const idPost = route.params.idPost;
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
+  const [reloadBar, setReloadBar] = useState(true);
 
   useEffect(() => {
     const fetchData = () => {
@@ -24,6 +25,7 @@ export function PostScreen(props) {
         .then((data) => {
           setDataPost(data);
         })
+        .then(setReloadBar((prevState) => !prevState))
 
         .catch((error) => console.error(error));
     };
@@ -216,8 +218,9 @@ export function PostScreen(props) {
               idPost={dataPost.id}
               recharge={true}
               reloadPost={setReload}
-              amount={false}
+              amount={true}
               size={30}
+              reloadBar={reloadBar}
             />
             <View
               style={[

@@ -17,6 +17,7 @@ export function PostButtonBar({
   size = 20,
   recharge = false,
   reloadPost = null,
+  reloadBar = false,
 }) {
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
@@ -42,7 +43,7 @@ export function PostButtonBar({
     };
 
     fetchData();
-  }, [reload]);
+  }, [reload, reloadBar, idPost]);
 
   useEffect(() => {
     const socket = new WebSocket(cableConsumer);
@@ -60,6 +61,7 @@ export function PostButtonBar({
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+
       if (data.message === "tweet_updated") {
         setReload((prevState) => !prevState);
         if (recharge == true) {
@@ -103,11 +105,11 @@ export function PostButtonBar({
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    })
+      .then(() => setIsLike(true))
+      .catch(() => setIsLike(false));
 
-    if (response.ok) {
-      setIsLike(true);
-    }
+    //if (response.ok) {}
   };
 
   const removeLike = async () => {

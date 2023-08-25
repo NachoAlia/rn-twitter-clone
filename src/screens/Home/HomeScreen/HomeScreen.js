@@ -12,13 +12,14 @@ export function HomeScreen() {
 
   const thema = useThemaContext();
   const dataPosts = usePostsContext();
-  const reloadpost = usereloadPostContext();
+  const reloadPost = usereloadPostContext();
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await reloadpost();
+    await reloadPost();
     setRefreshing(false);
   };
+
   return (
     <View
       style={{

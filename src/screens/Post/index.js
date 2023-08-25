@@ -1,4 +1,4 @@
 export * from "./NewPostScreen";
 export * from "./AddCommentScreen";
-export * from "./PostScreen";
+export * from "./AddRepostScreen";
 export * from "./PostScreen";

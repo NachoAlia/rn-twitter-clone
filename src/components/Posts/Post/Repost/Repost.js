@@ -20,13 +20,14 @@ export function Repost({ dataPost }) {
           size="small"
           rounded
         />
+
         <Text
           style={[
             styles.nicknameUser,
             { color: thema ? color.light.text : color.dark.text },
           ]}
         >
-          dataPost.nicknameUser
+          {dataPost.nickname}
         </Text>
         <Text
           style={[
@@ -42,14 +43,18 @@ export function Repost({ dataPost }) {
         </Text>
       </View>
       <View style={styles.containerInfo}>
-        <Text
-          style={[
-            styles.text,
-            { color: thema ? color.light.text : color.dark.text },
-          ]}
-        >
-          {dataPost.body}
-        </Text>
+        {dataPost.body ? (
+          <Text
+            style={[
+              styles.text,
+              { color: thema ? color.light.text : color.dark.text },
+            ]}
+          >
+            {dataPost.body}
+          </Text>
+        ) : (
+          <></>
+        )}
       </View>
       <View style={styles.image}>
         {dataPost.photoTweet_url ? (

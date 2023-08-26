@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Icon, View } from "react-native-elements";
+import { Icon } from "react-native-elements";
 
 import { HomeStack } from "./HomeStack";
 import { SearchStack } from "./SearchStack";
@@ -68,9 +69,11 @@ export function AppNavigation() {
       <Tab.Screen
         name={screen.post.tab}
         component={PostStack}
-        screenOptions={{}}
         options={{
           title: "",
+          tabBarButton: () => {
+            return null;
+          },
         }}
       />
     </Tab.Navigator>

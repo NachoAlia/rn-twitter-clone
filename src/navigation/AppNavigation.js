@@ -65,6 +65,14 @@ export function AppNavigation() {
           title: "",
         }}
       />
+      <Tab.Screen
+        name={screen.post.tab}
+        component={PostStack}
+        screenOptions={{}}
+        options={{
+          title: "",
+        }}
+      />
     </Tab.Navigator>
   );
 }

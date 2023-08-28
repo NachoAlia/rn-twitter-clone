@@ -32,12 +32,15 @@ export function UserPosts(props) {
     <View
       style={{
         marginTop: 0,
-        alignSelf: "center",
         marginLeft: 0,
       }}
     >
       {postIds?.length > 0 ? (
-        postIds?.map((post) => <Post idPost={post.id} key={post.id} />)
+        postIds?.map((post) => (
+          <View style={{ marginBottom: 20 }}>
+            <Post idPost={post.id} key={post.id} />
+          </View>
+        ))
       ) : (
         <Text
           style={{

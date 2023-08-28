@@ -4,6 +4,7 @@ import { Avatar, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import {
   color,
+  GoToUserProfile,
   IconsButton,
   ImageAuto,
   screen,
@@ -95,6 +96,7 @@ export function Post({ idPost }) {
                 }
                 size="medium"
                 rounded
+                onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
               />
             </View>
 
@@ -262,6 +264,7 @@ export function Post({ idPost }) {
               source={require("../../../../assets/icons/default_user_photo.png")}
               size="small"
               rounded
+              onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
             />
           </View>
           <Text style={styles.threadText}>Mostrar este hilo</Text>

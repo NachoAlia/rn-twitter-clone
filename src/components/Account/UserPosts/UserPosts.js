@@ -37,7 +37,7 @@ export function UserPosts(props) {
     >
       {postIds?.length > 0 ? (
         postIds?.map((post) => (
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 20 }} key={post.id}>
             <Post idPost={post.id} key={post.id} />
           </View>
         ))

@@ -10,7 +10,7 @@ import { SignoutButton } from "../../Auth";
 import { UserContext } from "../../../context/UserProvider";
 
 export function DrawerOptions() {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setUpdateInfo } = useContext(UserContext);
   const navigation = useNavigation();
   const thema = useThemaContext();
 
@@ -47,7 +47,10 @@ export function DrawerOptions() {
         iconNameLeft: "bookmark-outline",
         iconSize: 32,
         bottomDivider: false,
-        onPress: () => navigation.navigate(screen.bookmark.tab),
+        onPress: () => {
+          setUpdateInfo(true);
+          navigation.navigate(screen.bookmark.tab);
+        },
       },
       // {
       //   title: "Settings",

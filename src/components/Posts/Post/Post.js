@@ -1,29 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  View,
-  Dimensions,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { Avatar, Button, Image, Text } from "react-native-elements";
+import React, { useEffect, useState } from "react";
+import { View, Dimensions, TouchableOpacity } from "react-native";
+import { Avatar, Text } from "react-native-elements";
 import { styles } from "./Post.style";
-import { color, ImageAuto, screen, timePost } from "../../../utils";
-import { GoToUserProfile } from "../../../utils/GoToUserProfile";
+import {
+  color,
+  GoToUserProfile,
+  IconsButton,
+  ImageAuto,
+  screen,
+  timePost,
+} from "../../../utils";
 import { useNavigation } from "@react-navigation/native";
 import { PostButtonBar } from "./PostButtonBar";
 import { Repost } from "./Repost";
 import { useThemaContext } from "../../ThemeProvider";
 import { domainUrl } from "../../../config/host";
-import { UserContext } from "../../../context";
+import { Modal } from "../../Shared";
+import { ImageScreen } from "../../../screens/Post/ImageScreen";
 
 export function Post({ idPost }) {
   const [dataPost, setDataPost] = useState(null);
-  const [reload, setReload] = useState(true);
-  const [isLiked, setIsLiked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [dataRepost, setDataRepost] = useState(null);
 
   const thema = useThemaContext();
-
-  const { currentUser } = useContext(UserContext);
 
   const navigation = useNavigation();
 
@@ -32,9 +32,9 @@ export function Post({ idPost }) {
       fetch(`${domainUrl}/tweets/${idPost}`)
         .then((response) => response.json())
         .then((data) => {
-          setIsLiked(
-            data.likes.some((like) => like.user_id === currentUser.id)
-          );
+          if (!(data.body || data.photoTweet_url)) {
+            setDataRepost(data.retweet);
+          }
           setDataPost(data);
         })
 
@@ -42,68 +42,106 @@ export function Post({ idPost }) {
     };
 
     fetchData();
-  }, [reload]);
+  }, []);
 
   const goPost = () => {
-    navigation.navigate(screen.post.tab, {
-      screen: screen.post.post,
-      params: { dataPost, isLiked },
-    });
+    dataRepost
+      ? navigation.navigate(screen.post.tab, {
+          screen: screen.post.post,
+          params: { idPost: dataRepost.id },
+        })
+      : navigation.navigate(screen.post.tab, {
+          screen: screen.post.post,
+          params: { idPost: dataPost.id },
+        });
   };
 
-  const goImage = () => {
-    navigation.navigate(screen.post.tab, {
-      screen: screen.post.image,
-      params: { dataPost, isLiked },
-    });
-  };
+  const onCloseOpenModal = () => setShowModal((prevState) => !prevState);
 
   return (
     <>
       {dataPost && (
-        <View style={styles.container}>
-          <View style={styles.photoUser}>
-            <Avatar
-              source={
-                dataPost.photoProfile_url
-                  ? { uri: dataPost.photoProfile_url }
-                  : require("../../../../assets/icons/default_user_photo.png")
-              }
-              size="medium"
-              rounded
-              onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
-            />
-          </View>
-
-          <View style={styles.containerData}>
-            {dataPost.thread_tweet_id ? (
-              <View
-                style={[
-                  styles.threadBar,
-                  {
-                    backgroundColor: thema
-                      ? color.light.contrast
-                      : color.dark.contrast,
-                  },
-                ]}
+        <>
+          {dataRepost && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 30,
+              }}
+            >
+              <IconsButton name={"repost"} touchable={false} />
+              <Text
+                style={{
+                  color: thema
+                    ? color.light.textSecondary
+                    : color.dark.textSecondary,
+                }}
+              >
+                {dataPost.nickname} reposteo
+              </Text>
+            </View>
+          )}
+          <View style={dataRepost ? styles.containerTight : styles.container}>
+            <View style={styles.photoUser}>
+              <Avatar
+                source={
+                  dataRepost
+                    ? dataRepost.photoProfile_url
+                      ? { uri: dataRepost.photoProfile_url }
+                      : require("../../../../assets/icons/default_user_photo.png")
+                    : dataPost.photoProfile_url
+                    ? { uri: dataPost.photoProfile_url }
+                    : require("../../../../assets/icons/default_user_photo.png")
+                }
+                size="medium"
+                rounded
+                onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
               />
-            ) : (
-              <></>
-            )}
-            <View style={styles.title}>
-              <View style={styles.postTitle}>
-                <Text
-                  style={[
-                    styles.nicknameUser,
-                    { color: thema ? color.light.text : color.dark.text },
-                  ]}
-                >
-                  {dataPost.nickname ? dataPost.nickname : dataPost.username}
-                </Text>
+            </View>
 
+            <View style={styles.containerData}>
+              {dataPost.thread_tweet_id ? (
+                <View
+                  style={[
+                    styles.threadBar,
+                    {
+                      backgroundColor: thema
+                        ? color.light.contrast
+                        : color.dark.contrast,
+                    },
+                  ]}
+                />
+              ) : (
+                <></>
+              )}
+
+              <View style={styles.title}>
+                <View style={styles.postTitle}>
+                  <Text
+                    style={[
+                      styles.nicknameUser,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataRepost ? dataRepost.nickname : dataPost.nickname}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.nameUser,
+                      {
+                        color: thema
+                          ? color.light.textSecondary
+                          : color.dark.textSecondary,
+                      },
+                    ]}
+                  >
+                    @{dataRepost ? dataRepost.username : dataPost.username}
+                  </Text>
+                </View>
                 <Text
                   style={[
-                    styles.nameUser,
+                    styles.titleDate,
                     {
                       color: thema
                         ? color.light.textSecondary
@@ -111,61 +149,113 @@ export function Post({ idPost }) {
                     },
                   ]}
                 >
-                  @{dataPost.username}
+                  {timePost(dataPost.created_at)}
                 </Text>
               </View>
-              <Text
-                style={[
-                  styles.titleDate,
-                  {
-                    color: thema
-                      ? color.light.textSecondary
-                      : color.dark.textSecondary,
-                  },
-                ]}
-              >
-                {timePost(dataPost.created_at)}
-              </Text>
-            </View>
 
-            <View style={styles.containerInfo}>
-              <Text
-                style={[
-                  styles.text,
-                  { color: thema ? color.light.text : color.dark.text },
-                ]}
-              >
-                {dataPost.body}
-              </Text>
-              <TouchableOpacity style={styles.postButton} onPress={goPost} />
-
-              {dataPost.photoTweet_url ? (
-                <View style={styles.imagePost}>
-                  <TouchableOpacity onPress={goImage}>
-                    <ImageAuto
-                      uri={dataPost.photoTweet_url}
-                      desiredWidth={Dimensions.get("window").width * 0.75}
-                    />
-                  </TouchableOpacity>
+              <View style={styles.containerInfo}>
+                {dataPost.body ? (
+                  <View style={styles.body}>
+                    <Text
+                      style={[
+                        styles.text,
+                        { color: thema ? color.light.text : color.dark.text },
+                      ]}
+                    >
+                      {dataPost.body}
+                    </Text>
+                  </View>
+                ) : (
+                  <></>
+                )}
+                {dataRepost?.body ? (
+                  <View style={styles.body}>
+                    <Text
+                      style={[
+                        styles.text,
+                        { color: thema ? color.light.text : color.dark.text },
+                      ]}
+                    >
+                      {dataRepost.body}
+                    </Text>
+                  </View>
+                ) : (
+                  <></>
+                )}
+                <TouchableOpacity style={styles.postButton} onPress={goPost} />
+                {dataPost.photoTweet_url ? (
+                  <View style={styles.imagePost}>
+                    <TouchableOpacity onPress={onCloseOpenModal}>
+                      <ImageAuto
+                        uri={dataPost.photoTweet_url}
+                        desiredWidth={Dimensions.get("window").width * 0.75}
+                      />
+                    </TouchableOpacity>
+                    <Modal
+                      fullScreen={true}
+                      show={showModal}
+                      close={onCloseOpenModal}
+                      style={{
+                        flex: 1,
+                        width: "100%",
+                        borderRadius: 0,
+                        backgroundColor: thema
+                          ? color.light.background
+                          : color.dark.background,
+                      }}
+                    >
+                      <ImageScreen close={onCloseOpenModal} data={dataPost} />
+                    </Modal>
+                  </View>
+                ) : dataRepost?.photoTweet_url ? (
+                  <View style={styles.imagePost}>
+                    <TouchableOpacity onPress={onCloseOpenModal}>
+                      <ImageAuto
+                        uri={dataRepost.photoTweet_url}
+                        desiredWidth={Dimensions.get("window").width * 0.75}
+                      />
+                    </TouchableOpacity>
+                    <Modal
+                      fullScreen={true}
+                      show={showModal}
+                      close={onCloseOpenModal}
+                      style={{
+                        flex: 1,
+                        width: "100%",
+                        borderRadius: 0,
+                        backgroundColor: thema
+                          ? color.light.background
+                          : color.dark.background,
+                      }}
+                    >
+                      <ImageScreen close={onCloseOpenModal} data={dataRepost} />
+                    </Modal>
+                  </View>
+                ) : (
+                  <></>
+                )}
+                {!dataRepost ? (
+                  dataPost.retweet ? (
+                    <Repost dataPost={dataPost.retweet} />
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+                <View style={{ marginTop: 20 }}>
+                  {dataRepost?.id ? (
+                    <>
+                      <PostButtonBar idPost={dataRepost.id} />
+                    </>
+                  ) : (
+                    <PostButtonBar idPost={dataPost.id} />
+                  )}
                 </View>
-              ) : (
-                <></>
-              )}
-              {dataPost.retweet ? (
-                <Repost dataPost={dataPost.retweet} />
-              ) : (
-                <></>
-              )}
-              <View style={{ marginTop: 10 }}>
-                <PostButtonBar
-                  dataPost={dataPost}
-                  reload={setReload}
-                  isLiked={isLiked}
-                />
               </View>
             </View>
           </View>
-        </View>
+        </>
       )}
       {dataPost?.thread_tweet_id ? (
         <View style={styles.threadStyle}>
@@ -174,6 +264,7 @@ export function Post({ idPost }) {
               source={require("../../../../assets/icons/default_user_photo.png")}
               size="small"
               rounded
+              onPress={() => GoToUserProfile(navigation, dataPost.user_id)}
             />
           </View>
           <Text style={styles.threadText}>Mostrar este hilo</Text>

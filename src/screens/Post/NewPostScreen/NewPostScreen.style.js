@@ -3,18 +3,21 @@ import { color } from "../../../utils";
 
 export const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    padding: 20,
+    paddingHorizontal: 20,
     flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   containerButtonPostDisabled: { backgroundColor: color.light.alternative },
   containerButtonPost: {
-    borderRadius: 20,
+    borderRadius: 10,
     alignSelf: "flex-end",
     backgroundColor: color.light.corporate,
-    paddingHorizontal: 15,
   },
-  textArea: { padding: 0, margin: 0, borderBottomWidth: 0 },
+  textArea: { borderBottomWidth: 0 },
   imagePost: {
     justifyContent: "center",
     alignItems: "center",

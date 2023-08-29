@@ -22,19 +22,26 @@ export function HomeScreen() {
 
   const thema = useThemaContext();
   const dataPosts = usePostsContext();
+<<<<<<< HEAD
   const morePosts = useMorePostsContext();
   const reloadpost = usereloadPostContext();
+=======
+  const reloadPost = usereloadPostContext();
+>>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await reloadpost();
+    await reloadPost();
     setRefreshing(false);
   };
 
+<<<<<<< HEAD
   const loadMorePosts = async () => {
     setLoading(true);
     await morePosts().then(setLoading(false));
   };
+=======
+>>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
   return (
     <View
       style={{

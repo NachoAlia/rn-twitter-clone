@@ -35,10 +35,18 @@ export function PostsProvider(props) {
     setLastPostId(dataPosts[dataPosts.length - 1].id);
 
     const fetchMoreData = () => {
+<<<<<<< HEAD
       setLastPostId(dataPosts[dataPosts.length - 1].id);
       fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
         .then((response) => response.json())
         .then((data) => setDataPosts((prevData) => [...prevData, ...data]))
+=======
+      fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDataPosts((prevData) => [...prevData, ...data]);
+        })
+>>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
         .catch((error) => console.error(error));
     };
 

@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { domainUrl } from "../../../../config/host";
 import { UserContext, usereloadPostContext } from "../../../../context";
 
-export function RepostsModal({ visible, onBackdropPress, dataPost }) {
+export function RepostsModal({ visible, onBackdropPress, dataPost, citeCase }) {
   const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
   const reloadpost = usereloadPostContext();
@@ -36,10 +36,8 @@ export function RepostsModal({ visible, onBackdropPress, dataPost }) {
   };
 
   const goToRepost = () => {
-    navigation.navigate(screen.post.tab, {
-      screen: screen.post.addRepost,
-      params: { dataPost },
-    });
+    onBackdropPress();
+    citeCase();
   };
 
   return (

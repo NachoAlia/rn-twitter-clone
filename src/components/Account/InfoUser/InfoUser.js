@@ -92,7 +92,7 @@ export function InfoUser({ userData, isCurrent, postCounter, myId }) {
             <ProfileButtons
               isCurrentUser={isCurrent}
               myId={myId}
-              otherPersorId={userData.id}
+              otherPersonId={userData.id}
             />
           </View>
           <ScrollView style={{ maxHeight: 70, marginBottom: 30 }}>

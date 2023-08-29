@@ -15,7 +15,7 @@ import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProfileButtons } from "../ProfileButtons";
 
-export function InfoUser({ userData, isCurrent, postCounter }) {
+export function InfoUser({ userData, isCurrent, postCounter, myId }) {
   const thema = useThemaContext();
   const createdAt = new Date(userData.created_at);
   return (
@@ -91,13 +91,8 @@ export function InfoUser({ userData, isCurrent, postCounter }) {
 
             <ProfileButtons
               isCurrentUser={isCurrent}
-              isFollowing={false}
-              onFollow={() => {
-                console.log("follow");
-              }}
-              onNotifications={() => {
-                console.log("notifications");
-              }}
+              myId={myId}
+              otherPersorId={userData.id}
             />
           </View>
           <ScrollView style={{ maxHeight: 70, marginBottom: 30 }}>

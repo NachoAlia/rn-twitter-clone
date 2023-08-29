@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { styles } from "./ProfileButtons.styles";
@@ -7,10 +7,13 @@ import { screen } from '../../../utils/screenName'
 
 export const ProfileButtons = ({
   isCurrentUser,
-  isFollowing,
-  onFollow,
-  onNotifications,
+  myId,
+  otherPersorId,
 }) => {
+
+  const [isFriend, setIsFriend] = useState(false)
+
+  // const [notifications, setNotifications] = useState(false)
 
   const navigation = useNavigation();
 
@@ -18,37 +21,44 @@ export const ProfileButtons = ({
     navigation.navigate(screen.account.editProfile);
   };
 
+  const handlerFriendship = () => {
+    if (isFriend = false) {
+      // si no es amigo debe enviar una solicitud de amistad
+    } else {
+      // si ya es amigo debe eliminar la amistad
+    }
+  }
+
   return (
     <View style={styles.buttonsContainer}>
-      {/* Botón de Editar Perfil */}
-      {isCurrentUser && (
+
+      {isCurrentUser ? (
+
         <TouchableOpacity style={styles.editButton} onPress={() => goToEditProfile()}>
-          <Text style={styles.editButtonText}>Editar Perfil</Text>
+          <Text style={styles.editButtonText}>Edit Profile</Text>
         </TouchableOpacity>
-      )}
 
-      {/* Botón de Seguir */}
-      {!isCurrentUser && (
-        <TouchableOpacity style={styles.followButton} onPress={onFollow}>
-          <Text style={styles.followButtonText}>
-            {isFollowing ? "Siguiendo" : "Seguir"}
-          </Text>
-        </TouchableOpacity>
-      )}
+      ) : (
 
-      {/* Botón de Notificaciones */}
-      {!isCurrentUser && (
-        <TouchableOpacity
-          style={styles.notificationsButton}
-          onPress={onNotifications}
-        >
-          <Icon
-            name="bell-outline"
-            type="material-community"
-            color="#ffffff"
-            size={20}
-          />
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity style={styles.followButton} onPress={() => console.log(` ${myId} jajaj ${otherPersorId} `)}>
+            <Text style={styles.followButtonText}>
+              {isFriend ? "Friend" : "Add Friend"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity
+            style={styles.notificationsButton}
+            onPress={console.log(notifications)}
+          >
+            <Icon
+              name="bell-outline"
+              type="material-community"
+              color="#ffffff"
+              size={20}
+            />
+          </TouchableOpacity> */}
+        </>
       )}
     </View>
   );

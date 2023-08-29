@@ -1,16 +1,23 @@
-import React, { useEffect } from "react";
-import { View, Text } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { View, Text, ActivityIndicator } from "react-native";
 
 import { Dropdown } from "../../../components/Shared/Dropdown";
 import { useNavigation } from "@react-navigation/native";
 import { screen, color } from "../../../utils";
 import { useThemaContext } from "../../../components/ThemeProvider";
-
 import { styles } from "./BookmarkScreen.styles";
+import { BookmarkList } from "../../../components/Bookmark/BookmarkList";
+import { ScrollView } from "react-native-gesture-handler";
+import { UserContext } from "../../../context";
 
 export function BookmarkScreen() {
   const navigation = useNavigation();
   const thema = useThemaContext();
+  const { user_bookmark, setUpdateInfo, updateInfo } = useContext(UserContext);
+  const removeAllBookmarks = () => {
+    user_bookmark.removeAllBookmarks();
+    setUpdateInfo(true);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -18,7 +25,7 @@ export function BookmarkScreen() {
           links={[
             {
               name: "Borrar todos los elementos guardados",
-              action: () => navigation.navigate(screen.home.home),
+              action: () => removeAllBookmarks(),
             },
           ]}
           overlayStyle={{
@@ -42,19 +49,18 @@ export function BookmarkScreen() {
     });
   }, [thema]);
   return (
-    <View
-      style={[
-        styles.content,
-        {
-          backgroundColor: thema
-            ? color.light.background
-            : color.dark.background,
-        },
-      ]}
+    <ScrollView
+      style={{
+        backgroundColor: thema ? color.light.background : color.dark.background,
+      }}
     >
-      <Text style={{ color: thema ? color.light.text : color.dark.text }}>
-        BookmarkScreen
-      </Text>
-    </View>
+      {updateInfo && (
+        <ActivityIndicator
+          style={{ marginTop: 20 }}
+          color={color.light.corporate}
+        />
+      )}
+      <BookmarkList />
+    </ScrollView>
   );
 }

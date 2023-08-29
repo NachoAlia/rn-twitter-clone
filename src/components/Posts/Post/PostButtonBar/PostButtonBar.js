@@ -21,13 +21,13 @@ export function PostButtonBar({
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
   const [isLike, setIsLike] = useState(false);
-  const [isBookmark, setIsBookmark] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showModalRepost, setShowModalRepost] = useState(false);
   const [showModalComment, setShowModalComment] = useState(false);
-  const { currentUser } = useContext(UserContext);
-
+  const { currentUser, user_bookmark, setUpdateInfo, updateInfo } =
+    useContext(UserContext);
   const thema = useThemaContext();
+  const isBookmark = user_bookmark.includedInBookmark(idPost);
 
   useEffect(() => {
     const fetchData = () => {
@@ -35,6 +35,7 @@ export function PostButtonBar({
         .then((response) => response.json())
         .then((data) => {
           setIsLike(data.likes.some((like) => like.user_id === currentUser.id));
+
           setDataPost(data);
         })
 
@@ -129,11 +130,15 @@ export function PostButtonBar({
   };
 
   const giveBookmark = () => {
-    setIsBookmark(true);
+    user_bookmark.addBookmark(dataPost.id);
+    setUpdateInfo(true);
+    setReload(true);
   };
 
   const removeBookmark = () => {
-    setIsBookmark(false);
+    user_bookmark.removeBookmark(dataPost.id);
+    setUpdateInfo(true);
+    setReload(true);
   };
 
   return (

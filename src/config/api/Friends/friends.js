@@ -3,6 +3,7 @@
 import { domainUrl } from "../../host";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// /api/v1/users/:user_id/friendships/:id/create(.:format) 
 const apiUrl = `${domainUrl}/users`;
 
 export async function sendFriendRequest(myId, otherPersonId) {
@@ -10,13 +11,14 @@ export async function sendFriendRequest(myId, otherPersonId) {
     try {
         const token = await AsyncStorage.getItem("token");
 
-        const response = await fetch(`${apiUrl}/${JSON.stringify(myId)}/friendships`, {
+
+        const response = await fetch(`${apiUrl}/${JSON.stringify(myId)}/friendships/${otherPersonId}/create`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ friendship: otherPersonId }), // Envía el ID del amigo
+            // headers: {
+            //     "Content-Type": "application/json",
+            //     Authorization: `Bearer ${token}`,
+            // },
+            // body: JSON.stringify({ friend_id: otherPersonId }),
         });
 
         if (!response.ok) {

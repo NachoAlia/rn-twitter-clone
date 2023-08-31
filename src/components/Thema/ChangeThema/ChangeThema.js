@@ -12,9 +12,9 @@ export function ChangeThema() {
   return (
     <View style={styles.margin}>
       {thema ? (
-        <IconsButton name={"light"} size={40} onPress={onChangeMode} />
+        <IconsButton name={"light"} size={38} onPress={onChangeMode} />
       ) : (
-        <IconsButton name={"dark"} size={40} onPress={onChangeMode} />
+        <IconsButton name={"dark"} size={38} onPress={onChangeMode} />
       )}
     </View>
   );

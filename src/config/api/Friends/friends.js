@@ -1,9 +1,7 @@
-// src/config/api/Friends/friends.js
 
 import { domainUrl } from "../../host";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// /api/v1/users/:user_id/friendships/:id/create(.:format) 
 const apiUrl = `${domainUrl}/users`;
 
 export async function sendFriendRequest(myId, otherPersonId) {

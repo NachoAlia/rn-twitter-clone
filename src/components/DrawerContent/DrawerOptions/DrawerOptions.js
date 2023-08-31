@@ -98,7 +98,9 @@ export function DrawerOptions() {
           </View>
         );
       })}
-      <SignoutButton />
+      <View style={{ marginBottom: 30 }}>
+        <SignoutButton />
+      </View>
     </View>
   );
 }

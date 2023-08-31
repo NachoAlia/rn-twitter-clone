@@ -26,7 +26,7 @@ export function UserPosts(props) {
       postCounter.setCountPosts(result.length);
     };
     fetchData();
-  }, [shouldUpdateList, userData.id]);
+  }, [shouldUpdateList, userData?.id]);
 
   return (
     <View

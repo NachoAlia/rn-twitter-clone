@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${domainUrl}/users/${currentUser.id}/bookmarks/index`,
+        `${domainUrl}/users/${currentUser?.id}/bookmarks/index`,
         {
           method: "GET",
         }
@@ -40,7 +40,7 @@ export const UserProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${domainUrl}/users/${currentUser.id}/bookmarks/${postId}/create`,
+          `${domainUrl}/users/${currentUser?.id}/bookmarks/${postId}/create`,
           {
             method: "POST",
           }
@@ -62,11 +62,11 @@ export const UserProvider = ({ children }) => {
   };
   const removeBookmark = (postId) => {
     const fetchData = async () => {
-      await fetch(`${domainUrl}/users/${currentUser.id}/bookmarks/${postId}`, {
+      await fetch(`${domainUrl}/users/${currentUser?.id}/bookmarks/${postId}`, {
         method: "DELETE",
       }).then(() => {
         setBookmarks(
-          bookmarks.filter((bookmark) => bookmark.tweet_id !== postId)
+          bookmarks.filter((bookmark) => bookmark?.tweet_id !== postId)
         );
         setUpdateInfo(true);
       });
@@ -77,7 +77,7 @@ export const UserProvider = ({ children }) => {
   const removeAllBookmarks = () => {
     const fetchData = async () => {
       try {
-        await fetch(`${domainUrl}/users/${currentUser.id}/bookmarks`, {
+        await fetch(`${domainUrl}/users/${currentUser?.id}/bookmarks`, {
           method: "DELETE",
         });
         setBookmarks([]);

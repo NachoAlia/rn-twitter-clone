@@ -24,10 +24,11 @@ export function PostButtonBar({
   const [visible, setVisible] = useState(false);
   const [showModalRepost, setShowModalRepost] = useState(false);
   const [showModalComment, setShowModalComment] = useState(false);
+
   const { currentUser, user_bookmark, setUpdateInfo, updateInfo } =
     useContext(UserContext);
   const thema = useThemaContext();
-  const isBookmark = user_bookmark.includedInBookmark(idPost);
+  const isBookmark = user_bookmark.includedInBookmark(idPost) || false;
 
   useEffect(() => {
     const fetchData = () => {

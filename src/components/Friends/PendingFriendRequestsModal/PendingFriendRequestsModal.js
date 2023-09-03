@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { TouchableOpacity, FlatList, View } from "react-native";
+import {
+    Avatar,
+    Text,
+    Image,
+    Icon,
+} from "react-native-elements";
+
 import { Modal, LoadingModal } from "../../Shared";
 import { getPendingFriendRequests } from "../../../config/api/Friends/friends";
 import { styles } from './PendingFriendRequestsModal.styles'
 import Toast from "react-native-toast-message";
-import { Icon } from "react-native-elements";
 import { color } from "../../../utils";
 import { useThemaContext } from "../../ThemeProvider";
 
@@ -72,6 +78,13 @@ export function PendingFriendRequestsModal({ userId }) {
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item }) => (
                                 <View>
+                                    <Avatar
+                                        size="large"
+                                        rounded
+                                        containerStyle={styles.containerProfileAvatar}
+                                        source={{ uri: item.user_id.url_profile_photo }}
+                                    />
+                                    <Text>{item.user_id.username}</Text>
                                     <Text>{item.status}</Text>
                                 </View>
                             )}

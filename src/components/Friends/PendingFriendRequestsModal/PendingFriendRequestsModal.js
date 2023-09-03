@@ -8,7 +8,7 @@ import {
 } from "react-native-elements";
 
 import { Modal, LoadingModal } from "../../Shared";
-import { getPendingFriendRequests } from "../../../config/api/Friends/friends";
+import { getPendingFriendRequests, deleteFriendship } from "../../../config/api/Friends/friends";
 import { styles } from './PendingFriendRequestsModal.styles'
 import Toast from "react-native-toast-message";
 import { color } from "../../../utils";
@@ -41,12 +41,19 @@ export function PendingFriendRequestsModal({ userId }) {
         }
         // setShowModal(true);
     };
-    const acceptRequest = (friendId) => {
-        // Agregar lógica para aceptar la solicitud aquí
+    const acceptRequest = (requestId) => {
+        console.log(requestId);
     };
 
-    const deleteRequest = (friendId) => {
-        // Agregar lógica para eliminar la solicitud aquí
+    const deleteRequest = async (myId, requestId) => {
+        try {
+            setShowLoading(true);
+            const requests = await deleteFriendship(myId, requestId);
+            setShowLoading(false);
+        } catch (error) {
+            console.error("Error deleted friend requests:", error);
+            setShowLoading(false);
+        }
     };
 
     return (
@@ -106,14 +113,14 @@ export function PendingFriendRequestsModal({ userId }) {
                                             type="material-community"
                                             size={35}
                                             color="#c40000"
-                                            onPress={() => deleteRequest(item.friend_id)}
+                                            onPress={() => deleteRequest(item.friend_id, item.id)}
                                         />
                                         <Icon
                                             name="check"
                                             type="material-community"
                                             size={35}
                                             color="#0a8c41"
-                                            onPress={() => acceptRequest(item.friend_id)}
+                                            onPress={() => acceptRequest(item.id)}
                                         />
                                     </View>
                                 </View>

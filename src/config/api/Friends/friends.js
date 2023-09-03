@@ -29,11 +29,11 @@ export async function sendFriendRequest(myId, otherPersonId) {
     }
 }
 
-export async function deleteFriendship(myId, otherPersonId) {
+export async function deleteFriendship(myId, requestId) {
     try {
-        const token = await AsyncStorage.getItem("token");
+        // const token = await AsyncStorage.getItem("token");
 
-        const response = await fetch(`${apiUrl}/${JSON.stringify(myId)}/friendships/${otherPersonId}`, {
+        const response = await fetch(`${apiUrl}/${myId}/friendships/${requestId}`, {
             method: "DELETE",
             // headers: {
             //     Authorization: `Bearer ${token}`,

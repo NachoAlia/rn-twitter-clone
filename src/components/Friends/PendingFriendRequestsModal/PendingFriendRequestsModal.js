@@ -19,28 +19,29 @@ export function PendingFriendRequestsModal({ userId }) {
 
     useEffect(() => {
         fetchPendingRequests();
-    }, [showModal]);
+    }, []);
 
     const fetchPendingRequests = async () => {
         try {
-            setShowModal(false);
-            // setShowLoading(true);
+            setShowLoading(true);
             const requests = await getPendingFriendRequests(userId);
-            setPendingRequests(requests);
-            // setShowLoading(false);
-            // setShowModal(true);
+            setPendingRequests(requests.received_friend_requests);
+            setShowLoading(false);
+            setShowModal(true);
         } catch (error) {
             console.error("Error fetching pending friend requests:", error);
-            // setShowLoading(false);
-            // setShowModal(false);
+            setShowLoading(false);
+            setShowModal(false);
         }
+        // setShowModal(true);
     };
+    console.log(pendingRequests);
 
     return (
         <View>
             <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={() => setShowModal(true)}
+                onPress={() => fetchPendingRequests()}
             >
                 <Icon name="account-multiple-plus" type="material-community" size={32} color="#ccc" />
                 <Text
@@ -65,21 +66,27 @@ export function PendingFriendRequestsModal({ userId }) {
                     ]}
                 >
                     <Text>Pending Friend Requests</Text>
-                    <FlatList
-                        data={pendingRequests}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <View>
-                                <Text>{item.username}</Text>
-                            </View>
-                        )}
-                    />
+                    {pendingRequests.length > 0 ? (
+                        <FlatList
+                            data={pendingRequests}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => (
+                                <View>
+                                    <Text>{item.status}</Text>
+                                </View>
+                            )}
+                        />
+                    ) : (
+                        <Text>No pending requests</Text>
+                    )}
+
+
                     <TouchableOpacity onPress={() => setShowModal(false)}>
                         <Text>Close</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
-            <LoadingModal show={showLoading} text="Signing out..." />
+            <LoadingModal show={showLoading} text="Charging requests..." />
         </View>
     );
 }

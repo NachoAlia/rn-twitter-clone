@@ -53,11 +53,11 @@ export async function deleteFriendship(myId, otherPersonId) {
 export async function getPendingFriendRequests(userId) {
     try {
         const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${apiUrl}/${userId}/friendships/pending`, {
+        const response = await fetch(`${apiUrl}/${userId}/friendships`, {
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // },
         });
 
         if (!response.ok) {
@@ -65,7 +65,7 @@ export async function getPendingFriendRequests(userId) {
         }
 
         const data = await response.json();
-        return data.pending_requests;
+        return data;
     } catch (error) {
         throw error;
     }

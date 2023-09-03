@@ -41,7 +41,13 @@ export function PendingFriendRequestsModal({ userId }) {
         }
         // setShowModal(true);
     };
-    console.log(pendingRequests);
+    const acceptRequest = (friendId) => {
+        // Agregar lógica para aceptar la solicitud aquí
+    };
+
+    const deleteRequest = (friendId) => {
+        // Agregar lógica para eliminar la solicitud aquí
+    };
 
     return (
         <View>
@@ -71,32 +77,52 @@ export function PendingFriendRequestsModal({ userId }) {
                         },
                     ]}
                 >
-                    <Text>Pending Friend Requests</Text>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Friend Requests</Text>
+                        <TouchableOpacity style={styles.buttonClose} onPress={() => setShowModal(false)}>
+                            <Icon name="close" size={40} color="#000" type="material-community" />
+                        </TouchableOpacity>
+                    </View>
                     {pendingRequests.length > 0 ? (
                         <FlatList
                             data={pendingRequests}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item }) => (
-                                <View>
+                                <View style={styles.avatarContainer}>
                                     <Avatar
-                                        size="large"
+                                        size="medium"
                                         rounded
-                                        containerStyle={styles.containerProfileAvatar}
+                                        containerStyle={styles.avatar}
                                         source={{ uri: item.user_id.url_profile_photo }}
                                     />
-                                    <Text>{item.user_id.username}</Text>
-                                    <Text>{item.status}</Text>
+                                    <View>
+                                        <Text style={styles.username}>{item.user_id.username}</Text>
+                                        <Text style={styles.status}>{item.status}</Text>
+                                    </View>
+                                    <View style={styles.actionButtons}>
+
+                                        <Icon
+                                            name="delete"
+                                            type="material-community"
+                                            size={35}
+                                            color="#c40000"
+                                            onPress={() => deleteRequest(item.friend_id)}
+                                        />
+                                        <Icon
+                                            name="check"
+                                            type="material-community"
+                                            size={35}
+                                            color="#0a8c41"
+                                            onPress={() => acceptRequest(item.friend_id)}
+                                        />
+                                    </View>
                                 </View>
                             )}
                         />
                     ) : (
-                        <Text>No pending requests</Text>
+                        <Text style={styles.none}>No pending requests 😓</Text>
                     )}
 
-
-                    <TouchableOpacity onPress={() => setShowModal(false)}>
-                        <Text>Close</Text>
-                    </TouchableOpacity>
                 </View>
             </Modal>
             <LoadingModal show={showLoading} text="Charging requests..." />

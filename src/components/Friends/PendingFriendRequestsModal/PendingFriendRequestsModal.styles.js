@@ -2,40 +2,62 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
     containerModal: {
-        margin: -5,
-        padding: 25,
+        padding: 10,
         borderRadius: 15,
+        backgroundColor: 'white',
+        margin: -5
+    },
+    header: {
+        flexDirection: 'row',
+        alignSelf: "stretch",
+        justifyContent: "space-around",
+        marginVertical: 5
+        // borderBottomWidth: 1,
+        // borderColor: "#C1C1C1",
+
+    },
+    buttonClose: {
+        marginLeft: 80,
+        justifyContent: "center"
     },
     buttonContainer: {
         flexDirection: "row",
-        marginTop: 15,
-        marginLeft: 15,
-    },
-    text: {
-        fontSize: 26,
-        textAlign: "center",
-        flexWrap: "wrap",
-    },
-    buttonsContainer: {
-        flexDirection: "row",
         alignItems: "center",
+        // backgroundColor: "red"
+    },
+    title: {
+        fontSize: 22,
+        paddingHorizontal: 10,
+        fontWeight: 'bold',
+        marginVertical: 10,
+
+    },
+    avatarContainer: {
+        flexDirection: 'row',
         justifyContent: "space-around",
-        borderWidth: 1,
-        borderColor: "#c19659",
-        borderRadius: 15,
-        marginTop: 15,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderColor: "#C1C1C1",
+
     },
-    btnAceptCancel: {
-        color: "#c19659",
+
+    username: {
+        fontSize: 18,
+        fontWeight: 'bold',
+
     },
-    buttonAcceptContainer: {
-        width: "50%",
+    none: {
+        fontSize: 18,
+        textAlign: "center"
     },
-    buttonCloseContainer: {
-        padding: 5,
-        backgroundColor: "#c1965950",
-        width: "50%",
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
+    status: {
+        fontSize: 16,
+        color: '#555',
     },
-})
+    actionButtons: {
+        flexDirection: 'row',
+        marginLeft: 30,
+        alignItems: "center",
+    },
+
+});

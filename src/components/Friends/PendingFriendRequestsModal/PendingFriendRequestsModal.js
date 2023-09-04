@@ -23,9 +23,9 @@ export function PendingFriendRequestsModal({ userId }) {
     const theme = useThemaContext();
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    useEffect(() => {
-        fetchPendingRequests();
-    }, []);
+    // useEffect(() => {
+    //     fetchPendingRequests();
+    // }, []);
 
     const fetchPendingRequests = async () => {
         try {
@@ -46,6 +46,7 @@ export function PendingFriendRequestsModal({ userId }) {
             setShowLoading(true);
             const requests = await acceptFriendship(myId, requestId);
             setShowLoading(false);
+            setShowModal(false);
         } catch (error) {
             console.error("Error accepted friend requests:", error);
             setShowLoading(false);

@@ -12,11 +12,6 @@ export async function sendFriendRequest(myId, otherPersonId) {
 
         const response = await fetch(`${apiUrl}/${JSON.stringify(myId)}/friendships/${otherPersonId}/create`, {
             method: "POST",
-            // headers: {
-            //     "Content-Type": "application/json",
-            //     Authorization: `Bearer ${token}`,
-            // },
-            // body: JSON.stringify({ friend_id: otherPersonId }),
         });
 
         if (!response.ok) {
@@ -48,13 +43,9 @@ export async function acceptFriendship(myId, requestId) {
 
 export async function deleteFriendship(myId, requestId) {
     try {
-        // const token = await AsyncStorage.getItem("token");
 
         const response = await fetch(`${apiUrl}/${myId}/friendships/${requestId}`, {
             method: "DELETE",
-            // headers: {
-            //     Authorization: `Bearer ${token}`,
-            // },
         });
 
         if (!response.ok) {
@@ -69,12 +60,8 @@ export async function deleteFriendship(myId, requestId) {
 
 export async function getPendingFriendRequests(userId) {
     try {
-        const token = await AsyncStorage.getItem("token");
         const response = await fetch(`${apiUrl}/${userId}/friendships`, {
-            method: "GET",
-            // headers: {
-            //     Authorization: `Bearer ${token}`,
-            // },
+            method: "GET"
         });
 
         if (!response.ok) {
@@ -82,6 +69,25 @@ export async function getPendingFriendRequests(userId) {
         }
 
         const data = await response.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export async function getFriends(userId) {
+    try {
+        const response = await fetch(`${apiUrl}/${userId}/friendships/accepted`, {
+            method: "GET"
+        });
+
+        if (!response.ok) {
+            throw new Error("Unable to fetch pending friend requests.");
+        }
+
+        const data = await response.json();
+
         return data;
     } catch (error) {
         throw error;

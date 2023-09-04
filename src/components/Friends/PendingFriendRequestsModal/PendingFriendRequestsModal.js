@@ -23,10 +23,6 @@ export function PendingFriendRequestsModal({ userId }) {
     const theme = useThemaContext();
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    // useEffect(() => {
-    //     fetchPendingRequests();
-    // }, []);
-
     const fetchPendingRequests = async () => {
         try {
             setShowLoading(true);
@@ -70,7 +66,7 @@ export function PendingFriendRequestsModal({ userId }) {
                 style={styles.buttonContainer}
                 onPress={() => fetchPendingRequests()}
             >
-                <Icon name="account-multiple-plus" type="material-community" size={32} color="#ccc" />
+                <Icon name="account-multiple-plus" type="material-community" size={32} color="#c19659" />
                 <Text
                     style={{
                         fontSize: 22,
@@ -120,14 +116,14 @@ export function PendingFriendRequestsModal({ userId }) {
                                             name="delete"
                                             type="material-community"
                                             size={35}
-                                            color="#c40000"
+                                            color="#7A7474"
                                             onPress={() => deleteRequest(item.friend_id, item.id)}
                                         />
                                         <Icon
                                             name="check"
                                             type="material-community"
                                             size={35}
-                                            color="#0a8c41"
+                                            color="#c19659"
                                             onPress={() => acceptRequest(item.friend_id, item.id)}
                                         />
                                     </View>

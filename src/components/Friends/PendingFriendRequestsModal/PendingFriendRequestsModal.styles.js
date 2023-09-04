@@ -23,6 +23,8 @@ export const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         alignItems: "center",
+        marginLeft: 10,
+        paddingVertical: 20
         // backgroundColor: "red"
     },
     title: {

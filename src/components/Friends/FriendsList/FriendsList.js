@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList } from "react-native";
-import { getFriends } from "../../../config/api/Friends/friends";
+import { View, FlatList } from "react-native";
+import { getFriends, deleteFriendship } from "../../../config/api/Friends/friends";
 import { LoadingModal } from "../../Shared";
+import { useNavigation } from "@react-navigation/native";
+import { GoToUserProfile } from '../../../utils'
+import {
+    Avatar,
+    Text,
+    Image,
+    Icon,
+} from "react-native-elements";
+import { styles } from './FriendsList.styles'
 
 export function FriendsList({ userId }) {
 
+    const navigation = useNavigation();
+    const [refreshing, setRefreshing] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
     const [friends, setFriends] = useState([]);
 
@@ -24,20 +35,50 @@ export function FriendsList({ userId }) {
             setShowLoading(false);
         }
     };
+
+    const deleteRequest = async (myId, requestId) => {
+        try {
+            setShowLoading(true);
+            const requests = await deleteFriendship(myId, requestId);
+            setShowLoading(false);
+        } catch (error) {
+            console.error("Error deleted friend requests:", error);
+            setShowLoading(false);
+        }
+    };
+
     return (
-        <View>
-            <Text onPress={() => handleGetFriends(userId)} >Lista de Amigos</Text>
+        <View style={styles.container}>
+            <Text style={styles.header}>My Friends</Text>
             <FlatList
                 data={friends}
                 keyExtractor={(friend) => friend.id.toString()}
+                refreshing={refreshing}
+                onRefresh={async () => {
+                    setRefreshing(true);
+                    await handleGetFriends(userId);
+                    setRefreshing(false);
+                }}
                 renderItem={({ item }) => (
-                    <View>
-                        <Text>{item.friend_id.id}</Text>
-                        <Text>{item.friend_id.username}</Text>
+                    <View style={styles.friendItem}>
+                        <Avatar
+                            size="large"
+                            rounded
+                            source={{ uri: item.friend_id.url_profile_photo }}
+                            onPress={() => GoToUserProfile(navigation, item.friend_id.id)}
+                        />
+                        <Text style={styles.friendUsername}>{item.friend_id.username}</Text>
+                        <Icon
+                            name="delete"
+                            type="material-community"
+                            size={35}
+                            color="#7A7474"
+                            onPress={() => deleteRequest(item.user_id, item.id)}
+                        />
                     </View>
                 )}
             />
-            <LoadingModal show={showLoading} text="Charging friends..." />
+            <LoadingModal show={showLoading} text="Cargando amigos..." />
         </View>
     );
 }

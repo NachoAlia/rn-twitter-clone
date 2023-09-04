@@ -29,6 +29,23 @@ export async function sendFriendRequest(myId, otherPersonId) {
     }
 }
 
+export async function acceptFriendship(myId, requestId) {
+    try {
+
+        const response = await fetch(`${apiUrl}/${myId}/friendships/${requestId}/accept`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Unabled to accept friendship.");
+        }
+
+        return "Friendship accepted.";
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function deleteFriendship(myId, requestId) {
     try {
         // const token = await AsyncStorage.getItem("token");

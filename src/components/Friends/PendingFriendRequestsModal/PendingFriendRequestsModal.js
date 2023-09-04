@@ -8,7 +8,7 @@ import {
 } from "react-native-elements";
 
 import { Modal, LoadingModal } from "../../Shared";
-import { getPendingFriendRequests, deleteFriendship } from "../../../config/api/Friends/friends";
+import { getPendingFriendRequests, acceptFriendship, deleteFriendship } from "../../../config/api/Friends/friends";
 import { styles } from './PendingFriendRequestsModal.styles'
 import Toast from "react-native-toast-message";
 import { color } from "../../../utils";
@@ -41,8 +41,15 @@ export function PendingFriendRequestsModal({ userId }) {
         }
         // setShowModal(true);
     };
-    const acceptRequest = (requestId) => {
-        console.log(requestId);
+    const acceptRequest = async (myId, requestId) => {
+        try {
+            setShowLoading(true);
+            const requests = await acceptFriendship(myId, requestId);
+            setShowLoading(false);
+        } catch (error) {
+            console.error("Error accepted friend requests:", error);
+            setShowLoading(false);
+        }
     };
 
     const deleteRequest = async (myId, requestId) => {
@@ -120,7 +127,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                             type="material-community"
                                             size={35}
                                             color="#0a8c41"
-                                            onPress={() => acceptRequest(item.id)}
+                                            onPress={() => acceptRequest(item.friend_id, item.id)}
                                         />
                                     </View>
                                 </View>

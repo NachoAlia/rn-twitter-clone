@@ -2,68 +2,84 @@ import React, { useContext, useEffect, useState } from "react";
 import { domainUrl } from "../config/host";
 
 export const postsContext = React.createContext();
-export const morePostContext = React.createContext();
-export const reloadPostContext = React.createContext();
 
 export function usePostsContext() {
-  return useContext(postsContext);
+  const { dataPosts } = useContext(postsContext);
+  return dataPosts;
 }
 export function useMorePostsContext() {
-  return useContext(morePostContext);
+  const { morePosts } = useContext(postsContext);
+  return morePosts;
 }
-export function usereloadPostContext() {
-  return useContext(reloadPostContext);
+export function useReloadingContext() {
+  const { reloading } = useContext(postsContext);
+  return reloading;
+}
+export function useReloadPostContext() {
+  const { onReloadPosts } = useContext(postsContext);
+  return onReloadPosts;
+}
+
+export function useHasMorePostsContext() {
+  const { hasMorePosts } = useContext(postsContext);
+  return hasMorePosts;
 }
 
 export function PostsProvider(props) {
-  const [dataPosts, setDataPosts] = useState(null);
+  const [dataPosts, setDataPosts] = useState([]);
   const [reload, setReload] = useState(true);
-  const [lastPostId, setLastPostId] = useState(null);
+  const [reloading, setReloading] = useState(false);
+  const [lastPostId, setLastPostId] = useState(0);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
 
   useEffect(() => {
-    const fetchData = () => {
-      fetch(`${domainUrl}/tweets`)
-        .then((response) => response.json())
-        .then((data) => setDataPosts(data))
-        .catch((error) => console.error(error));
-    };
-
+    setHasMorePosts(true);
+    console.log(`1 ${reloading}`);
     fetchData();
+    console.log(`2 ${reloading}`);
   }, [reload]);
 
-  const morePosts = () => {
-    setLastPostId(dataPosts[dataPosts.length - 1].id);
-
-    const fetchMoreData = () => {
-<<<<<<< HEAD
-      setLastPostId(dataPosts[dataPosts.length - 1].id);
-      fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
-        .then((response) => response.json())
-        .then((data) => setDataPosts((prevData) => [...prevData, ...data]))
-=======
-      fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setDataPosts((prevData) => [...prevData, ...data]);
-        })
->>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
-        .catch((error) => console.error(error));
-    };
-
-    fetchMoreData();
+  const fetchData = async () => {
+    setReloading(true);
+    await fetch(`${domainUrl}/tweets`)
+      .then((response) => response.json())
+      .then((data) => {
+        setDataPosts(data);
+        setLastPostId(data[data.length - 1].id);
+      })
+      .then(setReloading(false))
+      .catch((error) => console.error(error));
   };
 
-  const onReloadPost = () => {
+  const morePosts = async () => {
+    if (lastPostId != 0) {
+      setReloading(true);
+      await fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.length < 1) {
+            setHasMorePosts(false);
+          } else {
+            setDataPosts((prevData) => [...prevData, ...data]);
+            setLastPostId(data[data.length - 1].id);
+            console.log(`en el provider es ${reloading}`);
+          }
+        })
+
+        .then(setReloading(false))
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const onReloadPosts = () => {
     setReload((prevState) => !prevState);
   };
 
   return (
-    <postsContext.Provider value={dataPosts}>
-      <morePostContext.Provider value={morePosts}>
-        <reloadPostContext.Provider value={onReloadPost}>
-          {props.children}
-        </reloadPostContext.Provider>
-      </morePostContext.Provider>
+    <postsContext.Provider
+      value={{ dataPosts, hasMorePosts, reloading, morePosts, onReloadPosts }}
+    >
+      {props.children}
     </postsContext.Provider>
   );
 }

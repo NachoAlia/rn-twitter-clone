@@ -2,46 +2,49 @@ import React, { useState } from "react";
 import {
   View,
   RefreshControl,
-  FlatList,
   ActivityIndicator,
+  VirtualizedList,
+  Text,
 } from "react-native";
-import { ButtonNewPost } from "../../../components";
+import { ButtonNewPost, HeaderNewPosts } from "../../../components";
 import { Post } from "../../../components/Posts";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
 
 import {
+  useHasMorePostsContext,
   useMorePostsContext,
   usePostsContext,
-  usereloadPostContext,
+  useReloadPostContext,
+  useReloadingContext,
 } from "../../../context";
+import { FlatList } from "react-native-gesture-handler";
 
 export function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const thema = useThemaContext();
-  const dataPosts = usePostsContext();
-<<<<<<< HEAD
-  const morePosts = useMorePostsContext();
-  const reloadpost = usereloadPostContext();
-=======
-  const reloadPost = usereloadPostContext();
->>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
 
+  const dataPosts = usePostsContext();
+  const morePosts = useMorePostsContext();
+  const reloading = useReloadingContext();
+  const reloadPost = useReloadPostContext();
+  const hasMorePosts = useHasMorePostsContext();
+
+  console.log(`reloading es ${reloading}`);
   const onRefresh = async () => {
     setRefreshing(true);
     await reloadPost();
     setRefreshing(false);
   };
 
-<<<<<<< HEAD
   const loadMorePosts = async () => {
-    setLoading(true);
-    await morePosts().then(setLoading(false));
+    if (!reloading)
+      if (hasMorePosts) {
+        await morePosts();
+      }
   };
-=======
->>>>>>> abf6b4864f5879a6aec4c0e2fafc11aba7ec1e6c
+  console.log(`en la flatlist tengo ${dataPosts.length} posts`);
   return (
     <View
       style={{
@@ -58,10 +61,15 @@ export function HomeScreen() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           onEndReached={loadMorePosts}
-          ListFooterComponent={() => (loading ? <ActivityIndicator /> : null)}
+          //onEndReachedThreshold={0.1}
+          ListFooterComponent={() =>
+            hasMorePosts ? <ActivityIndicator /> : null
+          }
         />
       )}
+
       <ButtonNewPost />
+      <HeaderNewPosts />
     </View>
   );
 }

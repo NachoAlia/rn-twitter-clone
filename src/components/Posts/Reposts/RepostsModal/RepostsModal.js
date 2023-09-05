@@ -6,12 +6,12 @@ import { useThemaContext } from "../../../ThemeProvider";
 import { color, screen } from "../../../../utils";
 import { useNavigation } from "@react-navigation/native";
 import { domainUrl } from "../../../../config/host";
-import { UserContext, usereloadPostContext } from "../../../../context";
+import { UserContext, useReloadPostContext } from "../../../../context";
 
 export function RepostsModal({ visible, onBackdropPress, dataPost, citeCase }) {
   const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
-  const reloadpost = usereloadPostContext();
+  const reloadpost = useReloadPostContext();
   const navigation = useNavigation();
 
   const repost = async () => {

@@ -9,7 +9,7 @@ import { IconsButton, ImageAuto, color, screen } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
-import { UserContext, usereloadPostContext } from "../../../context";
+import { UserContext, useReloadPostContext } from "../../../context";
 import { Repost } from "../../../components/Posts/Post/Repost";
 
 export function AddRepostScreen({ close, data }) {
@@ -18,7 +18,7 @@ export function AddRepostScreen({ close, data }) {
 
   const { currentUser } = useContext(UserContext);
   const dataPost = data;
-  const reloadpost = usereloadPostContext();
+  const reloadpost = useReloadPostContext();
   const thema = useThemaContext();
 
   const formik = useFormik({

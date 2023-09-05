@@ -34,9 +34,7 @@ export function PostsProvider(props) {
 
   useEffect(() => {
     setHasMorePosts(true);
-    console.log(`1 ${reloading}`);
     fetchData();
-    console.log(`2 ${reloading}`);
   }, [reload]);
 
   const fetchData = async () => {
@@ -62,7 +60,6 @@ export function PostsProvider(props) {
           } else {
             setDataPosts((prevData) => [...prevData, ...data]);
             setLastPostId(data[data.length - 1].id);
-            console.log(`en el provider es ${reloading}`);
           }
         })
 

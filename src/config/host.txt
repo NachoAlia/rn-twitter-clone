@@ -19,9 +19,9 @@ sudo ufw allow 3000/tcp
 
 2.- para visualizar tu puerto ejecuta:
 
-ip addr show
+ip addr show 
 
-
+.
 lo veras despues "inet",ejemplo: inet 122.169.5.400
 
 3.- inicia tu aplicacion rails con:

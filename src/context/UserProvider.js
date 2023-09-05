@@ -7,6 +7,8 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentToken, setCurrentToken] = useState(null);
   const [updateInfo, setUpdateInfo] = useState(true);
+  const [friendsRequest, setFriendsRequest] = useState(null);
+  const [friends, setFriends] = useState(null);
 
   const [bookmarks, setBookmarks] = useState(null);
 
@@ -35,6 +37,71 @@ export const UserProvider = ({ children }) => {
     };
     fetchData();
   }, [updateInfo]);
+
+  const getFriendsRequest = async () => {
+    try {
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships`, {
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch pending friend requests.");
+      }
+
+      const data = await response.json();
+
+      setFriendsRequest(data.received_friend_requests);
+      console.log("ESTA ES LA DATA DE PENDING:____________", data.received_friend_requests);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    getFriendsRequest();
+  }, [updateInfo])
+
+  const includedInFriendsRequest = (friendId) => {
+    console.log(friendId);
+    const result = friendsRequest?.some((friendRequest) => friendRequest.user_id.id === friendId);
+    console.log("Is pending?: ", result);
+    return result
+
+  };
+
+  const getFriends = async () => {
+    try {
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/accepted`, {
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch pending friend requests.");
+      }
+
+      const data = await response.json();
+
+      setFriends(data);
+      console.log("ESTA ES LA DATA DE FRIEND:____________", data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+
+
+    getFriends();
+  }, [updateInfo])
+
+  const includedInFriends = (friendId) => {
+    console.log(friendId);
+    const result = friends?.some((friend) => friend.friend_id.id === friendId);
+    console.log("is friend?: ", result);
+    return result
+
+  };
+
 
   const addBookmark = (postId) => {
     const fetchData = async () => {
@@ -118,6 +185,16 @@ export const UserProvider = ({ children }) => {
           includedInBookmark,
           removeBookmark,
           removeAllBookmarks,
+        },
+        myFriends: {
+          friends,
+          setFriends,
+          includedInFriends,
+        },
+        myFriendsRequest: {
+          friendsRequest,
+          setFriendsRequest,
+          includedInFriendsRequest,
         },
       }}
     >

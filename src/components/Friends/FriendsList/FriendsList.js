@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, FlatList } from "react-native";
 import { getFriends, deleteFriendship } from "../../../config/api/Friends/friends";
 import { LoadingModal } from "../../Shared";
@@ -10,9 +10,12 @@ import {
     Image,
     Icon,
 } from "react-native-elements";
+import { UserContext } from '../../../context/UserProvider'
 import { styles } from './FriendsList.styles'
 
 export function FriendsList({ userId }) {
+
+    const { currentUser, setUpdateInfo } = useContext(UserContext);
 
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
@@ -40,6 +43,7 @@ export function FriendsList({ userId }) {
         try {
             setShowLoading(true);
             const requests = await deleteFriendship(myId, requestId);
+            setUpdateInfo(true);
             setShowLoading(false);
         } catch (error) {
             console.error("Error deleted friend requests:", error);
@@ -51,8 +55,9 @@ export function FriendsList({ userId }) {
         <View style={styles.container}>
             <Text style={styles.header}>My Friends</Text>
             <FlatList
+                contentContainerStyle={styles.list}
                 data={friends}
-                keyExtractor={(friend) => friend.id.toString()}
+                keyExtractor={(friend) => friend.id}
                 refreshing={refreshing}
                 onRefresh={async () => {
                     setRefreshing(true);

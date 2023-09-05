@@ -14,6 +14,10 @@ export const styles = StyleSheet.create({
         padding: 16,
         textAlign: "center"
     },
+    list: {
+        flex: 1,
+        marginVertical: 20,
+    },
     friendItem: {
         flexDirection: 'row',
         alignItems: 'center',

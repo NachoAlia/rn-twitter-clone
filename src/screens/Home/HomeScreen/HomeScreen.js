@@ -3,8 +3,7 @@ import {
   View,
   RefreshControl,
   ActivityIndicator,
-  VirtualizedList,
-  Text,
+  FlatList,
 } from "react-native";
 import { ButtonNewPost, HeaderNewPosts } from "../../../components";
 import { Post } from "../../../components/Posts";
@@ -18,7 +17,6 @@ import {
   useReloadPostContext,
   useReloadingContext,
 } from "../../../context";
-import { FlatList } from "react-native-gesture-handler";
 
 export function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -31,7 +29,6 @@ export function HomeScreen() {
   const reloadPost = useReloadPostContext();
   const hasMorePosts = useHasMorePostsContext();
 
-  console.log(`reloading es ${reloading}`);
   const onRefresh = async () => {
     setRefreshing(true);
     await reloadPost();
@@ -44,7 +41,7 @@ export function HomeScreen() {
         await morePosts();
       }
   };
-  console.log(`en la flatlist tengo ${dataPosts.length} posts`);
+
   return (
     <View
       style={{

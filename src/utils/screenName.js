@@ -40,7 +40,10 @@ const bookmarkStack = {
   tab: "BookmarkTab",
   index: "Bookmark",
 };
-
+const friendsScreen = {
+  index: "FriendsIndex",
+  list: "FriendsList",
+};
 export const screen = {
   home: homeStack,
   search: searchStack,
@@ -48,5 +51,6 @@ export const screen = {
   messages: messagesStack,
   account: accountStack,
   bookmark: bookmarkStack,
+  friends: friendsScreen,
   post: PostStack,
 };

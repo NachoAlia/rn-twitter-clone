@@ -16,14 +16,14 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  followButton: {
+  friendButton: {
     backgroundColor: color.light.corporate,
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
     marginLeft: 15
   },
-  followButtonText: {
+  friendButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },

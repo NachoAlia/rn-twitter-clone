@@ -9,14 +9,14 @@ import { IconsButton, ImageAuto, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
-import { UserContext, usereloadPostContext } from "../../../context";
+import { UserContext } from "../../../context";
 
 export function NewPostScreen({ close }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
   const [image, setImage] = useState(null);
 
   const { currentUser } = useContext(UserContext);
-  const reloadpost = usereloadPostContext();
+
   const thema = useThemaContext();
 
   const formik = useFormik({
@@ -41,7 +41,6 @@ export function NewPostScreen({ close }) {
           },
           body: formData,
         });
-        reloadpost();
 
         formik.resetForm();
         setImage(null);

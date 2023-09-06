@@ -7,8 +7,8 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentToken, setCurrentToken] = useState(null);
   const [updateInfo, setUpdateInfo] = useState(true);
-  const [friendsRequest, setFriendsRequest] = useState(null);
-  const [friends, setFriends] = useState(null);
+  const [friendshipsAccepted, setFriendshipsAccepted] = useState(null);
+  const [friendshipsPending, setFriendshipsPending] = useState(null);
 
   const [bookmarks, setBookmarks] = useState(null);
 
@@ -38,38 +38,17 @@ export const UserProvider = ({ children }) => {
     fetchData();
   }, [updateInfo]);
 
-  const getFriendsRequest = async () => {
-    try {
-      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships`, {
-        method: "GET"
-      });
 
-      if (!response.ok) {
-        throw new Error("Unable to fetch pending friend requests.");
-      }
 
-      const data = await response.json();
 
-      setFriendsRequest(data.received_friend_requests);
-      console.log("ESTA ES LA DATA DE PENDING:____________", data.received_friend_requests);
-    } catch (error) {
-      throw error;
-    }
-  }
 
-  useEffect(() => {
-    getFriendsRequest();
-  }, [updateInfo])
 
-  const includedInFriendsRequest = (friendId) => {
-    console.log(friendId);
-    const result = friendsRequest?.some((friendRequest) => friendRequest.user_id.id === friendId);
-    console.log("Is pending?: ", result);
-    return result
+  //*************** empieza friends
+  //*************** empieza friends
+  //*************** empieza friends
+  //*************** empieza friends
 
-  };
-
-  const getFriends = async () => {
+  const getFriendshipsAccepted = async () => {
     try {
       const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/accepted`, {
         method: "GET"
@@ -81,26 +60,56 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.json();
 
-      setFriends(data);
-      console.log("ESTA ES LA DATA DE FRIEND:____________", data);
+      setFriendshipsAccepted(data);
+      console.log("ESTA ES LA DATA DE FRIENDSHIPS ACCEPTED:____________", data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const getFriendshipsPending = async () => {
+    try {
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/pending`, {
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch pending friend requests.");
+      }
+
+      const data = await response.json();
+
+      setFriendshipsPending(data);
+      console.log("ESTA ES LA DATA DE FRIENDSHIPS PENDING:____________", data);
     } catch (error) {
       throw error;
     }
   }
 
   useEffect(() => {
-
-
-    getFriends();
+    getFriendshipsPending();
+    getFriendshipsAccepted();
   }, [updateInfo])
 
-  const includedInFriends = (friendId) => {
+  const includedInFriendshipsAccepted = (friendId) => {
     console.log(friendId);
-    const result = friends?.some((friend) => friend.friend_id.id === friendId);
-    console.log("is friend?: ", result);
+    const result = friendshipsAccepted?.some((friend) => friend.friend_id.id === friendId);
+    console.log("included In Friendships Accepted: ", result);
     return result
-
   };
+
+  const includedInFriendshipsPending = (friendId) => {
+    console.log(friendId);
+    const result = friendshipsPending?.some((friend) => friend.friend_id.id === friendId);
+    console.log("included In Friendships Pending?: ", result);
+    return result
+  };
+
+  //*************** termina friends
+  //*************** termina friends
+  //*************** termina friends
+  //*************** termina friends
+
 
 
   const addBookmark = (postId) => {
@@ -187,14 +196,12 @@ export const UserProvider = ({ children }) => {
           removeAllBookmarks,
         },
         myFriends: {
-          friends,
-          setFriends,
-          includedInFriends,
-        },
-        myFriendsRequest: {
-          friendsRequest,
-          setFriendsRequest,
-          includedInFriendsRequest,
+          friendshipsAccepted,
+          friendshipsPending,
+          setFriendshipsAccepted,
+          setFriendshipsPending,
+          includedInFriendshipsAccepted,
+          includedInFriendshipsPending,
         },
       }}
     >

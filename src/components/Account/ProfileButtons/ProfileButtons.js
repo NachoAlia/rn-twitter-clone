@@ -9,7 +9,7 @@ import { UserContext } from '../../../context/UserProvider'
 
 export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
 
-  const { currentUser, setUpdateInfo, myFriends, myFriendsRequest } = useContext(UserContext);
+  const { currentUser, setUpdateInfo, myFriends } = useContext(UserContext);
   const [showButtonAdd, setShowButtonAdd] = useState(false)
   const [showButtonLoading, setShowButtonLoading] = useState(false)
   const [showButtonDelete, setShowButtonDelete] = useState(false)
@@ -49,25 +49,32 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
   }
 
   useEffect(() => {
-    if (!(myFriends.includedInFriends(otherPersonId))) {
-      // setShowButtonLoading(false)
-      // setShowButtonDelete(false)
-      console.log("1111111:___", myFriends.includedInFriends(otherPersonId));
+    if (!(myFriends.includedInFriendshipsAccepted(otherPersonId)) && !(myFriends.includedInFriendshipsPending(otherPersonId))) {
+      setShowButtonLoading(false)
+      setShowButtonDelete(false)
       setShowButtonAdd(true)
+
+
+      console.log("add on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
 
-    if (!myFriendsRequest.includedInFriendsRequest(otherPersonId)) {
-      // setShowButtonAdd(false)
-      // setShowButtonDelete(false)
-      console.log("222222222:___", myFriendsRequest.includedInFriendsRequest(otherPersonId));
-      // setShowButtonLoading(true)
+    if ((myFriends.includedInFriendshipsPending(otherPersonId))) {
+      setShowButtonAdd(false)
+      setShowButtonDelete(false)
+      setShowButtonLoading(true)
+
+
+      console.log("loading on:___", myFriends.includedInFriendshipsPending(otherPersonId));
+
+
     }
 
-    if (myFriends.includedInFriends(otherPersonId)) {
-      // setShowButtonAdd(false)
-      // setShowButtonLoading(false)
-      console.log("33333333:___", myFriends.includedInFriends(otherPersonId));
-      // setShowButtonDelete(true)
+    if (myFriends.includedInFriendshipsAccepted(otherPersonId)) {
+      setShowButtonAdd(false)
+      setShowButtonLoading(false)
+      setShowButtonDelete(true)
+
+      console.log("deleted on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
   }, [
     // handleAdd,
@@ -78,8 +85,6 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
     // myFriendsRequest,
     otherPersonId
   ])
-
-
 
   return (
     <View style={styles.buttonsContainer}>

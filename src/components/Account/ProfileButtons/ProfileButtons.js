@@ -36,10 +36,11 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
   }
 
   const handleDelete = async () => {
+    const friendshipsAcceptedId = myFriends.friendshipsAcceptedId
     try {
       setShowButtonDelete(false)
       setShowButtonLoading(false)
-      await deleteFriendship(myId, otherPersonId); // Pasa ambos IDs
+      await deleteFriendship(myId, friendshipsAcceptedId);
       setUpdateInfo(true);
       setShowButtonAdd(true)
     } catch (error) {

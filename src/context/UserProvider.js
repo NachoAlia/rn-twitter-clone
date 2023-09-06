@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
   const [currentToken, setCurrentToken] = useState(null);
   const [updateInfo, setUpdateInfo] = useState(true);
   const [friendshipsAccepted, setFriendshipsAccepted] = useState(null);
+  const [friendshipsAcceptedId, setFriendshipsAcceptedId] = useState(null);
   const [friendshipsPending, setFriendshipsPending] = useState(null);
 
   const [bookmarks, setBookmarks] = useState(null);
@@ -61,6 +62,7 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
 
       setFriendshipsAccepted(data);
+
       console.log("ESTA ES LA DATA DE FRIENDSHIPS ACCEPTED:____________", data);
     } catch (error) {
       throw error;
@@ -93,14 +95,25 @@ export const UserProvider = ({ children }) => {
 
   const includedInFriendshipsAccepted = (friendId) => {
     console.log(friendId);
-    const result = friendshipsAccepted?.some((friend) => friend.friend_id.id === friendId);
-    console.log("included In Friendships Accepted: ", result);
-    return result
+
+    const acceptedFriendship = friendshipsAccepted?.find(
+      (friendship) => friendship.friend_id.id === friendId && friendship.status === 'accepted'
+    );
+
+    if (acceptedFriendship) {
+      setFriendshipsAcceptedId(acceptedFriendship.id);
+      console.log("Set Friendships Accepted ID:", acceptedFriendship.id);
+      return true;
+    } else {
+      setFriendshipsAcceptedId(null);
+      console.log("Friendships Accepted ID set to null");
+      return false;
+    }
   };
 
   const includedInFriendshipsPending = (friendId) => {
     console.log(friendId);
-    const result = friendshipsPending?.some((friend) => friend.friend_id.id === friendId);
+    const result = friendshipsPending?.some((friendship) => friendship.friend_id.id === friendId);
     console.log("included In Friendships Pending?: ", result);
     return result
   };
@@ -198,7 +211,9 @@ export const UserProvider = ({ children }) => {
         myFriends: {
           friendshipsAccepted,
           friendshipsPending,
+          friendshipsAcceptedId,
           setFriendshipsAccepted,
+          setFriendshipsAcceptedId,
           setFriendshipsPending,
           includedInFriendshipsAccepted,
           includedInFriendshipsPending,

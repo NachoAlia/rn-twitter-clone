@@ -12,8 +12,6 @@ export const styles = StyleSheet.create({
         alignSelf: "stretch",
         justifyContent: "space-around",
         marginVertical: 5
-        // borderBottomWidth: 1,
-        // borderColor: "#C1C1C1",
 
     },
     buttonClose: {
@@ -23,9 +21,12 @@ export const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
         marginLeft: 10,
-        paddingVertical: 20
-        // backgroundColor: "red"
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderColor: "#C1C1C1",
     },
     title: {
         fontSize: 22,
@@ -54,12 +55,14 @@ export const styles = StyleSheet.create({
     },
     status: {
         fontSize: 16,
-        color: '#555',
     },
     actionButtons: {
         flexDirection: 'row',
         marginLeft: 30,
         alignItems: "center",
     },
+    containerButtonDelete: {
+        marginRight: 20
+    }
 
 });

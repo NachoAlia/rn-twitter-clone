@@ -11,6 +11,10 @@ export function useMorePostsContext() {
   const { morePosts } = useContext(postsContext);
   return morePosts;
 }
+export function useReloadContext() {
+  const { reload } = useContext(postsContext);
+  return reload;
+}
 export function useReloadingContext() {
   const { reloading } = useContext(postsContext);
   return reloading;
@@ -49,22 +53,26 @@ export function PostsProvider(props) {
       .catch((error) => console.error(error));
   };
 
-  const morePosts = async () => {
+  const fetchMorePots = async () => {
+    await fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length < 1) {
+          setHasMorePosts(false);
+        } else {
+          setDataPosts((prevData) => [...prevData, ...data]);
+          setLastPostId(data[data.length - 1].id);
+        }
+      })
+
+      .then(setReloading(false))
+      .catch((error) => console.error(error));
+  };
+
+  const morePosts = () => {
     if (lastPostId != 0) {
       setReloading(true);
-      await fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.length < 1) {
-            setHasMorePosts(false);
-          } else {
-            setDataPosts((prevData) => [...prevData, ...data]);
-            setLastPostId(data[data.length - 1].id);
-          }
-        })
-
-        .then(setReloading(false))
-        .catch((error) => console.error(error));
+      fetchMorePots();
     }
   };
 
@@ -74,7 +82,14 @@ export function PostsProvider(props) {
 
   return (
     <postsContext.Provider
-      value={{ dataPosts, hasMorePosts, reloading, morePosts, onReloadPosts }}
+      value={{
+        dataPosts,
+        hasMorePosts,
+        reload,
+        reloading,
+        morePosts,
+        onReloadPosts,
+      }}
     >
       {props.children}
     </postsContext.Provider>

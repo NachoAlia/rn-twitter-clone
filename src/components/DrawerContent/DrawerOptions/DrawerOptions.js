@@ -42,6 +42,14 @@ export function DrawerOptions() {
       //   onPress: () => console.log("asd"),
       // },
       {
+        title: "Friends",
+        iconType: "material-community",
+        iconNameLeft: "account-group-outline",
+        iconSize: 32,
+        bottomDivider: false,
+        onPress: () => navigation.navigate(screen.friends.index),
+      },
+      {
         title: "Bookmark",
         iconType: "material-community",
         iconNameLeft: "bookmark-outline",

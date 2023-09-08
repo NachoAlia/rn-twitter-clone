@@ -25,7 +25,7 @@ export function DrawerUserInfo() {
         <View style={{ marginTop: 30 }}>
           <Icon
             type="material-community"
-            name="pencil-box"
+            name="pencil-circle"
             color={color.light.corporate}
             containerStyle={{
               position: "absolute",

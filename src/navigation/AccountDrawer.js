@@ -16,6 +16,7 @@ import { useThemaContext } from "../components/ThemeProvider";
 import { color } from "../utils";
 import { AccountStack } from "./AccountStack";
 import { BookmarkStack } from "./BookmarkStack";
+import { FriendsStack } from "./FriendsStack";
 import { PostStack } from "./PostStack";
 import { DrawerContext } from "../context";
 
@@ -126,6 +127,14 @@ export function AccountDrawer() {
       <Drawer.Screen
         name={screen.bookmark.tab}
         component={BookmarkStack}
+        options={{
+          swipeEnabled: false,
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name={screen.friends.index}
+        component={FriendsStack}
         options={{
           swipeEnabled: false,
           headerShown: false,

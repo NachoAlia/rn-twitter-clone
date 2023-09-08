@@ -62,8 +62,8 @@ export function AccountScreen() {
           ? userData.nickname
           : "@" + userData.username
         : currentUser.nickname
-        ? currentUser.nickname
-        : "@" + currentUser.username,
+          ? currentUser.nickname
+          : "@" + currentUser.username,
       headerTintColor: thema ? color.light.text : color.dark.text,
       headerStyle: {
         backgroundColor: thema ? color.light.background : color.dark.background,
@@ -87,6 +87,7 @@ export function AccountScreen() {
             userData={userData}
             isCurrent={currentUser.id === userData?.id}
             postCounter={{ countPosts, setCountPosts }}
+            myId={currentUser.id}
           />
         )}
 

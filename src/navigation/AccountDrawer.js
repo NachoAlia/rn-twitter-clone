@@ -36,19 +36,32 @@ export function AccountDrawer() {
             : color.dark.background,
         }}
       >
-        <View style={{ marginTop: 40, marginLeft: 20 }}>
-          <Image
-            source={require("../../assets/icons/logo_owl.png")}
-            style={{ width: 100, height: 60, resizeMode: "center" }}
-          ></Image>
+        <View style={{ marginTop: 25, marginLeft: 20 }}>
+          <View
+            style={{
+              marginHorizontal: -20,
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../assets/icons/logo_owl.png")}
+              style={{
+                width: 50,
+                height: 40,
+                resizeMode: "center",
+              }}
+            />
+          </View>
           <DrawerUserInfo />
         </View>
         <View
           style={{
             width: "100%",
             height: 1,
-            marginTop: 10,
-            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
+            opacity: 0.4,
+            marginTop: -5,
+            backgroundColor: "#c4c4c4",
           }}
         />
         <View style={{ marginTop: 20, marginLeft: 0 }}>
@@ -58,8 +71,9 @@ export function AccountDrawer() {
           style={{
             width: "100%",
             height: 1,
-            marginTop: 10,
-            backgroundColor: thema ? color.light.contrast : color.dark.contrast,
+            opacity: 0.4,
+            marginTop: -5,
+            backgroundColor: "#c4c4c4",
           }}
         />
         <ChangeThema />
@@ -80,7 +94,11 @@ export function AccountDrawer() {
         ),
         headerTitleAlign: "center",
         headerTitleStyle: { width: "100%" },
-
+        drawerStyle: {
+          width: "55%",
+          //borderRightWidth: 1,
+          //borderRightColor: "#c4c4c4",
+        },
         ...drawerScreenOptions,
       }}
     >

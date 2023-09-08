@@ -2,18 +2,20 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   content: {
-    marginTop: 30,
+    marginTop: 0,
     marginBottom: 30,
+    // width: "80%",
+    // alignItems: "center",
   },
   avatar: {
-    width: 60,
-    height: 60,
+    width: 65,
+    height: 65,
   },
   avatarOverlay: {
     borderRadius: 40,
   },
   userName: {
-    marginTop: 5,
+    marginTop: 10,
     fontSize: 20,
   },
   mentionUserName: {

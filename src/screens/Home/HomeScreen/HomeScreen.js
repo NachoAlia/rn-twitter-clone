@@ -67,8 +67,16 @@ export function HomeScreen() {
                 <ActivityIndicator size="large" color={color.light.corporate} />
               </View>
             ) : (
-              <View>
-                <Text>No hay mas Posts que mostar</Text>
+              <View style={{ marginVertical: 20 }}>
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 16,
+                    color: thema ? color.light.contrast : color.dark.contrast,
+                  }}
+                >
+                  No hay mas posts que mostrar
+                </Text>
               </View>
             )
           }

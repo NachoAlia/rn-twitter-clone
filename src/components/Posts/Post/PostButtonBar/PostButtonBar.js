@@ -13,6 +13,7 @@ import { AddRepostScreen, AddCommentScreen } from "../../../../screens/Post/";
 
 export function PostButtonBar({
   idPost,
+  removeFlag,
   amount = true,
   size = 20,
   recharge = false,
@@ -69,6 +70,9 @@ export function PostButtonBar({
           reloadPost((prevState) => !prevState);
         }
       }
+      if (data.message === "tweet_deleted") {
+        removeFlag((prevState) => !prevState);
+      }
     };
 
     socket.onerror = (error) => {
@@ -83,8 +87,6 @@ export function PostButtonBar({
       socket.close();
     };
   }, [idPost]);
-
-  const navigation = useNavigation();
 
   const onCloseOpenModalRepost = () =>
     setShowModalRepost((prevState) => !prevState);
@@ -140,6 +142,16 @@ export function PostButtonBar({
     user_bookmark.removeBookmark(dataPost.id);
     setUpdateInfo(true);
     setReload(true);
+  };
+  const deletePost = async () => {
+    const route = `/tweets/${dataPost.id}`;
+    const apiUrl = `${domainUrl}${route}`;
+
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+    });
+
+    setDataPost(null);
   };
 
   return (
@@ -269,9 +281,13 @@ export function PostButtonBar({
               />
             )}
           </View>
-          <View style={styles.barElement}>
-            <IconsButton name={"share"} size={size} />
-          </View>
+          {currentUser.id === dataPost.user_id ? (
+            <View style={styles.barElement}>
+              <IconsButton name={"trash"} size={size} onPress={deletePost} />
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
       )}
     </>

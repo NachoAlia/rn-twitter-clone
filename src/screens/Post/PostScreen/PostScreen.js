@@ -2,18 +2,15 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions, ScrollView, FlatList } from "react-native";
 import { Avatar } from "react-native-elements";
 import { styles } from "./PostScreen.style";
-import { IconsButton, ImageAuto, color, screen } from "../../../utils";
+import { IconsButton, ImageAuto, color } from "../../../utils";
 import { date } from "../../../utils/date";
 import { Repost } from "../../../components/Posts/Post/Repost";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { PostButtonBar } from "../../../components/Posts/Post/PostButtonBar";
 import { Post } from "../../../components/Posts";
-import { useNavigation } from "@react-navigation/native";
 import { domainUrl } from "../../../config/host";
 
-export function PostScreen(props) {
-  const { route } = props;
-  const idPost = route.params.idPost;
+export function PostScreen({ close, idPost }) {
   const [dataPost, setDataPost] = useState(null);
   const [reload, setReload] = useState(true);
 
@@ -31,32 +28,7 @@ export function PostScreen(props) {
     fetchData();
   }, [reload, idPost]);
 
-  const navigation = useNavigation();
-
   const thema = useThemaContext();
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => {},
-      headerLeft: () =>
-        thema ? (
-          <IconsButton name={"arrow_dark"} size={25} onPress={goBack} />
-        ) : (
-          <IconsButton name={"arrow_light"} size={25} onPress={goBack} />
-        ),
-      headerStyle: {
-        backgroundColor: thema ? color.light.background : color.dark.background,
-      },
-
-      tabBarStyle: { display: "none" },
-    });
-  }, []);
-
-  const goBack = () => {
-    navigation.navigate(screen.home.tab, {
-      screen: screen.home.home,
-    });
-  };
 
   return (
     <>
@@ -68,6 +40,13 @@ export function PostScreen(props) {
               : color.dark.background,
           }}
         >
+          <View>
+            {thema ? (
+              <IconsButton name={"arrow_dark"} size={25} onPress={close} />
+            ) : (
+              <IconsButton name={"arrow_light"} size={25} onPress={close} />
+            )}
+          </View>
           <View style={styles.container}>
             <View style={styles.title}>
               <Avatar
@@ -230,11 +209,13 @@ export function PostScreen(props) {
               ]}
             />
           </View>
-          <FlatList
-            data={dataPost.comments}
-            renderItem={({ item }) => <Post idPost={item.id} />}
-            keyExtractor={(item) => item.id}
-          />
+          <View>
+            <FlatList
+              data={dataPost.comments}
+              renderItem={({ item }) => <Post idPost={item.id} />}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
         </ScrollView>
       )}
     </>

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     marginTop: 15,
-    marginLeft: 15,
+    marginLeft: 18,
   },
   text: {
     fontSize: 26,

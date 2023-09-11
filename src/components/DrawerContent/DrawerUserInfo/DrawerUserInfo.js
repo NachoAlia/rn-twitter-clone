@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import { styles } from "./DrawerUserInfo.styles";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 import { UserContext } from "../../../context";
+import { useNavigation } from "@react-navigation/native";
+import { screen } from "../../../utils";
+
 export function DrawerUserInfo() {
   const { currentUser } = useContext(UserContext);
   const thema = useThemaContext();
-
+  const navigation = useNavigation();
   return (
     <View style={styles.content}>
       {currentUser.photoProfile_url ? (
@@ -19,12 +22,31 @@ export function DrawerUserInfo() {
           overlayContainerStyle={styles.avatarOverlay}
         />
       ) : (
-        <Avatar
-          rounded
-          source={require("../../../../assets/icons/default_user_photo.png")}
-          containerStyle={styles.avatar}
-          overlayContainerStyle={styles.avatarOverlay}
-        />
+        <View style={{ marginTop: 30 }}>
+          <Icon
+            type="material-community"
+            name="pencil-circle"
+            color={color.light.corporate}
+            containerStyle={{
+              position: "absolute",
+              alignSelf: "flex-end",
+              paddingHorizontal: 10,
+            }}
+            onPress={() =>
+              navigation.navigate(screen.account.account, {
+                screen: screen.account.editProfile,
+                params: { user_id: currentUser?.id },
+              })
+            }
+            size={28}
+          />
+          <Avatar
+            rounded
+            source={require("../../../../assets/icons/default_user_photo.png")}
+            containerStyle={styles.avatar}
+            overlayContainerStyle={styles.avatarOverlay}
+          />
+        </View>
       )}
       <Text
         style={[

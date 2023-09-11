@@ -11,7 +11,7 @@ export const color = {
     corporate: "#C19659",
     background: "#303030",
     contrast: "#D2D2D2",
-    text: "#FFFFFF",
+    text: "#F5F5F5",
     textSecondary: "#8F8F8F",
     alternative: "#D9D9D9",
   },

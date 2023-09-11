@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
-import { View, Text, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, Dimensions } from "react-native";
 import { useThemaContext } from "../../../components/ThemeProvider";
-import { IconsButton, ImageAuto, color, screen } from "../../../utils";
+import { IconsButton, ImageAuto, color } from "../../../utils";
 import { PostButtonBar } from "../../../components/Posts/Post/PostButtonBar";
 import { styles } from "./ImageScreen.style";
 
 export function ImageScreen({ close, data }) {
-  const navigation = useNavigation();
-
   const thema = useThemaContext();
 
   const dataPost = data;

@@ -4,17 +4,19 @@ import { cableConsumer } from "../../../../config/host";
 import { styles } from "./HeaderNewPosts.style";
 import { Avatar } from "react-native-elements";
 import { color } from "../../../../utils";
-import { useReloadPostContext } from "../../../../context";
+import { useReloadContext, useReloadPostContext } from "../../../../context";
 
 export function HeaderNewPosts() {
   const [imageUrls, setImageUrls] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [reload, setReload] = useState(false);
+  const [reloading, setReloading] = useState(true);
 
   const reloadPost = useReloadPostContext();
+  const reload = useReloadContext();
 
   useEffect(() => {
     let counter = 0;
+    setReloading(false);
     setVisible(false);
     const socket = new WebSocket(cableConsumer);
 
@@ -60,9 +62,9 @@ export function HeaderNewPosts() {
   }, [reload]);
 
   const onRefresh = async () => {
+    setReloading(true);
     await reloadPost();
     setImageUrls([]);
-    setReload((prevState) => !prevState);
   };
 
   return (
@@ -71,48 +73,54 @@ export function HeaderNewPosts() {
         <View style={styles.container}>
           <TouchableOpacity onPress={onRefresh}>
             <View style={styles.button}>
-              <Avatar
-                source={
-                  imageUrls[0]
-                    ? { uri: imageUrls[0] }
-                    : require("../../../../../assets/icons/default_user_photo.png")
-                }
-                size="small"
-                rounded
-                containerStyle={{
-                  borderWidth: 1,
-                  borderColor: color.light.alternative,
-                }}
-              />
-              <Avatar
-                source={
-                  imageUrls[1]
-                    ? { uri: imageUrls[1] }
-                    : require("../../../../../assets/icons/default_user_photo.png")
-                }
-                size="small"
-                rounded
-                containerStyle={{
-                  marginLeft: -15,
-                  borderWidth: 1,
-                  borderColor: color.light.alternative,
-                }}
-              />
-              <Avatar
-                source={
-                  imageUrls[2]
-                    ? { uri: imageUrls[2] }
-                    : require("../../../../../assets/icons/default_user_photo.png")
-                }
-                size="small"
-                rounded
-                containerStyle={{
-                  marginLeft: -15,
-                  borderWidth: 1,
-                  borderColor: color.light.alternative,
-                }}
-              />
-              <Text style={styles.text}>Nuevos poteos</Text>
+              {reloading ? (
+                <ActivityIndicator />
+              ) : (
+                <>
+                  <Avatar
+                    source={
+                      imageUrls[0]
+                        ? { uri: imageUrls[0] }
+                        : require("../../../../../assets/icons/default_user_photo.png")
+                    }
+                    size="small"
+                    rounded
+                    containerStyle={{
+                      borderWidth: 1,
+                      borderColor: color.light.alternative,
+                    }}
+                  />
+                  <Avatar
+                    source={
+                      imageUrls[1]
+                        ? { uri: imageUrls[1] }
+                        : require("../../../../../assets/icons/default_user_photo.png")
+                    }
+                    size="small"
+                    rounded
+                    containerStyle={{
+                      marginLeft: -15,
+                      borderWidth: 1,
+                      borderColor: color.light.alternative,
+                    }}
+                  />
+                  <Avatar
+                    source={
+                      imageUrls[2]
+                        ? { uri: imageUrls[2] }
+                        : require("../../../../../assets/icons/default_user_photo.png")
+                    }
+                    size="small"
+                    rounded
+                    containerStyle={{
+                      marginLeft: -15,
+                      borderWidth: 1,
+                      borderColor: color.light.alternative,
+                    }}
+                  />
+                  <Text style={styles.text}>Nuevos posteos</Text>
+                </>
+              )}
             </View>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Dimensions, TouchableOpacity } from "react-native";
-import { Avatar, Text } from "react-native-elements";
+import { Avatar, Overlay, Text } from "react-native-elements";
 import { styles } from "./Post.style";
 import {
   color,
@@ -17,10 +17,13 @@ import { useThemaContext } from "../../ThemeProvider";
 import { domainUrl } from "../../../config/host";
 import { Modal } from "../../Shared";
 import { ImageScreen } from "../../../screens/Post/ImageScreen";
+import { PostScreen } from "../../../screens/Post";
 
 export function Post({ idPost }) {
   const [dataPost, setDataPost] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [deleteData, setDeleteData] = useState(false);
+  const [showModalImage, setShowModalImage] = useState(false);
+  const [showModalPost, setShowModalPost] = useState(false);
   const [dataRepost, setDataRepost] = useState(null);
 
   const thema = useThemaContext();
@@ -44,19 +47,11 @@ export function Post({ idPost }) {
     fetchData();
   }, []);
 
-  const goPost = () => {
-    dataRepost
-      ? navigation.navigate(screen.post.tab, {
-          screen: screen.post.post,
-          params: { idPost: dataRepost.id },
-        })
-      : navigation.navigate(screen.post.tab, {
-          screen: screen.post.post,
-          params: { idPost: dataPost.id },
-        });
-  };
+  const onCloseOpenModalPost = () =>
+    setShowModalPost((prevState) => !prevState);
 
-  const onCloseOpenModal = () => setShowModal((prevState) => !prevState);
+  const onCloseOpenModalImage = () =>
+    setShowModalImage((prevState) => !prevState);
 
   return (
     <>
@@ -71,6 +66,21 @@ export function Post({ idPost }) {
                   paddingHorizontal: 30,
                 }}
               >
+                {console.log(deleteData)}
+                {deleteData ? (
+                  <View
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      position: "absolute",
+                      backgroundColor: "#000000",
+                    }}
+                  >
+                    {console.log(`aca esta en ${deleteData}`)}
+                  </View>
+                ) : (
+                  <></>
+                )}
                 <IconsButton name={"repost"} touchable={false} />
                 <Text
                   style={{
@@ -122,7 +132,9 @@ export function Post({ idPost }) {
                     <Text
                       style={[
                         styles.nicknameUser,
-                        { color: thema ? color.light.text : color.dark.text },
+                        {
+                          color: thema ? color.light.text : color.dark.text,
+                        },
                       ]}
                     >
                       {dataRepost ? dataRepost.nickname : dataPost.nickname}
@@ -160,7 +172,9 @@ export function Post({ idPost }) {
                       <Text
                         style={[
                           styles.text,
-                          { color: thema ? color.light.text : color.dark.text },
+                          {
+                            color: thema ? color.light.text : color.dark.text,
+                          },
                         ]}
                       >
                         {dataPost.body}
@@ -174,7 +188,9 @@ export function Post({ idPost }) {
                       <Text
                         style={[
                           styles.text,
-                          { color: thema ? color.light.text : color.dark.text },
+                          {
+                            color: thema ? color.light.text : color.dark.text,
+                          },
                         ]}
                       >
                         {dataRepost.body}
@@ -185,11 +201,29 @@ export function Post({ idPost }) {
                   )}
                   <TouchableOpacity
                     style={styles.postButton}
-                    onPress={goPost}
+                    onPress={onCloseOpenModalPost}
                   />
+                  <Modal
+                    fullScreen={true}
+                    show={showModalPost}
+                    close={onCloseOpenModalPost}
+                    style={{
+                      flex: 1,
+                      width: "100%",
+                      borderRadius: 0,
+                      backgroundColor: thema
+                        ? color.light.background
+                        : color.dark.background,
+                    }}
+                  >
+                    <PostScreen
+                      idPost={dataRepost ? dataRepost.id : dataPost.id}
+                      close={onCloseOpenModalPost}
+                    />
+                  </Modal>
                   {dataPost.photoTweet_url ? (
                     <View style={styles.imagePost}>
-                      <TouchableOpacity onPress={onCloseOpenModal}>
+                      <TouchableOpacity onPress={onCloseOpenModalImage}>
                         <ImageAuto
                           uri={dataPost.photoTweet_url}
                           desiredWidth={Dimensions.get("window").width * 0.75}
@@ -197,32 +231,8 @@ export function Post({ idPost }) {
                       </TouchableOpacity>
                       <Modal
                         fullScreen={true}
-                        show={showModal}
-                        close={onCloseOpenModal}
-                        style={{
-                          flex: 1,
-                          width: "100%",
-                          borderRadius: 0,
-                          backgroundColor: thema
-                            ? color.light.background
-                            : color.dark.background,
-                        }}
-                      >
-                        <ImageScreen close={onCloseOpenModal} data={dataPost} />
-                      </Modal>
-                    </View>
-                  ) : dataRepost?.photoTweet_url ? (
-                    <View style={styles.imagePost}>
-                      <TouchableOpacity onPress={onCloseOpenModal}>
-                        <ImageAuto
-                          uri={dataRepost.photoTweet_url}
-                          desiredWidth={Dimensions.get("window").width * 0.75}
-                        />
-                      </TouchableOpacity>
-                      <Modal
-                        fullScreen={true}
-                        show={showModal}
-                        close={onCloseOpenModal}
+                        show={showModalImage}
+                        close={onCloseOpenModalImage}
                         style={{
                           flex: 1,
                           width: "100%",
@@ -233,7 +243,34 @@ export function Post({ idPost }) {
                         }}
                       >
                         <ImageScreen
-                          close={onCloseOpenModal}
+                          close={onCloseOpenModalImage}
+                          data={dataPost}
+                        />
+                      </Modal>
+                    </View>
+                  ) : dataRepost?.photoTweet_url ? (
+                    <View style={styles.imagePost}>
+                      <TouchableOpacity onPress={onCloseOpenModalImage}>
+                        <ImageAuto
+                          uri={dataRepost.photoTweet_url}
+                          desiredWidth={Dimensions.get("window").width * 0.75}
+                        />
+                      </TouchableOpacity>
+                      <Modal
+                        fullScreen={true}
+                        show={showModalImage}
+                        close={onCloseOpenModalImage}
+                        style={{
+                          flex: 1,
+                          width: "100%",
+                          borderRadius: 0,
+                          backgroundColor: thema
+                            ? color.light.background
+                            : color.dark.background,
+                        }}
+                      >
+                        <ImageScreen
+                          close={onCloseOpenModalImage}
                           data={dataRepost}
                         />
                       </Modal>
@@ -253,10 +290,16 @@ export function Post({ idPost }) {
                   <View style={{ marginTop: 20 }}>
                     {dataRepost?.id ? (
                       <>
-                        <PostButtonBar idPost={dataRepost.id} />
+                        <PostButtonBar
+                          removeFlag={setDeleteData}
+                          idPost={dataRepost.id}
+                        />
                       </>
                     ) : (
-                      <PostButtonBar idPost={dataPost.id} />
+                      <PostButtonBar
+                        removeFlag={setDeleteData}
+                        idPost={dataPost.id}
+                      />
                     )}
                   </View>
                 </View>
@@ -289,6 +332,48 @@ export function Post({ idPost }) {
               },
             ]}
           />
+          {deleteData ? (
+            <View
+              style={[
+                styles.deleteContainer,
+                {
+                  backgroundColor: `${
+                    thema ? color.dark.background : color.light.background
+                  }50`,
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.deleteMesage,
+                  {
+                    backgroundColor: thema
+                      ? color.light.background
+                      : color.dark.background,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: thema ? color.light.text : color.dark.text,
+                  }}
+                >
+                  Lo lamento!
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: thema ? color.light.text : color.dark.text,
+                  }}
+                >
+                  Este Post fue eliminado.
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
         </>
       )}
     </>

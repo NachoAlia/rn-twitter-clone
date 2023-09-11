@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
 import { styles } from "./PostButtonBar.style";
-import { IconsButton, color, screen } from "../../../../utils";
+import { IconsButton, color } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
 import { Modal } from "../../../Shared";
 import { domainUrl, cableConsumer } from "../../../../config/host";
 import { UserContext } from "../../../../context";
 import { RepostsModal } from "../../Reposts";
 import { AddRepostScreen, AddCommentScreen } from "../../../../screens/Post/";
+import { DeletepostModal } from "../DeletePostModal";
 
 export function PostButtonBar({
   idPost,
+  removeFlag,
   amount = true,
   size = 20,
   recharge = false,
@@ -22,6 +23,7 @@ export function PostButtonBar({
   const [reload, setReload] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [showModalRepost, setShowModalRepost] = useState(false);
   const [showModalComment, setShowModalComment] = useState(false);
 
@@ -69,6 +71,10 @@ export function PostButtonBar({
           reloadPost((prevState) => !prevState);
         }
       }
+      if (data.message === "tweet_deleted") {
+        removeFlag((prevState) => !prevState);
+        setDataPost(null);
+      }
     };
 
     socket.onerror = (error) => {
@@ -84,8 +90,6 @@ export function PostButtonBar({
     };
   }, [idPost]);
 
-  const navigation = useNavigation();
-
   const onCloseOpenModalRepost = () =>
     setShowModalRepost((prevState) => !prevState);
 
@@ -96,6 +100,9 @@ export function PostButtonBar({
     setVisible(!visible);
   };
 
+  const toggleOverlayDelete = () => {
+    setConfirmDelete(!confirmDelete);
+  };
   const giveLike = async () => {
     const route = `/tweets/${dataPost.id}/likes`;
     const apiUrl = `${domainUrl}${route}`;
@@ -272,6 +279,22 @@ export function PostButtonBar({
           <View style={styles.barElement}>
             <IconsButton name={"share"} size={size} />
           </View>
+          {currentUser.id === dataPost.user_id ? (
+            <View style={styles.barElement}>
+              <IconsButton
+                name={"trash"}
+                size={size}
+                onPress={toggleOverlayDelete}
+              />
+            </View>
+          ) : (
+            <></>
+          )}
+          <DeletepostModal
+            visible={confirmDelete}
+            onBackdropPress={toggleOverlayDelete}
+            dataPost={dataPost}
+          />
         </View>
       )}
     </>

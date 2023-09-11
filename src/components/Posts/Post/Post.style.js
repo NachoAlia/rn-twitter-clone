@@ -45,4 +45,18 @@ export const styles = StyleSheet.create({
     left: -35,
     width: 1,
   },
+  deleteContainer: {
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  deleteMesage: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    borderRadius: 10,
+  },
 });

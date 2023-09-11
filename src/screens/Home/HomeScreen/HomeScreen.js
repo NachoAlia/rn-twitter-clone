@@ -3,7 +3,8 @@ import {
   View,
   RefreshControl,
   ActivityIndicator,
-  FlatList,
+  Text,
+  VirtualizedList,
 } from "react-native";
 import { ButtonNewPost, HeaderNewPosts } from "../../../components";
 import { Post } from "../../../components/Posts";
@@ -50,17 +51,34 @@ export function HomeScreen() {
       }}
     >
       {dataPosts && (
-        <FlatList
+        <VirtualizedList
           data={dataPosts}
           renderItem={({ item }) => <Post idPost={item.id} />}
           keyExtractor={(item) => item.id}
+          getItemCount={() => dataPosts.length}
+          getItem={(data, index) => data[index]}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           onEndReached={loadMorePosts}
-          //onEndReachedThreshold={0.1}
           ListFooterComponent={() =>
-            hasMorePosts ? <ActivityIndicator /> : null
+            hasMorePosts ? (
+              <View style={{ marginVertical: 20 }}>
+                <ActivityIndicator size="large" color={color.light.corporate} />
+              </View>
+            ) : (
+              <View style={{ marginVertical: 20 }}>
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 16,
+                    color: thema ? color.light.contrast : color.dark.contrast,
+                  }}
+                >
+                  No hay mas posts que mostrar
+                </Text>
+              </View>
+            )
           }
         />
       )}

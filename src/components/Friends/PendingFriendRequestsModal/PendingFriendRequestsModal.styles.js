@@ -22,11 +22,15 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginLeft: 10,
         paddingVertical: 20,
         borderBottomWidth: 1,
         borderTopWidth: 1,
         borderColor: "#C1C1C1",
+        width: "100%"
+    },
+    textBtnPending: {
+        fontSize: 22,
+        paddingHorizontal: 10,
     },
     title: {
         fontSize: 22,

@@ -5,7 +5,7 @@ import { styles } from "./LoadingModal.styles";
 import { useThemaContext } from "../../ThemeProvider";
 import { color } from "../../../utils";
 
-export function LoadingModal({ show = false, text }) {
+export function LoadingModal({ show = false, text, animation = "fade" }) {
   const theme = useThemaContext();
   return (
     <Overlay
@@ -19,6 +19,7 @@ export function LoadingModal({ show = false, text }) {
             : color.dark.background,
         },
       ]}
+      animationType={animation}
     >
       <View style={styles.view}>
         <ActivityIndicator size="large" color="#C19659" />

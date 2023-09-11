@@ -68,11 +68,9 @@ export function PendingFriendRequestsModal({ userId }) {
             >
                 <Icon name="account-multiple-plus" type="material-community" size={32} color="#c19659" />
                 <Text
-                    style={{
-                        fontSize: 22,
-                        paddingHorizontal: 10,
+                    style={[styles.textBtnPending, {
                         color: theme ? color.light.text : color.dark.text,
-                    }}
+                    }]}
                 >
                     Pending Friendships Request
                 </Text>

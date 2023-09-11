@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   iconStyle: { color: "#c2c2c2", marginLeft: 15 },
   bottomDivider: {
     width: "100%",
-    height: 1,
+    height: 0.5,
     backgroundColor: "#c2c2c2",
     marginTop: 40,
   },

@@ -81,7 +81,7 @@ export function DrawerOptions() {
 
   const menuOptions = getMenuOptions();
   return (
-    <View>
+    <View style={{ marginTop: -15 }}>
       {menuOptions.map((elem, index) => {
         return (
           <View key={index}>

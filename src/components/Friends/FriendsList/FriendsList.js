@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, FlatList } from "react-native";
 import { getFriends, deleteFriendship } from "../../../config/api/Friends/friends";
 import { LoadingModal } from "../../Shared";
@@ -10,11 +10,17 @@ import {
     Image,
     Icon,
 } from "react-native-elements";
+import { UserContext } from '../../../context/UserProvider'
 import { styles } from './FriendsList.styles'
+import { color } from "../../../utils";
+import { useThemaContext } from "../../ThemeProvider";
 
 export function FriendsList({ userId }) {
 
+    const { currentUser, setUpdateInfo } = useContext(UserContext);
+
     const navigation = useNavigation();
+    const theme = useThemaContext();
     const [refreshing, setRefreshing] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
     const [friends, setFriends] = useState([]);
@@ -40,6 +46,7 @@ export function FriendsList({ userId }) {
         try {
             setShowLoading(true);
             const requests = await deleteFriendship(myId, requestId);
+            setUpdateInfo(true);
             setShowLoading(false);
         } catch (error) {
             console.error("Error deleted friend requests:", error);
@@ -48,11 +55,24 @@ export function FriendsList({ userId }) {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>My Friends</Text>
+        <View style={[
+            styles.container,
+            {
+                backgroundColor: theme
+                    ? color.light.background
+                    : color.dark.background,
+            }
+        ]}>
+            <Text style={[
+                styles.header,
+                {
+                    color: color.dark.corporate
+                }
+            ]}>My Friends</Text>
             <FlatList
+                contentContainerStyle={styles.list}
                 data={friends}
-                keyExtractor={(friend) => friend.id.toString()}
+                keyExtractor={(friend) => friend.id}
                 refreshing={refreshing}
                 onRefresh={async () => {
                     setRefreshing(true);
@@ -61,18 +81,54 @@ export function FriendsList({ userId }) {
                 }}
                 renderItem={({ item }) => (
                     <View style={styles.friendItem}>
-                        <Avatar
-                            size="large"
-                            rounded
-                            source={{ uri: item.friend_id.url_profile_photo }}
-                            onPress={() => GoToUserProfile(navigation, item.friend_id.id)}
-                        />
-                        <Text style={styles.friendUsername}>{item.friend_id.username}</Text>
+
+
+                        {item.friend_id.url_profile_photo ? (
+                            <Avatar
+                                size="large"
+                                rounded
+                                source={{ uri: item.friend_id.url_profile_photo }}
+                                onPress={() => GoToUserProfile(navigation, item.friend_id.id)}
+                            />
+                        ) : (
+
+                            <Avatar
+                                size="large"
+                                rounded
+                                source={require("../../../../assets/icons/default_user_photo.png")}
+                                onPress={() => GoToUserProfile(navigation, item.friend_id.id)}
+                            />
+
+                        )}
+                        <View>
+                            <Text
+                                style={[
+                                    styles.friendUsername,
+                                    {
+                                        color: theme ? color.light.text : color.dark.text,
+                                    }
+                                ]}
+                            >
+                                {item.friend_id.username}
+                            </Text>
+                            <Text
+                                style={[
+                                    styles.friendUsername,
+                                    {
+                                        color: theme ? color.light.textSecondary : color.dark.textSecondary,
+                                    }
+                                ]}
+                            >
+                                Is friend
+                            </Text>
+                        </View>
                         <Icon
                             name="delete"
                             type="material-community"
                             size={35}
-                            color="#7A7474"
+                            color={theme
+                                ? color.light.textSecondary
+                                : color.dark.textSecondary}
                             onPress={() => deleteRequest(item.user_id, item.id)}
                         />
                     </View>

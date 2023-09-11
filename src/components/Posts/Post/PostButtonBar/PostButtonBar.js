@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
 import { styles } from "./PostButtonBar.style";
-import { IconsButton, color, screen } from "../../../../utils";
+import { IconsButton, color } from "../../../../utils";
 import { useThemaContext } from "../../../ThemeProvider";
 import { Modal } from "../../../Shared";
 import { domainUrl, cableConsumer } from "../../../../config/host";
 import { UserContext } from "../../../../context";
 import { RepostsModal } from "../../Reposts";
 import { AddRepostScreen, AddCommentScreen } from "../../../../screens/Post/";
+import { DeletepostModal } from "../DeletePostModal";
 
 export function PostButtonBar({
   idPost,
@@ -23,6 +23,7 @@ export function PostButtonBar({
   const [reload, setReload] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [showModalRepost, setShowModalRepost] = useState(false);
   const [showModalComment, setShowModalComment] = useState(false);
 
@@ -72,6 +73,7 @@ export function PostButtonBar({
       }
       if (data.message === "tweet_deleted") {
         removeFlag((prevState) => !prevState);
+        setDataPost(null);
       }
     };
 
@@ -98,6 +100,9 @@ export function PostButtonBar({
     setVisible(!visible);
   };
 
+  const toggleOverlayDelete = () => {
+    setConfirmDelete(!confirmDelete);
+  };
   const giveLike = async () => {
     const route = `/tweets/${dataPost.id}/likes`;
     const apiUrl = `${domainUrl}${route}`;
@@ -142,16 +147,6 @@ export function PostButtonBar({
     user_bookmark.removeBookmark(dataPost.id);
     setUpdateInfo(true);
     setReload(true);
-  };
-  const deletePost = async () => {
-    const route = `/tweets/${dataPost.id}`;
-    const apiUrl = `${domainUrl}${route}`;
-
-    const response = await fetch(apiUrl, {
-      method: "DELETE",
-    });
-
-    setDataPost(null);
   };
 
   return (
@@ -281,13 +276,25 @@ export function PostButtonBar({
               />
             )}
           </View>
+          <View style={styles.barElement}>
+            <IconsButton name={"share"} size={size} />
+          </View>
           {currentUser.id === dataPost.user_id ? (
             <View style={styles.barElement}>
-              <IconsButton name={"trash"} size={size} onPress={deletePost} />
+              <IconsButton
+                name={"trash"}
+                size={size}
+                onPress={toggleOverlayDelete}
+              />
             </View>
           ) : (
             <></>
           )}
+          <DeletepostModal
+            visible={confirmDelete}
+            onBackdropPress={toggleOverlayDelete}
+            dataPost={dataPost}
+          />
         </View>
       )}
     </>

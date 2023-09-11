@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: "2%",
     borderColor: color.light.corporate,
-    borderRadius: 20,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,

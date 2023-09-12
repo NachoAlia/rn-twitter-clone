@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, FlatList } from "react-native";
-import { getFriends, deleteFriendship } from "../../../config/api/Friends/friends";
 import { LoadingModal } from "../../Shared";
 import { useNavigation } from "@react-navigation/native";
 import { GoToUserProfile } from '../../../utils'
@@ -15,9 +14,9 @@ import { styles } from './FriendsList.styles'
 import { color } from "../../../utils";
 import { useThemaContext } from "../../ThemeProvider";
 
-export function FriendsList({ userId }) {
+export function FriendsList() {
 
-    const { currentUser, setUpdateInfo } = useContext(UserContext);
+    const { currentUser, setUpdateInfo, myFriends } = useContext(UserContext);
 
     const navigation = useNavigation();
     const theme = useThemaContext();
@@ -26,13 +25,13 @@ export function FriendsList({ userId }) {
     const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        handleGetFriends(userId);
-    }, []);
+        handleGetFriends();
+    }, [myFriends.friendshipsAccepted]);
 
-    const handleGetFriends = async (userId) => {
+    const handleGetFriends = async () => {
         try {
             setShowLoading(true);
-            const requests = await getFriends(userId);
+            const requests = await myFriends.friendshipsAccepted;
             console.log(requests);
             setFriends(requests);
             setShowLoading(false);
@@ -42,10 +41,10 @@ export function FriendsList({ userId }) {
         }
     };
 
-    const deleteRequest = async (myId, requestId) => {
+    const deleteRequest = async (requestId) => {
         try {
             setShowLoading(true);
-            const requests = await deleteFriendship(myId, requestId);
+            const requests = await myFriends.deleteFriendship(requestId);
             setUpdateInfo(true);
             setShowLoading(false);
         } catch (error) {
@@ -74,9 +73,10 @@ export function FriendsList({ userId }) {
                 data={friends}
                 keyExtractor={(friend) => friend.id}
                 refreshing={refreshing}
-                onRefresh={async () => {
+                onRefresh={() => {
                     setRefreshing(true);
-                    await handleGetFriends(userId);
+                    setUpdateInfo(true);
+                    handleGetFriends();
                     setRefreshing(false);
                 }}
                 renderItem={({ item }) => (
@@ -129,7 +129,7 @@ export function FriendsList({ userId }) {
                             color={theme
                                 ? color.light.textSecondary
                                 : color.dark.textSecondary}
-                            onPress={() => deleteRequest(item.user_id, item.id)}
+                            onPress={() => deleteRequest(item.id)}
                         />
                     </View>
                 )}

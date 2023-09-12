@@ -49,6 +49,60 @@ export const UserProvider = ({ children }) => {
   //*************** empieza friends
   //*************** empieza friends
 
+
+  const sendFriendRequest = async (otherPersonId) => {
+
+    try {
+
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${otherPersonId}/create`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to send friend request.");
+      }
+
+      return "Friend request sent.";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const deleteFriendship = async (requestId) => {
+    try {
+
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${requestId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to delete friendship.");
+      }
+
+      return "Friendship deleted.";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const acceptFriendship = async (requestId) => {
+    try {
+
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${requestId}/accept`, {
+        method: "POST"
+      });
+
+      if (!response.ok) {
+        throw new Error("Unabled to accept friendship.");
+      }
+
+      return "Friendship accepted.";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   const getFriendshipsAccepted = async () => {
     try {
       const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/accepted`, {
@@ -91,7 +145,15 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     getFriendshipsPending();
     getFriendshipsAccepted();
-  }, [updateInfo])
+    // acceptFriendship()
+    // deleteFriendship()
+    // sendFriendRequest()
+  }, [
+    updateInfo,
+    // acceptFriendship,
+    // deleteFriendship,
+    // sendFriendRequest,
+  ])
 
   const includedInFriendshipsAccepted = (friendId) => {
     console.log(friendId);
@@ -217,6 +279,9 @@ export const UserProvider = ({ children }) => {
           setFriendshipsPending,
           includedInFriendshipsAccepted,
           includedInFriendshipsPending,
+          acceptFriendship,
+          deleteFriendship,
+          sendFriendRequest,
         },
       }}
     >

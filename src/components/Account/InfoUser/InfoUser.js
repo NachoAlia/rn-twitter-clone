@@ -15,7 +15,7 @@ import { color } from "../../../utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProfileButtons } from "../ProfileButtons";
 
-export function InfoUser({ userData, isCurrent, postCounter, myId }) {
+export function InfoUser({ userData, postCounter }) {
   const thema = useThemaContext();
   const createdAt = new Date(userData.created_at);
   return (
@@ -90,8 +90,6 @@ export function InfoUser({ userData, isCurrent, postCounter, myId }) {
             </View>
 
             <ProfileButtons
-              isCurrentUser={isCurrent}
-              myId={myId}
               otherPersonId={userData.id}
             />
           </View>

@@ -1,33 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { TouchableOpacity, FlatList, View } from "react-native";
 import {
     Avatar,
     Text,
-    Image,
     Icon,
 } from "react-native-elements";
 
 import { Modal, LoadingModal } from "../../Shared";
-import { getPendingFriendRequests, acceptFriendship, deleteFriendship } from "../../../config/api/Friends/friends";
 import { styles } from './PendingFriendRequestsModal.styles'
-import Toast from "react-native-toast-message";
+// import Toast from "react-native-toast-message";
 import { color } from "../../../utils";
+import { UserContext } from '../../../context/UserProvider'
 import { useThemaContext } from "../../ThemeProvider";
 
 
 
-export function PendingFriendRequestsModal({ userId }) {
+export function PendingFriendRequestsModal() {
 
+    const { currentUser, setUpdateInfo, myFriends } = useContext(UserContext);
     const [showLoading, setShowLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const theme = useThemaContext();
     const [pendingRequests, setPendingRequests] = useState([]);
 
+    useEffect(() => {
+        setUpdateInfo(true)
+    }, [
+        pendingRequests,
+        showModal,
+        // setShowLoading
+    ])
+
+
     const fetchPendingRequests = async () => {
+        setUpdateInfo(true)
         try {
             setShowLoading(true);
-            const requests = await getPendingFriendRequests(userId);
-            setPendingRequests(requests.received_friend_requests);
+            const requests = await myFriends.friendshipsPending;
+            setPendingRequests(requests);
             setShowLoading(false);
             setShowModal(true);
         } catch (error) {
@@ -37,10 +47,11 @@ export function PendingFriendRequestsModal({ userId }) {
         }
         // setShowModal(true);
     };
-    const acceptRequest = async (myId, requestId) => {
+    const acceptRequest = async (requestId) => {
         try {
             setShowLoading(true);
-            const requests = await acceptFriendship(myId, requestId);
+            await myFriends.acceptFriendship(requestId);
+            setUpdateInfo(true)
             setShowLoading(false);
             setShowModal(false);
         } catch (error) {
@@ -49,11 +60,14 @@ export function PendingFriendRequestsModal({ userId }) {
         }
     };
 
-    const deleteRequest = async (myId, requestId) => {
+    const deleteRequest = async (requestId) => {
+
         try {
             setShowLoading(true);
-            const requests = await deleteFriendship(myId, requestId);
+            await myFriends.deleteFriendship(requestId);
+            setUpdateInfo(true)
             setShowLoading(false);
+            setShowModal(false)
         } catch (error) {
             console.error("Error deleted friend requests:", error);
             setShowLoading(false);
@@ -113,12 +127,12 @@ export function PendingFriendRequestsModal({ userId }) {
                                 <View style={styles.avatarContainer}>
 
 
-                                    {item.user_id.url_profile_photo ? (
+                                    {item.friend_id.url_profile_photo ? (
                                         <Avatar
                                             size="medium"
                                             rounded
                                             containerStyle={styles.avatar}
-                                            source={{ uri: item.user_id.url_profile_photo }}
+                                            source={{ uri: item.friend_id.url_profile_photo }}
                                         />
                                     ) : (
 
@@ -140,7 +154,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                                     ? color.light.text
                                                     : color.dark.text
                                             }
-                                        ]}>{item.user_id.username}</Text>
+                                        ]}>{item.friend_id.username}</Text>
                                         <Text
                                             style={[
                                                 styles.status,
@@ -160,7 +174,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                                 type="material-community"
                                                 size={35}
                                                 color={color.dark.textSecondary}
-                                                onPress={() => deleteRequest(item.friend_id, item.id)}
+                                                onPress={() => deleteRequest(item.id)}
                                             />
                                         </View>
                                         <Icon
@@ -168,7 +182,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                             type="material-community"
                                             size={35}
                                             color="#c19659"
-                                            onPress={() => acceptRequest(item.friend_id, item.id)}
+                                            onPress={() => acceptRequest(item.id)}
                                         />
                                     </View>
                                 </View>

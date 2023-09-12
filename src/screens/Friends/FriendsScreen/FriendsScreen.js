@@ -22,8 +22,8 @@ export const FriendsScreen = () => {
         },
       ]}
     >
-      <PendingFriendRequestsModal userId={currentUser.id} />
-      <FriendsList userId={currentUser.id} />
+      <PendingFriendRequestsModal />
+      <FriendsList />
     </View>
   )
 }

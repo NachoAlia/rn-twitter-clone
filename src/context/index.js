@@ -3,3 +3,4 @@ export * from "./DrawerProvider";
 export * from "./TabBarProvider";
 export * from "./PostsProvider";
 export * from "./DirectMessagesProvider";
+export * from "./NotificationsProvider";

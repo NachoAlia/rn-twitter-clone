@@ -8,6 +8,7 @@ import {
   TabBarProvider,
   PostsProvider,
   UserProvider,
+  NotificationsProvider,
 } from "./src/context";
 import Toast from "react-native-toast-message";
 
@@ -16,19 +17,21 @@ LogBox.ignoreAllLogs();
 export default function App() {
   return (
     <>
-      <DrawerProvider>
-        <TabBarProvider>
-          <UserProvider>
-            <PostsProvider>
-              <ThemaProvider>
-                <NavigationContainer>
-                  <AppStack />
-                </NavigationContainer>
-              </ThemaProvider>
-            </PostsProvider>
-          </UserProvider>
-        </TabBarProvider>
-      </DrawerProvider>
+      <NotificationsProvider>
+        <DrawerProvider>
+          <TabBarProvider>
+            <UserProvider>
+              <PostsProvider>
+                <ThemaProvider>
+                  <NavigationContainer>
+                    <AppStack />
+                  </NavigationContainer>
+                </ThemaProvider>
+              </PostsProvider>
+            </UserProvider>
+          </TabBarProvider>
+        </DrawerProvider>
+      </NotificationsProvider>
       <Toast />
     </>
   );

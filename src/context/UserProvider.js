@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
   const [friendshipsAccepted, setFriendshipsAccepted] = useState(null);
   const [friendshipsAcceptedId, setFriendshipsAcceptedId] = useState(null);
   const [friendshipsPending, setFriendshipsPending] = useState(null);
+  const [friendshipsPendingReceived, setFriendshipsPendingReceived] = useState(null);
 
   const [bookmarks, setBookmarks] = useState(null);
 
@@ -143,9 +144,31 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  const getFriendshipsPendingReceived = async () => {
+    try {
+      const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships`, {
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch pending friend requests.");
+      }
+
+      const data = await response.json();
+
+      setFriendshipsPendingReceived(data.received_friend_requests);
+      console.log("ESTA ES LA DATA DE FRIENDSHIPS PENDING RECEIVED:____________", data.received_friend_requests);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
   useEffect(() => {
     getFriendshipsPending();
     getFriendshipsAccepted();
+    getFriendshipsPendingReceived();
     // acceptFriendship()
     // deleteFriendship()
     // sendFriendRequest()
@@ -310,6 +333,7 @@ export const UserProvider = ({ children }) => {
         myFriends: {
           friendshipsAccepted,
           friendshipsPending,
+          friendshipsPendingReceived,
           friendshipsAcceptedId,
           updateFriendship,
           setFriendshipsAccepted,

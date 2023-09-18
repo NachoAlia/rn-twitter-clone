@@ -36,7 +36,7 @@ export function PendingFriendRequestsModal() {
         setUpdateInfo(true)
         try {
             setShowLoading(true);
-            const requests = await myFriends.friendshipsPending;
+            const requests = await myFriends.friendshipsPendingReceived;
             setPendingRequests(requests);
             setShowLoading(false);
             setShowModal(true);
@@ -127,12 +127,12 @@ export function PendingFriendRequestsModal() {
                                 <View style={styles.avatarContainer}>
 
 
-                                    {item.friend_id.url_profile_photo ? (
+                                    {item.user_id.url_profile_photo ? (
                                         <Avatar
                                             size="medium"
                                             rounded
                                             containerStyle={styles.avatar}
-                                            source={{ uri: item.friend_id.url_profile_photo }}
+                                            source={{ uri: item.user_id.url_profile_photo }}
                                         />
                                     ) : (
 
@@ -154,7 +154,7 @@ export function PendingFriendRequestsModal() {
                                                     ? color.light.text
                                                     : color.dark.text
                                             }
-                                        ]}>{item.friend_id.username}</Text>
+                                        ]}>{item.user_id.username}</Text>
                                         <Text
                                             style={[
                                                 styles.status,

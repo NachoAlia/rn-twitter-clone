@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
-import { domainUrl } from "../config/host";
+import { domainUrl, cableConsumer } from "../config/host";
 
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentToken, setCurrentToken] = useState(null);
   const [updateInfo, setUpdateInfo] = useState(true);
+  const [updateFriendship, setUpdateFriendship] = useState(true);
   const [friendshipsAccepted, setFriendshipsAccepted] = useState(null);
   const [friendshipsAcceptedId, setFriendshipsAcceptedId] = useState(null);
   const [friendshipsPending, setFriendshipsPending] = useState(null);
@@ -150,6 +151,7 @@ export const UserProvider = ({ children }) => {
     // sendFriendRequest()
   }, [
     updateInfo,
+    updateFriendship,
     // acceptFriendship,
     // deleteFriendship,
     // sendFriendRequest,
@@ -179,6 +181,41 @@ export const UserProvider = ({ children }) => {
     console.log("included In Friendships Pending?: ", result);
     return result
   };
+
+  useEffect(() => {
+    socket = new WebSocket(cableConsumer);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            id: currentUser.id,
+            channel: "FriendshipsChannel",
+          }),
+        })
+      );
+    };
+    socket.onclose = () => {
+      //not yet implemented
+    };
+    socket.onerror = (error) => {
+      console.error("WebSocket connection failed: ", error);
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("ERROR", data);
+      if (
+        (data.message && data.message.type === "new_message") ||
+        data.type === "welcome"
+      ) {
+        getFriendshipsPending();
+        getFriendshipsAccepted();
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   //*************** termina friends
   //*************** termina friends
@@ -274,6 +311,7 @@ export const UserProvider = ({ children }) => {
           friendshipsAccepted,
           friendshipsPending,
           friendshipsAcceptedId,
+          updateFriendship,
           setFriendshipsAccepted,
           setFriendshipsAcceptedId,
           setFriendshipsPending,
@@ -282,6 +320,7 @@ export const UserProvider = ({ children }) => {
           acceptFriendship,
           deleteFriendship,
           sendFriendRequest,
+          setUpdateFriendship,
         },
       }}
     >

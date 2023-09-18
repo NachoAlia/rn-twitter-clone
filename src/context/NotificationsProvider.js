@@ -1,12 +1,53 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserProvider";
-import { domainUrl } from "../config/host";
+import { domainUrl, cableConsumer } from "../config/host";
+import { TabBarContext } from "./TabBarProvider";
+
 export const NotificationsContext = createContext();
 
 export const NotificationsProvider = ({ children }) => {
+  const { currentUser } = useContext(UserContext);
+  const { newNotifications, setNewNotifications } = useContext(TabBarContext);
   const [shouldUpdateNotifications, setShouldUpdateNotifications] =
     useState(true);
   const [notifications, setNotifications] = useState(null);
+
+  useEffect(() => {
+    socket = new WebSocket(cableConsumer);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            id: currentUser.id,
+            channel: "NotificationsChannel",
+          }),
+        })
+      );
+    };
+    socket.onclose = () => {
+      //not yet implemented
+    };
+    socket.onerror = (error) => {
+      console.error("Error en la conexión WebSocket: ", error);
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data?.message.type === "new-post" || data.type === "new-post") {
+        handleReceivedMessage();
+        //console.log(data);
+      }
+    };
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const handleReceivedMessage = () => {
+    console.log("new-post.....................");
+    setShouldUpdateNotifications((prevState) => !prevState);
+    setNewNotifications(true);
+  };
 
   const notifications_from_user = async (user_id) => {
     try {

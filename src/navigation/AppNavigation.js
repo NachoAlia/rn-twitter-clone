@@ -17,14 +17,16 @@ import { TabBarContext } from "../context";
 const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
-  const { tabBarScreenOptions } = useContext(TabBarContext);
+  const { tabBarScreenOptions, newNotifications } = useContext(TabBarContext);
   const thema = useThemaContext();
+  const activeNotification = color.light.corporate;
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: color.light.corporate,
         tabBarInactiveTintColor: color.light.alternative,
-        tabBarIcon: ({ color, size }) => screenOptions(route, color, size),
+        tabBarIcon: ({ color, size }) =>
+          screenOptions(route, color, size, activeNotification),
         tabBarShowLabel: false,
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -80,7 +82,9 @@ export function AppNavigation() {
   );
 }
 
-function screenOptions(route, color, size) {
+function screenOptions(route, color, size, activeNotification) {
+  const { newNotifications } = useContext(TabBarContext);
+
   let iconName;
   if (route.name === screen.home.tab) {
     iconName = "home-outline";
@@ -91,7 +95,9 @@ function screenOptions(route, color, size) {
     size = 28;
   }
   if (route.name === screen.notifications.tab) {
-    iconName = "bell-outline";
+    newNotifications == true
+      ? ((iconName = "bell-badge-outline"), (color = activeNotification))
+      : (iconName = "bell-outline");
   }
   if (route.name === screen.messages.tab) {
     iconName = "message-outline";

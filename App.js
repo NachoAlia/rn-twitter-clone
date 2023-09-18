@@ -17,10 +17,10 @@ LogBox.ignoreAllLogs();
 export default function App() {
   return (
     <>
-      <NotificationsProvider>
-        <DrawerProvider>
-          <TabBarProvider>
-            <UserProvider>
+      <DrawerProvider>
+        <TabBarProvider>
+          <UserProvider>
+            <NotificationsProvider>
               <PostsProvider>
                 <ThemaProvider>
                   <NavigationContainer>
@@ -28,10 +28,10 @@ export default function App() {
                   </NavigationContainer>
                 </ThemaProvider>
               </PostsProvider>
-            </UserProvider>
-          </TabBarProvider>
-        </DrawerProvider>
-      </NotificationsProvider>
+            </NotificationsProvider>
+          </UserProvider>
+        </TabBarProvider>
+      </DrawerProvider>
       <Toast />
     </>
   );

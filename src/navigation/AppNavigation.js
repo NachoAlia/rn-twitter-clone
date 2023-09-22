@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
@@ -12,14 +12,24 @@ import { AccountStack } from "./AccountStack";
 import { screen, color } from "../utils";
 import { useThemaContext } from "../components/ThemeProvider";
 import { PostStack } from "./PostStack";
-import { TabBarContext } from "../context";
+import { NotificationsContext, TabBarContext, UserContext } from "../context";
 
 const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
-  const { tabBarScreenOptions, newNotifications } = useContext(TabBarContext);
   const thema = useThemaContext();
+  // const { currentUser } = useContext(UserContext);
+  // const { newNotifications } = useContext(NotificationsContext);
+  const { tabBarScreenOptions } = useContext(TabBarContext);
+  // const [newCurrentScreenNotifications, setNewCurrentScreenNotifications] =
+  //   useState(null);
   const activeNotification = color.light.corporate;
+
+  // useEffect(() => {
+  //   setNewCurrentScreenNotifications(newNotifications);
+  //   console.log("newNotifications desde tab:", newNotifications);
+  // }, [newNotifications]);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -83,7 +93,7 @@ export function AppNavigation() {
 }
 
 function screenOptions(route, color, size, activeNotification) {
-  const { newNotifications } = useContext(TabBarContext);
+  const { newNotifications } = useContext(NotificationsContext);
 
   let iconName;
   if (route.name === screen.home.tab) {

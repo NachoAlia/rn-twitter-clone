@@ -38,12 +38,18 @@ export function Item(props) {
             borderColor: color.light.corporate,
           }}
         />
+
         <View style={{ marginLeft: 10, flex: 1 }}>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text
               style={{
                 fontWeight: "bold",
-                color: thema ? color.light.text : color.dark.text,
+                color:
+                  notification.status === 1
+                    ? thema
+                      ? color.light.text
+                      : color.dark.text
+                    : color.light.corporate,
                 fontSize: 14,
               }}
             >
@@ -53,9 +59,12 @@ export function Item(props) {
               <Text style={{ marginLeft: 5, alignSelf: "flex-end" }}>
                 <Text
                   style={{
-                    color: thema
-                      ? color.light.textSecondary
-                      : color.dark.textSecondary,
+                    color:
+                      notification.status === 1
+                        ? thema
+                          ? color.light.textSecondary
+                          : color.dark.textSecondary
+                        : color.light.corporate,
                     fontSize: 13,
                   }}
                 >

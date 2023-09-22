@@ -1,73 +1,67 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Button, ActivityIndicator } from "react-native";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
-import {
-  NotificationsContext,
-  TabBarContext,
-  UserContext,
-} from "../../../context";
-import { Avatar, Button } from "react-native-elements";
+import { NotificationsContext, UserContext } from "../../../context";
+
 import { Item } from "../../../components/Notifications";
 import { ScrollView } from "react-native-gesture-handler";
-import { useFocusEffect } from "@react-navigation/native";
+
 export function NotificationsScreen() {
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
-  const { notifications_from_user, shouldUpdateNotifications } =
+  const [loading, setLoading] = useState(false);
+  const { notifications, loadNotifications, mark_all_as_read_notification } =
     useContext(NotificationsContext);
-  const { newNotifications, setNewNotifications } = useContext(TabBarContext);
-  const [notifications, setNotifications] = useState(null);
-
-  useFocusEffect(() => {
-    setNewNotifications(false);
-  });
-
+  const [currentScreenNotifications, setCurrentScreenNotifications] =
+    useState(null);
   useEffect(() => {
-    notifications_from_user(currentUser.id)
-      .then((result) => {
-        setNotifications(result);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [shouldUpdateNotifications]);
+    // Cuando loadNotifications cambia a true, cargamos las notificaciones desde el contexto
+    if (loadNotifications) {
+      setCurrentScreenNotifications(notifications);
+    }
+  }, [loadNotifications, notifications]);
 
+  const hasUnread = () => {
+    return notifications.some((notification) => notification.status === 0);
+  };
+  const handle_mark_all_as_read_notification = () => {
+    setLoading(true);
+    mark_all_as_read_notification().then(() => {
+      setLoading(false);
+    });
+  };
   return (
-    <ScrollView>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-
-          backgroundColor: thema
-            ? color.light.background
-            : color.dark.background,
-        }}
-      >
+    <>
+      {hasUnread() && !loading && (
+        <Button
+          title="Marcar como leidas"
+          color={color.light.corporate}
+          onPress={handle_mark_all_as_read_notification}
+        />
+      )}
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color={thema ? color.light.corporate : color.dark.corporate}
+        />
+      )}
+      <ScrollView>
         <View
           style={{
-            paddingVertical: 10,
-            paddingHorizontal: 10,
-            alignSelf: "flex-end",
+            flex: 1,
+            alignItems: "center",
+
+            backgroundColor: thema
+              ? color.light.background
+              : color.dark.background,
           }}
         >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "500",
-              textDecorationLine: "underline",
-              color: color.light.corporate,
-            }}
-            onPress={() => setRefresh(true)}
-          >
-            Marcar como leidas
-          </Text>
+          {notifications?.map((notification) => (
+            <Item notification={notification} key={notification?.id} />
+          ))}
         </View>
-        {notifications?.map((notification) => (
-          <Item notification={notification} key={notification.id} />
-        ))}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }

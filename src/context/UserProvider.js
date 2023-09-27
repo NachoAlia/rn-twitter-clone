@@ -12,7 +12,6 @@ export const UserProvider = ({ children }) => {
   const [friendshipsAcceptedId, setFriendshipsAcceptedId] = useState(null);
   const [friendshipsPending, setFriendshipsPending] = useState(null);
   const [friendshipsPendingReceived, setFriendshipsPendingReceived] = useState(null);
-  // const [friendshipId, setFriendshipId] = useState(null);
 
   const [bookmarks, setBookmarks] = useState(null);
 
@@ -75,8 +74,6 @@ export const UserProvider = ({ children }) => {
 
   const deleteFriendship = async (requestId) => {
 
-    // setFriendshipId(requestId);
-
     try {
 
       const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${requestId}`, {
@@ -124,8 +121,6 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
 
       setFriendshipsAccepted(data);
-
-      // console.log("ESTA ES LA DATA DE FRIENDSHIPS ACCEPTED:____________", data);
     } catch (error) {
       throw error;
     }
@@ -144,7 +139,6 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
 
       setFriendshipsPending(data);
-      // console.log("ESTA ES LA DATA DE FRIENDSHIPS PENDING:____________", data);
     } catch (error) {
       throw error;
     }
@@ -163,7 +157,6 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
 
       setFriendshipsPendingReceived(data.received_friend_requests);
-      // console.log("ESTA ES LA DATA DE FRIENDSHIPS PENDING RECEIVED:____________", data.received_friend_requests);
     } catch (error) {
       throw error;
     }
@@ -181,7 +174,6 @@ export const UserProvider = ({ children }) => {
   ])
 
   const includedInFriendshipsAccepted = (friendId) => {
-    // console.log(friendId);
 
     const acceptedFriendship = friendshipsAccepted?.find(
       (friendship) => friendship.friend_id.id === friendId && friendship.status === 'accepted'
@@ -189,22 +181,15 @@ export const UserProvider = ({ children }) => {
 
     if (acceptedFriendship) {
       setFriendshipsAcceptedId(acceptedFriendship.id);
-      // setFriendshipId(acceptedFriendship.id);
-      // console.log("Set Friendships Accepted ID:", acceptedFriendship.id);
       return true;
     } else {
       setFriendshipsAcceptedId(null);
-      // setFriendshipId(null);
-      // console.log("Friendships Accepted ID set to null");
       return false;
     }
   };
 
   const includedInFriendshipsPending = (friendId) => {
-    // console.log(friendId);
     const result = friendshipsPending?.some((friendship) => friendship.friend_id.id === friendId);
-    // console.log("included In Friendships Pending?: ", result);
-    // setFriendshipId(result.id);
     return result
   };
 
@@ -249,72 +234,26 @@ export const UserProvider = ({ children }) => {
           console.log("****");
         }
 
-        console.log(data);
-        // console.log(data.body);
+        if (data.type == 'friendship') {
+          console.log('Mensaje de solicitud de amistad:', data.message);
+          console.log("jajajajjajaj");
+          console.log("jajajajjajaj");
+        }
 
-        // if (data.type == ((pending_friendship) || (accepted_friendship) || (deleted_friendship))) {
-        //   console.log(data);
-        // }
+        if (data.type == 'friends') {
+          console.log('Mensaje de aceptacion solicitud de amistad:', data.message);
+          console.log("jajajajjajaj");
+          console.log("jajajajjajaj");
+        }
 
-        // // console.log(data.message);
-        // // console.log(data.message.type);
-        // // console.log(data.type);
-        // // if (
-        // //   (data.message && data.message.type === "pending_friendship") || (data.message && data.message.type === "accepted_friendship") || (data.message && data.message.type === "deleted_friendship")
-        // // ) {
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log(data);
-        // //   console.log(data.message);
-        // //   console.log(data.message.type);
-        // //   // console.log(data.type);
-        // //   // getFriendshipsPending();
-        // //   // getFriendshipsPendingReceived();
-        // //   // getFriendshipsAccepted();
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-        // //   console.log("GOOOOO!!!!");
-
-        // // }
-
-        // if (
-        //   (data.message || data.type === "pending_friendship")
-        // ) {
-        //   console.log(data);
-        //   console.log("SE EJECUTA PARA PENDING");
-        // }
-
-        // if (
-        //   (data.message || data.type === "accepted_friendship")
-        // ) {
-        //   console.log(data);
-        //   console.log("SE EJECUTA PARA ACCEPTED");
-        // }
-
-        // if (
-        //   (data.message || data.type === "deleted_friendship")
-        // ) {
-        //   console.log(data);
-        //   console.log("SE EJECUTA PARA DELETED");
-        // }
-
-        // socket.addEventListener('message', (event) => {
-        //   console.log('Mensaje recibido del servidor:', event.data);
-        // });
+        if (data.type == 'bye') {
+          console.log('Mensaje de eliminacion de amistad:', data.message);
+          console.log("jajajajjajaj");
+          console.log("jajajajjajaj");
+        }
       };
 
-      // socket.on('message', (message) => {
-      //   // Imprime el mensaje en la consola
-      //   console.log('Mensaje del servidor:', message);
-
-      //   // Luego, puedes hacer lo que necesites con el mensaje, como actualizar la interfaz de usuario, etc.
-      // });
-
       return () => {
-        // friendshipId,
         socket.close();
       };
     }

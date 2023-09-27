@@ -53,28 +53,18 @@ export const ProfileButtons = ({ otherPersonId }) => {
       setShowButtonLoading(false)
       setShowButtonDelete(false)
       setShowButtonAdd(true)
-
-
-      console.log("add on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
 
     if ((myFriends.includedInFriendshipsPending(otherPersonId))) {
       setShowButtonAdd(false)
       setShowButtonDelete(false)
       setShowButtonLoading(true)
-
-
-      console.log("loading on:___", myFriends.includedInFriendshipsPending(otherPersonId));
-
-
     }
 
     if (myFriends.includedInFriendshipsAccepted(otherPersonId)) {
       setShowButtonAdd(false)
       setShowButtonLoading(false)
       setShowButtonDelete(true)
-
-      console.log("deleted on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
   }, [
     handleAdd,

@@ -32,7 +32,6 @@ export function FriendsList() {
         try {
             setShowLoading(true);
             const requests = await myFriends.friendshipsAccepted;
-            console.log(requests);
             setFriends(requests);
             setShowLoading(false);
         } catch (error) {

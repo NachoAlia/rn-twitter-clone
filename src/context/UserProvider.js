@@ -232,7 +232,7 @@ export const UserProvider = ({ children }) => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
-        console.log(data);
+        // console.log(data);
 
         // if (data.identifier == `{\"id\":${currentUser.id},\"channel\":\"FriendshipsChannel\"}`) {
         //   console.log("****");
@@ -249,22 +249,16 @@ export const UserProvider = ({ children }) => {
         //   console.log("****");
         // }
 
-        if (data.type == 'friendship') {
-          console.log('Mensaje de solicitud de amistad:', data.message);
-          console.log("!!!!!!!!!!!!");
-          console.log("!!!!!!!!!!!!");
+        if (data.message && data.message.type === 'friendship') {
+          console.log('Envío de solicitud:', data.message.message);
         }
 
-        if (data.type == 'friends') {
-          console.log('Mensaje de aceptacion solicitud de amistad:', data.message);
-          console.log("!!!!!!!!!!!!");
-          console.log("!!!!!!!!!!!!");
+        if (data.message && data.message.type === 'friends') {
+          console.log('Acceptación de solicitud:', data.message.message);
         }
 
-        if (data.type == 'bye') {
-          console.log('Mensaje de eliminacion de amistad:', data.message);
-          console.log("!!!!!!!!!!!!");
-          console.log("!!!!!!!!!!!!");
+        if (data.message && data.message.type === 'bye') {
+          console.log('Eliminacion de solicitud:', data.message.message);
         }
       };
 

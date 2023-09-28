@@ -232,20 +232,22 @@ export const UserProvider = ({ children }) => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
-        if (data.identifier == `{\"id\":${currentUser.id},\"channel\":\"FriendshipsChannel\"}`) {
-          console.log("****");
-          console.log("****");
-          console.log("****");
-          console.log("1: (data): ", data);
-          console.log("2: (data.message): ", data.message);
-          console.log("3: (data.type): ", data.type);
-          console.log("4: (socket): ", socket);
-          console.log("5: (socket.onmessage): ", socket.onmessage);
-          console.log("6: (socket.onmessage.event): ", socket.onmessage.event);
-          console.log("****");
-          console.log("****");
-          console.log("****");
-        }
+        console.log(data);
+
+        // if (data.identifier == `{\"id\":${currentUser.id},\"channel\":\"FriendshipsChannel\"}`) {
+        //   console.log("****");
+        //   console.log("****");
+        //   console.log("****");
+        //   console.log("1: (data): ", data);
+        //   console.log("2: (data.message): ", data.message);
+        //   console.log("3: (data.type): ", data.type);
+        //   console.log("4: (socket): ", socket);
+        //   console.log("5: (socket.onmessage): ", socket.onmessage);
+        //   console.log("6: (socket.onmessage.event): ", socket.onmessage.event);
+        //   console.log("****");
+        //   console.log("****");
+        //   console.log("****");
+        // }
 
         if (data.type == 'friendship') {
           console.log('Mensaje de solicitud de amistad:', data.message);

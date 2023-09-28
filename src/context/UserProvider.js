@@ -60,6 +60,10 @@ export const UserProvider = ({ children }) => {
         method: "POST",
       });
 
+      if (response.ok) {
+        console.log("SOLICITUD DE AMISTAD ENVIADA CON EXITO!!");
+      }
+
 
       if (!response.ok) {
         console.log(response);
@@ -80,6 +84,10 @@ export const UserProvider = ({ children }) => {
         method: "DELETE",
       });
 
+      if (response.ok) {
+        console.log("SOLICITUD DE AMISTAD ELIMINADA CON EXITO!!");
+      }
+
       if (!response.ok) {
         throw new Error("Unable to delete friendship.");
       }
@@ -96,6 +104,10 @@ export const UserProvider = ({ children }) => {
       const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${requestId}/accept`, {
         method: "POST"
       });
+
+      if (response.ok) {
+        console.log("SOLICITUD DE AMISTAD ACEPTADA CON EXITO!!");
+      }
 
       if (!response.ok) {
         throw new Error("Unabled to accept friendship.");
@@ -209,9 +221,10 @@ export const UserProvider = ({ children }) => {
           })
         );
       };
-      console.log("este es el socket: ", socket);
+      // console.log("este es el socket: ", socket);
       socket.onclose = () => {
         //not yet implemented
+        console.log("socket onclose!!!!!");
       };
       socket.onerror = (error) => {
         console.error("WebSocket connection failed: ", error);
@@ -236,20 +249,20 @@ export const UserProvider = ({ children }) => {
 
         if (data.type == 'friendship') {
           console.log('Mensaje de solicitud de amistad:', data.message);
-          console.log("jajajajjajaj");
-          console.log("jajajajjajaj");
+          console.log("!!!!!!!!!!!!");
+          console.log("!!!!!!!!!!!!");
         }
 
         if (data.type == 'friends') {
           console.log('Mensaje de aceptacion solicitud de amistad:', data.message);
-          console.log("jajajajjajaj");
-          console.log("jajajajjajaj");
+          console.log("!!!!!!!!!!!!");
+          console.log("!!!!!!!!!!!!");
         }
 
         if (data.type == 'bye') {
           console.log('Mensaje de eliminacion de amistad:', data.message);
-          console.log("jajajajjajaj");
-          console.log("jajajajjajaj");
+          console.log("!!!!!!!!!!!!");
+          console.log("!!!!!!!!!!!!");
         }
       };
 
@@ -257,14 +270,16 @@ export const UserProvider = ({ children }) => {
         socket.close();
       };
     }
-  }, [currentUser]);
+  }, [currentUser,
+    // sendFriendRequest,
+    // deleteFriendship,
+    // acceptFriendship,
+  ]);
 
   //*************** termina friends
   //*************** termina friends
   //*************** termina friends
   //*************** termina friends
-
-
 
   const addBookmark = (postId) => {
     const fetchData = async () => {

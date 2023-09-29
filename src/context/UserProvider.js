@@ -219,7 +219,7 @@ export const UserProvider = ({ children }) => {
         socket.close();
       };
     }
-  }, [currentUser]);
+  }, [currentUser?.id]);
 
   //*************** termina friends
   //*************** termina friends

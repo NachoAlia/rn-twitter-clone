@@ -11,7 +11,7 @@ export async function Signin(emailOrUsername, password) {
   const token = await AsyncStorage.getItem("token");
 
   if (token) {
-    console.log(token);
+    // console.log(token);
     // Si hay un token guardado, intentamos iniciar sesión con él
     try {
       const data = await loginWithToken(token);

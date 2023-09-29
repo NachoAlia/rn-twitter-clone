@@ -10,7 +10,6 @@ export const FriendsScreen = () => {
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
 
-  console.log(currentUser.id);
   return (
     <View
       style={[
@@ -22,8 +21,8 @@ export const FriendsScreen = () => {
         },
       ]}
     >
-      <PendingFriendRequestsModal userId={currentUser.id} />
-      <FriendsList userId={currentUser.id} />
+      <PendingFriendRequestsModal />
+      <FriendsList />
     </View>
   )
 }

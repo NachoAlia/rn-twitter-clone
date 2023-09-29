@@ -1,58 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { TouchableOpacity, FlatList, View } from "react-native";
 import {
     Avatar,
     Text,
-    Image,
     Icon,
 } from "react-native-elements";
 
 import { Modal, LoadingModal } from "../../Shared";
-import { getPendingFriendRequests, acceptFriendship, deleteFriendship } from "../../../config/api/Friends/friends";
 import { styles } from './PendingFriendRequestsModal.styles'
-import Toast from "react-native-toast-message";
+// import Toast from "react-native-toast-message";
 import { color } from "../../../utils";
+import { UserContext } from '../../../context/UserProvider'
 import { useThemaContext } from "../../ThemeProvider";
 
 
 
-export function PendingFriendRequestsModal({ userId }) {
+export function PendingFriendRequestsModal() {
 
+    const { currentUser, setUpdateInfo, myFriends } = useContext(UserContext);
     const [showLoading, setShowLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const theme = useThemaContext();
     const [pendingRequests, setPendingRequests] = useState([]);
 
+    useEffect(() => {
+        fetchPendingRequests()
+    }, [
+        myFriends.friendshipsPendingReceived
+    ])
+
+
     const fetchPendingRequests = async () => {
         try {
             setShowLoading(true);
-            const requests = await getPendingFriendRequests(userId);
-            setPendingRequests(requests.received_friend_requests);
+            const requests = await myFriends.friendshipsPendingReceived;
+            setPendingRequests(requests);
             setShowLoading(false);
-            setShowModal(true);
         } catch (error) {
             console.error("Error fetching pending friend requests:", error);
             setShowLoading(false);
-            setShowModal(false);
         }
-        // setShowModal(true);
     };
-    const acceptRequest = async (myId, requestId) => {
+    const acceptRequest = async (requestId) => {
         try {
             setShowLoading(true);
-            const requests = await acceptFriendship(myId, requestId);
+            await myFriends.acceptFriendship(requestId);
+            setUpdateInfo(true)
             setShowLoading(false);
-            setShowModal(false);
         } catch (error) {
             console.error("Error accepted friend requests:", error);
             setShowLoading(false);
         }
     };
 
-    const deleteRequest = async (myId, requestId) => {
+    const deleteRequest = async (requestId) => {
+
         try {
             setShowLoading(true);
-            const requests = await deleteFriendship(myId, requestId);
+            await myFriends.deleteFriendship(requestId);
+            setUpdateInfo(true)
             setShowLoading(false);
         } catch (error) {
             console.error("Error deleted friend requests:", error);
@@ -64,7 +70,7 @@ export function PendingFriendRequestsModal({ userId }) {
         <View>
             <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={() => fetchPendingRequests()}
+                onPress={() => setShowModal(true)}
             >
                 <Icon name="account-multiple-plus" type="material-community" size={32} color="#c19659" />
                 <Text
@@ -160,7 +166,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                                 type="material-community"
                                                 size={35}
                                                 color={color.dark.textSecondary}
-                                                onPress={() => deleteRequest(item.friend_id, item.id)}
+                                                onPress={() => deleteRequest(item.id)}
                                             />
                                         </View>
                                         <Icon
@@ -168,7 +174,7 @@ export function PendingFriendRequestsModal({ userId }) {
                                             type="material-community"
                                             size={35}
                                             color="#c19659"
-                                            onPress={() => acceptRequest(item.friend_id, item.id)}
+                                            onPress={() => acceptRequest(item.id)}
                                         />
                                     </View>
                                 </View>

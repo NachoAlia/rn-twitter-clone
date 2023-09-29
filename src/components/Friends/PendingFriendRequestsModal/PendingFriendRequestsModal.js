@@ -24,26 +24,23 @@ export function PendingFriendRequestsModal() {
     const [pendingRequests, setPendingRequests] = useState([]);
 
     useEffect(() => {
-        setUpdateInfo(true)
+        fetchPendingRequests()
     }, [
-        pendingRequests,
-        showModal,
-        // setShowLoading
+        myFriends.friendshipsPendingReceived
     ])
 
 
     const fetchPendingRequests = async () => {
-        setUpdateInfo(true)
         try {
             setShowLoading(true);
             const requests = await myFriends.friendshipsPendingReceived;
             setPendingRequests(requests);
             setShowLoading(false);
-            setShowModal(true);
+            // setShowModal(true);
         } catch (error) {
             console.error("Error fetching pending friend requests:", error);
             setShowLoading(false);
-            setShowModal(false);
+            // setShowModal(false);
         }
         // setShowModal(true);
     };
@@ -53,7 +50,7 @@ export function PendingFriendRequestsModal() {
             await myFriends.acceptFriendship(requestId);
             setUpdateInfo(true)
             setShowLoading(false);
-            setShowModal(false);
+            // setShowModal(false);
         } catch (error) {
             console.error("Error accepted friend requests:", error);
             setShowLoading(false);
@@ -67,7 +64,7 @@ export function PendingFriendRequestsModal() {
             await myFriends.deleteFriendship(requestId);
             setUpdateInfo(true)
             setShowLoading(false);
-            setShowModal(false)
+            // setShowModal(false)
         } catch (error) {
             console.error("Error deleted friend requests:", error);
             setShowLoading(false);
@@ -78,7 +75,7 @@ export function PendingFriendRequestsModal() {
         <View>
             <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={() => fetchPendingRequests()}
+                onPress={() => setShowModal(true)}
             >
                 <Icon name="account-multiple-plus" type="material-community" size={32} color="#c19659" />
                 <Text

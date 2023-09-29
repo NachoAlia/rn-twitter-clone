@@ -251,14 +251,23 @@ export const UserProvider = ({ children }) => {
 
         if (data.message && data.message.type === 'friendship') {
           console.log('Envío de solicitud:', data.message.message);
+          getFriendshipsPending();
+          getFriendshipsAccepted();
+          getFriendshipsPendingReceived();
         }
 
         if (data.message && data.message.type === 'friends') {
           console.log('Acceptación de solicitud:', data.message.message);
+          getFriendshipsPending();
+          getFriendshipsAccepted();
+          getFriendshipsPendingReceived();
         }
 
         if (data.message && data.message.type === 'bye') {
           console.log('Eliminacion de solicitud:', data.message.message);
+          getFriendshipsPending();
+          getFriendshipsAccepted();
+          getFriendshipsPendingReceived();
         }
       };
 

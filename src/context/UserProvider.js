@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentToken, setCurrentToken] = useState(null);
   const [updateInfo, setUpdateInfo] = useState(true);
+
   const [updateFriendship, setUpdateFriendship] = useState(true);
   const [friendshipsAccepted, setFriendshipsAccepted] = useState(null);
   const [friendshipsAcceptedId, setFriendshipsAcceptedId] = useState(null);
@@ -42,10 +43,6 @@ export const UserProvider = ({ children }) => {
   }, [updateInfo]);
 
 
-
-
-
-
   //*************** empieza friends
   //*************** empieza friends
   //*************** empieza friends
@@ -60,13 +57,7 @@ export const UserProvider = ({ children }) => {
         method: "POST",
       });
 
-      if (response.ok) {
-        console.log("SOLICITUD DE AMISTAD ENVIADA CON EXITO!!");
-      }
-
-
       if (!response.ok) {
-        console.log(response);
         throw new Error("Unable to send friend request.");
       }
 
@@ -83,10 +74,6 @@ export const UserProvider = ({ children }) => {
       const response = await fetch(`${domainUrl}/users/${currentUser.id}/friendships/${requestId}`, {
         method: "DELETE",
       });
-
-      if (response.ok) {
-        console.log("SOLICITUD DE AMISTAD ELIMINADA CON EXITO!!");
-      }
 
       if (!response.ok) {
         throw new Error("Unable to delete friendship.");
@@ -105,10 +92,6 @@ export const UserProvider = ({ children }) => {
         method: "POST"
       });
 
-      if (response.ok) {
-        console.log("SOLICITUD DE AMISTAD ACEPTADA CON EXITO!!");
-      }
-
       if (!response.ok) {
         throw new Error("Unabled to accept friendship.");
       }
@@ -118,7 +101,6 @@ export const UserProvider = ({ children }) => {
       throw error;
     }
   }
-
 
   const getFriendshipsAccepted = async () => {
     try {
@@ -174,8 +156,6 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-
-
   useEffect(() => {
     getFriendshipsPending();
     getFriendshipsAccepted();
@@ -206,8 +186,6 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-
-
     if (currentUser) {
       socket = new WebSocket(cableConsumer);
       socket.onopen = () => {
@@ -221,10 +199,8 @@ export const UserProvider = ({ children }) => {
           })
         );
       };
-      // console.log("este es el socket: ", socket);
       socket.onclose = () => {
         //not yet implemented
-        console.log("socket onclose!!!!!");
       };
       socket.onerror = (error) => {
         console.error("WebSocket connection failed: ", error);
@@ -232,39 +208,7 @@ export const UserProvider = ({ children }) => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
-        // console.log(data);
-
-        // if (data.identifier == `{\"id\":${currentUser.id},\"channel\":\"FriendshipsChannel\"}`) {
-        //   console.log("****");
-        //   console.log("****");
-        //   console.log("****");
-        //   console.log("1: (data): ", data);
-        //   console.log("2: (data.message): ", data.message);
-        //   console.log("3: (data.type): ", data.type);
-        //   console.log("4: (socket): ", socket);
-        //   console.log("5: (socket.onmessage): ", socket.onmessage);
-        //   console.log("6: (socket.onmessage.event): ", socket.onmessage.event);
-        //   console.log("****");
-        //   console.log("****");
-        //   console.log("****");
-        // }
-
-        if (data.message && data.message.type === 'friendship') {
-          console.log('Envío de solicitud:', data.message.message);
-          getFriendshipsPending();
-          getFriendshipsAccepted();
-          getFriendshipsPendingReceived();
-        }
-
-        if (data.message && data.message.type === 'friends') {
-          console.log('Acceptación de solicitud:', data.message.message);
-          getFriendshipsPending();
-          getFriendshipsAccepted();
-          getFriendshipsPendingReceived();
-        }
-
-        if (data.message && data.message.type === 'bye') {
-          console.log('Eliminacion de solicitud:', data.message.message);
+        if (data.message && ((data.message.type === 'friendship') || (data.message.type === 'friends') || (data.message.type === 'bye'))) {
           getFriendshipsPending();
           getFriendshipsAccepted();
           getFriendshipsPendingReceived();
@@ -275,11 +219,7 @@ export const UserProvider = ({ children }) => {
         socket.close();
       };
     }
-  }, [currentUser,
-    // sendFriendRequest,
-    // deleteFriendship,
-    // acceptFriendship,
-  ]);
+  }, [currentUser]);
 
   //*************** termina friends
   //*************** termina friends

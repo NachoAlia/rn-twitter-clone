@@ -69,10 +69,6 @@ export const ProfileButtons = ({ otherPersonId }) => {
   }, [
     handleAdd,
     handleDelete,
-    // currentUser,
-    // setUpdateInfo,
-    // myFriends,
-    // myFriendsRequest,
     otherPersonId
   ])
 

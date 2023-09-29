@@ -36,13 +36,10 @@ export function PendingFriendRequestsModal() {
             const requests = await myFriends.friendshipsPendingReceived;
             setPendingRequests(requests);
             setShowLoading(false);
-            // setShowModal(true);
         } catch (error) {
             console.error("Error fetching pending friend requests:", error);
             setShowLoading(false);
-            // setShowModal(false);
         }
-        // setShowModal(true);
     };
     const acceptRequest = async (requestId) => {
         try {
@@ -50,7 +47,6 @@ export function PendingFriendRequestsModal() {
             await myFriends.acceptFriendship(requestId);
             setUpdateInfo(true)
             setShowLoading(false);
-            // setShowModal(false);
         } catch (error) {
             console.error("Error accepted friend requests:", error);
             setShowLoading(false);
@@ -64,7 +60,6 @@ export function PendingFriendRequestsModal() {
             await myFriends.deleteFriendship(requestId);
             setUpdateInfo(true)
             setShowLoading(false);
-            // setShowModal(false)
         } catch (error) {
             console.error("Error deleted friend requests:", error);
             setShowLoading(false);

@@ -10,7 +10,6 @@ export const FriendsScreen = () => {
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
 
-  console.log(currentUser.id);
   return (
     <View
       style={[

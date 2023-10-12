@@ -1,6 +1,4 @@
-# EXPO TWITTER CLONE
-
-# RN Twitter Clone
+# RN TWITTER CLONE
 
 ![Expo](https://img.shields.io/badge/Expo-^48.0.15-blue?style=flat&logo=expo)
 ![React Native](https://img.shields.io/badge/React%20Native-0.71.8-blue?style=flat&logo=react)
@@ -8,36 +6,58 @@
 ![Formik](https://img.shields.io/badge/Formik-^2.4.1-blue?style=flat)
 ![Yup](https://img.shields.io/badge/Yup-^1.2.0-blue?style=flat)
 
-## Descripción
+## Description
 
-Este proyecto es un clon de Twitter desarrollado en React Native con Expo. Incluye una serie de dependencias clave para la construcción de la aplicación. A continuación, se enumeran las dependencias más importantes utilizadas en este proyecto:
+This project is a Twitter clone developed in React Native with Expo. It includes a number of key dependencies for building the application. The most important dependencies used in this project are listed below:
 
-- `Expo`: Framework que facilita el desarrollo de aplicaciones móviles con React Native.
-- `React Navigation`: Para la navegación en la aplicación.
-- `Formik` y `Yup`: Utilizados para gestionar formularios y validación.
-- `React Native Elements`: Componentes personalizados para la interfaz de usuario.
-- `Expo Image Picker`: Para seleccionar imágenes desde la galería del dispositivo.
-- Y más...
+- `Expo`: Framework that facilitates the development of mobile applications with React Native.
+- `React Navigation`: For navigation in the application.
+- `Formik` y `Yup`: Used to manage forms and validation.
+- `React Native Elements`: Custom components for the user interface.
+- `Expo Image Picker`: To select images from the device gallery.
+- And more...
 
-## Instalación
+## Installation
 
-Para comenzar a trabajar con este proyecto en tu máquina local, sigue estos pasos:
+To start working with this project on your local machine, follow these steps:
 
-1. Asegúrate de tener [Node.js](https://nodejs.org/) instalado en tu sistema.
-2. Clona este repositorio a tu máquina:
+1. Make sure you have [Node.js](https://nodejs.org/) and [Yarn](https://classic.yarnpkg.com/) installed on your system.
+2. Clone this repository to your pc:
 
    ```shell
-   git clone <URL-del-repositorio>
+   git clone https://github.com/NachoAlia/rn-twitter-clone.git
    ```
 
-3. Navega al directorio del proyecto:
+3. Navigate to the project directory:
 
+   ```shell
    cd rn-twitter-clone
+   ```
 
-4. Instala las dependencias necesarias utilizando npm o Yarn:
+4. Install the necessary dependencies using npm or Yarn:
 
-   npm install
+   ```shell
+   yarn install
+   ```
 
-# O
+5. Run app
 
-yarn install
+First you have to verify that the server is running and change the extension of the "src/config/host.txt" file to host.js and edit its content with your IP or the full domain where the REST API is hosted, if so.
+
+```shell
+yarn start
+```
+
+› Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
+
+› Press a │ open Android
+
+› Press w │ open web
+
+› Press j │ open debugger
+
+› Press r │ reload app
+
+› Press m │ toggle menu
+
+› Press ? │ show all commands

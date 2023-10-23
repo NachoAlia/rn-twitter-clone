@@ -3,7 +3,7 @@ export const TabBarContext = createContext();
 
 export const TabBarProvider = ({ children }) => {
   const [tabBarScreenOptions, setTabBarScreenOptions] = useState(null);
-
+  const [newNotifications, setNewNotifications] = useState(false);
   useEffect(() => {
     setTabBarScreenOptions(null);
   }, []);
@@ -13,6 +13,8 @@ export const TabBarProvider = ({ children }) => {
       value={{
         tabBarScreenOptions,
         setTabBarScreenOptions,
+        newNotifications,
+        setNewNotifications,
       }}
     >
       {children}

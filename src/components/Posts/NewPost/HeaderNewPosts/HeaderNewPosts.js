@@ -33,7 +33,7 @@ export function HeaderNewPosts() {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      if (data.message && data.message.type === "new_tweet") {
+      if (data.message && data?.message?.type === "new_tweet") {
         counter = counter + 1;
         if (data.message.user) {
           setImageUrls((prevUrls) => [

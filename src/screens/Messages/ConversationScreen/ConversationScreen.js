@@ -2,7 +2,7 @@ import React, { useContext, useLayoutEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Avatar, Icon, Input } from "react-native-elements";
-import { DrawerContext, TabBarContext } from "../../../context";
+import { DrawerContext, TabBarContext, UserContext } from "../../../context";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { IconsButton, color, screen } from "../../../utils";
 import { Button } from "react-native-elements";
@@ -10,12 +10,16 @@ import { MessagesList } from "../../../components/Messages/MessagesList/Messages
 import { ChatImageModal, SendMessageForm } from "../../../components/Messages";
 
 export function ConversationScreen() {
+  const { currentUser } = useContext(UserContext);
   const { conversation } = useRoute().params;
   const { setDrawerScreenOptions } = useContext(DrawerContext);
   const thema = useThemaContext();
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageUriModal, setImageUriModal] = useState(null);
-  const item = conversation.user_receiver;
+  const item =
+    currentUser?.id === conversation.user_sender.id
+      ? conversation.user_receiver
+      : conversation.user_sender;
   const navigation = useNavigation();
 
   const [shoulHideDrawerHeader, setShoulHideDrawerHeader] = useState(false);

@@ -15,7 +15,7 @@ export function BookmarkList() {
     <View>
       {user_bookmark.bookmarks.length > 0 ? (
         user_bookmark.bookmarks?.map((post) => (
-          <Post idPost={post.tweet_id} key={post.tweet_id} />
+          <Post idPost={post?.tweet_id} key={post?.tweet_id} />
         ))
       ) : (
         <Text

@@ -85,7 +85,6 @@ export function AccountScreen() {
         {userData && (
           <InfoUser
             userData={userData}
-            isCurrent={currentUser.id === userData?.id}
             postCounter={{ countPosts, setCountPosts }}
             myId={currentUser.id}
           />

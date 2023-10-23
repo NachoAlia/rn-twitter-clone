@@ -75,12 +75,17 @@ export function NotificationsScreen() {
           color={thema ? color.light.corporate : color.dark.corporate}
         />
       )}
-      <ScrollView>
+      <ScrollView
+        style={{
+          backgroundColor: thema
+            ? color.light.background
+            : color.dark.background,
+        }}
+      >
         <View
           style={{
             flex: 1,
             alignItems: "center",
-
             backgroundColor: thema
               ? color.light.background
               : color.dark.background,

@@ -3,19 +3,13 @@ import { UserContext } from "./UserProvider";
 import { domainUrl, cableConsumer } from "../config/host";
 import { TabBarContext } from "./TabBarProvider";
 
-import { Audio } from "expo-av";
-
 export const NotificationsContext = createContext();
 
 export const NotificationsProvider = ({ children }) => {
   const { currentUser } = useContext(UserContext);
-  // const { newNotifications, setNewNotifications } = useContext(TabBarContext);
-  // const [shouldUpdateNotifications, setShouldUpdateNotifications] =
-  //   useState(true);
   const [loadNotifications, setLoadNotifications] = useState(true);
   const [notifications, setNotifications] = useState(null);
   const [newNotifications, setNewNotifications] = useState(false);
-  // Función para cargar las notificaciones desde el servidor
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +27,9 @@ export const NotificationsProvider = ({ children }) => {
       } catch (error) {
         console.error("Error al cargar notificaciones:", error);
       } finally {
-        setLoadNotifications(true);
+        if (!loadNotifications) {
+          setLoadNotifications(true);
+        }
       }
     };
 
@@ -59,7 +55,7 @@ export const NotificationsProvider = ({ children }) => {
     };
 
     const handleWebSocketClose = () => {
-      // Implementa lógica de cierre si es necesario
+      // Implementar lógica de cierre si es necesario
     };
 
     const handleWebSocketError = (error) => {
@@ -76,6 +72,7 @@ export const NotificationsProvider = ({ children }) => {
         data?.message?.type === "new-message"
       ) {
         console.log("Llegó un mensaje...");
+
         handleReceivedMessage();
       }
     };
@@ -91,7 +88,7 @@ export const NotificationsProvider = ({ children }) => {
   }, []);
 
   const handleReceivedMessage = () => {
-    console.log("Nuevo mensaje recibido");
+    //nuevo mensaje recibido
     setLoadNotifications(true);
   };
 
@@ -118,15 +115,10 @@ export const NotificationsProvider = ({ children }) => {
   return (
     <NotificationsContext.Provider
       value={{
-        // shouldUpdateNotifications,
-        // setShouldUpdateNotifications,
-        // notifications_from_user,
-        mark_all_as_read_notification,
-        // hasUnreadNotifications,
-        loadNotifications,
-        newNotifications,
-        // setLoadNotifications,
         notifications,
+        newNotifications,
+        loadNotifications,
+        mark_all_as_read_notification,
       }}
     >
       {children}

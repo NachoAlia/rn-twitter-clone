@@ -6,21 +6,50 @@ import { NotificationsContext, UserContext } from "../../../context";
 
 import { Item } from "../../../components/Notifications";
 import { ScrollView } from "react-native-gesture-handler";
+import * as Notifications from "expo-notifications";
 
 export function NotificationsScreen() {
   const thema = useThemaContext();
   const { currentUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const { notifications, loadNotifications, mark_all_as_read_notification } =
+  const { notifications, newNotifications, mark_all_as_read_notification } =
     useContext(NotificationsContext);
-  const [currentScreenNotifications, setCurrentScreenNotifications] =
-    useState(null);
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
   useEffect(() => {
-    // Cuando loadNotifications cambia a true, cargamos las notificaciones desde el contexto
-    if (loadNotifications) {
-      setCurrentScreenNotifications(notifications);
+    const triggerNotifications = async () => {
+      const getNotificationPermission = async () => {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== "granted") {
+          console.warn("Permiso de notificación no concedido");
+        }
+      };
+
+      await getNotificationPermission();
+
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Owl",
+          body: "Tienes notificaciones sin leer en la aplicacion",
+          color: color.light.corporate,
+          sticky: false,
+        },
+        trigger: {
+          seconds: 3,
+        },
+      });
+    };
+
+    if (newNotifications) {
+      triggerNotifications();
     }
-  }, [loadNotifications, notifications]);
+  }, [newNotifications]);
 
   const hasUnread = () => {
     return notifications.some((notification) => notification.status === 0);

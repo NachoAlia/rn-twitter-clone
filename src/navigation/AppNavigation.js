@@ -18,17 +18,8 @@ const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
   const thema = useThemaContext();
-  // const { currentUser } = useContext(UserContext);
-  // const { newNotifications } = useContext(NotificationsContext);
   const { tabBarScreenOptions } = useContext(TabBarContext);
-  // const [newCurrentScreenNotifications, setNewCurrentScreenNotifications] =
-  //   useState(null);
   const activeNotification = color.light.corporate;
-
-  // useEffect(() => {
-  //   setNewCurrentScreenNotifications(newNotifications);
-  //   console.log("newNotifications desde tab:", newNotifications);
-  // }, [newNotifications]);
 
   return (
     <Tab.Navigator

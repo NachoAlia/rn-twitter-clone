@@ -13,30 +13,26 @@ export const NotificationsProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${domainUrl}/users/${currentUser.id}/notifications`,
-          {
-            method: "GET",
-          }
-        );
-        const data = await response.json();
-        setNotifications(data);
-        const hasNew = data.some((notification) => notification.status === 0);
-        setNewNotifications(hasNew);
-      } catch (error) {
-        console.error("Error al cargar notificaciones:", error);
-      } finally {
-        if (!loadNotifications) {
-          setLoadNotifications(true);
+      if (loadNotifications) {
+        try {
+          const response = await fetch(
+            `${domainUrl}/users/${currentUser.id}/notifications`,
+            {
+              method: "GET",
+            }
+          );
+          const data = await response.json();
+          setNotifications(data);
+          const hasNew = data.some((notification) => notification.status === 0);
+          setNewNotifications(hasNew);
+          setLoadNotifications(false);
+        } catch (error) {
+          console.error("Error al cargar notificaciones:", error);
         }
       }
     };
 
-    if (currentUser && loadNotifications) {
-      setLoadNotifications(false);
-      fetchData();
-    }
+    fetchData();
   }, [currentUser, loadNotifications]);
 
   useEffect(() => {
@@ -85,7 +81,7 @@ export const NotificationsProvider = ({ children }) => {
     return () => {
       socket.close();
     };
-  }, []);
+  }, [currentUser]);
 
   const handleReceivedMessage = () => {
     //nuevo mensaje recibido

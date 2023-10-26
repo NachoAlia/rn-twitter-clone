@@ -44,11 +44,6 @@ export function SearchScreen() {
     setRefreshing(false);
   };
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    setRefreshing(false);
-  };
-
   return (
     <View
       style={{

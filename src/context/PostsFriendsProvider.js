@@ -1,58 +1,53 @@
 import React, { useContext, useEffect, useState } from "react";
 import { domainUrl } from "../config/host";
+import { UserContext } from "./UserProvider";
 
-export const postsContext = React.createContext();
+export const postsFriendsContext = React.createContext();
 
-export function usePostsContext() {
-  const { dataPosts } = useContext(postsContext);
+export function usePostsFriendsContext() {
+  const { dataPosts } = useContext(postsFriendsContext);
   return dataPosts;
 }
-export function useMorePostsContext() {
-  const { morePosts } = useContext(postsContext);
+export function useMorePostsFriendsContext() {
+  const { morePosts } = useContext(postsFriendsContext);
   return morePosts;
 }
-export function useReloadContext() {
-  const { reload } = useContext(postsContext);
+export function useReloadFriendsContext() {
+  const { reload } = useContext(postsFriendsContext);
   return reload;
 }
-export function useReloadingContext() {
-  const { reloading } = useContext(postsContext);
+export function useReloadingFriendsContext() {
+  const { reloading } = useContext(postsFriendsContext);
   return reloading;
 }
-
-export function useSetToSearch() {
-  const { setSearch } = useContext(postsContext);
-  return setSearch;
-}
-
-export function useReloadPostContext() {
-  const { onReloadPosts } = useContext(postsContext);
+export function useReloadPostFriendsContext() {
+  const { onReloadPosts } = useContext(postsFriendsContext);
   return onReloadPosts;
 }
 
-export function useHasMorePostsContext() {
-  const { hasMorePosts } = useContext(postsContext);
+export function useHasMorePostsFriendsContext() {
+  const { hasMorePosts } = useContext(postsFriendsContext);
   return hasMorePosts;
 }
 
-export function PostsProvider(props) {
+export function PostsFriendsProvider(props) {
   const [dataPosts, setDataPosts] = useState([]);
   const [reload, setReload] = useState(true);
-  const [search, setSearch] = useState(null);
   const [reloading, setReloading] = useState(false);
   const [lastPostId, setLastPostId] = useState(0);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
+  const { currentUser } = useContext(UserContext);
+
   useEffect(() => {
     setHasMorePosts(true);
     fetchData();
-  }, [reload, search]);
+  }, [reload, currentUser]);
 
   const fetchData = async () => {
     setReloading(true);
-    await fetch(
-      search ? `${domainUrl}/tweets?search=${search}` : `${domainUrl}/tweets`
-    )
+
+    await fetch(`${domainUrl}/users/${currentUser?.id}/tweets_from_friends`)
       .then((response) => response.json())
       .then((data) => {
         setDataPosts(data);
@@ -64,9 +59,7 @@ export function PostsProvider(props) {
 
   const fetchMorePots = async () => {
     await fetch(
-      search
-        ? `${domainUrl}/tweets?search=${search}&last_tweet_id=${lastPostId}`
-        : `${domainUrl}/tweets?last_tweet_id=${lastPostId}`
+      `${domainUrl}/users/${currentUser.id}/tweets_from_friends?last_tweet_id=${lastPostId}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -77,6 +70,7 @@ export function PostsProvider(props) {
           setLastPostId(data[data.length - 1].id);
         }
       })
+
       .then(setReloading(false))
       .catch((error) => console.error(error));
   };
@@ -93,18 +87,17 @@ export function PostsProvider(props) {
   };
 
   return (
-    <postsContext.Provider
+    <postsFriendsContext.Provider
       value={{
         dataPosts,
         hasMorePosts,
         reload,
         reloading,
-        setSearch,
         morePosts,
         onReloadPosts,
       }}
     >
       {props.children}
-    </postsContext.Provider>
+    </postsFriendsContext.Provider>
   );
 }

@@ -7,6 +7,7 @@ import {
   DrawerProvider,
   TabBarProvider,
   PostsProvider,
+  PostsFriendsProvider,
   UserProvider,
 } from "./src/context";
 import Toast from "react-native-toast-message";
@@ -20,11 +21,13 @@ export default function App() {
         <TabBarProvider>
           <UserProvider>
             <PostsProvider>
-              <ThemaProvider>
-                <NavigationContainer>
-                  <AppStack />
-                </NavigationContainer>
-              </ThemaProvider>
+              <PostsFriendsProvider>
+                <ThemaProvider>
+                  <NavigationContainer>
+                    <AppStack />
+                  </NavigationContainer>
+                </ThemaProvider>
+              </PostsFriendsProvider>
             </PostsProvider>
           </UserProvider>
         </TabBarProvider>

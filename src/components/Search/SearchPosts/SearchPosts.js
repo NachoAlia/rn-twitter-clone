@@ -1,34 +1,34 @@
 import React, { useState } from "react";
 import {
   View,
-  RefreshControl,
-  ActivityIndicator,
   Text,
   VirtualizedList,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
-import { ButtonNewPost, HeaderNewPosts } from "../../../components";
-import { Post } from "../../../components/Posts";
-import { useThemaContext } from "../../../components/ThemeProvider";
+import { SearchInput } from "../SearchInput";
+import {
+  useHasMorePostsContext,
+  useMorePostsContext,
+  usePostsContext,
+  useReloadPostContext,
+  useReloadingContext,
+  useSetToSearch,
+} from "../../../context";
+import { useThemaContext } from "../../ThemeProvider";
+import { Post } from "../../Posts";
 import { color } from "../../../utils";
 
-import {
-  useHasMorePostsFriendsContext,
-  useMorePostsFriendsContext,
-  usePostsFriendsContext,
-  useReloadPostFriendsContext,
-  useReloadingFriendsContext,
-} from "../../../context";
-
-export function HomeScreen() {
+export function SearchPosts() {
   const [refreshing, setRefreshing] = useState(false);
 
-  const thema = useThemaContext();
+  const dataPosts = usePostsContext();
+  const morePosts = useMorePostsContext();
+  const reloading = useReloadingContext();
+  const reloadPost = useReloadPostContext();
+  const hasMorePosts = useHasMorePostsContext();
 
-  const dataPosts = usePostsFriendsContext();
-  const morePosts = useMorePostsFriendsContext();
-  const reloading = useReloadingFriendsContext();
-  const reloadPost = useReloadPostFriendsContext();
-  const hasMorePosts = useHasMorePostsFriendsContext();
+  const thema = useThemaContext();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -44,12 +44,7 @@ export function HomeScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: thema ? color.light.background : color.dark.background,
-      }}
-    >
+    <>
       {dataPosts && (
         <VirtualizedList
           data={dataPosts}
@@ -82,9 +77,6 @@ export function HomeScreen() {
           }
         />
       )}
-
-      <ButtonNewPost />
-      <HeaderNewPosts />
-    </View>
+    </>
   );
 }

@@ -1,29 +1,4 @@
-export const domainUrl = "http://localhost:3000/api/v1";
-
-
-
-
-
-leeme:
-
-<!--* Iniciar localhost de forma "global" en toda tu red -->
-
-*****
-el paso uno es mas que nada para acceder al local host desde cualquier dispositivo del hogar, sirve para cuando quieran
-trabajar desde un emulador de android con android studio
-
-1.- por unica vez tienes que dar permisos a tu ubuntu para que puedan acceder a tu puerto 3000:
-
-sudo ufw allow 3000/tcp
-*****
-
-2.- para visualizar tu puerto ejecuta:
-
-ip addr show 
-
-.
-lo veras despues "inet",ejemplo: inet 122.169.5.400
-
-3.- inicia tu aplicacion rails con:
-
-rails s -b 0.0.0.0
+const networkAddress = "122.169.5.400";
+const port = "3000";
+export const domainUrl = `http://${networkAddress}:${port}/api/v1`;
+export const cableConsumer = `ws://${networkAddress}:${port}/cable`;

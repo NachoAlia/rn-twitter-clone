@@ -10,7 +10,6 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 export function SigninScreen() {
   const navigation = useNavigation();
   const theme = useThemaContext();
-  // console.log(theme);
 
   return (
     <ScrollView

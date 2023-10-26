@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
@@ -12,19 +12,22 @@ import { AccountStack } from "./AccountStack";
 import { screen, color } from "../utils";
 import { useThemaContext } from "../components/ThemeProvider";
 import { PostStack } from "./PostStack";
-import { TabBarContext } from "../context";
+import { NotificationsContext, TabBarContext, UserContext } from "../context";
 
 const Tab = createBottomTabNavigator();
 
 export function AppNavigation() {
-  const { tabBarScreenOptions } = useContext(TabBarContext);
   const thema = useThemaContext();
+  const { tabBarScreenOptions } = useContext(TabBarContext);
+  const activeNotification = color.light.corporate;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: color.light.corporate,
         tabBarInactiveTintColor: color.light.alternative,
-        tabBarIcon: ({ color, size }) => screenOptions(route, color, size),
+        tabBarIcon: ({ color, size }) =>
+          screenOptions(route, color, size, activeNotification),
         tabBarShowLabel: false,
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -80,7 +83,9 @@ export function AppNavigation() {
   );
 }
 
-function screenOptions(route, color, size) {
+function screenOptions(route, color, size, activeNotification) {
+  const { newNotifications } = useContext(NotificationsContext);
+
   let iconName;
   if (route.name === screen.home.tab) {
     iconName = "home-outline";
@@ -91,7 +96,9 @@ function screenOptions(route, color, size) {
     size = 28;
   }
   if (route.name === screen.notifications.tab) {
-    iconName = "bell-outline";
+    newNotifications == true
+      ? ((iconName = "bell-badge-outline"), (color = activeNotification))
+      : (iconName = "bell-outline");
   }
   if (route.name === screen.messages.tab) {
     iconName = "message-outline";

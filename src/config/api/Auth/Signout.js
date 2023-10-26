@@ -9,13 +9,11 @@ export async function Signout() {
 
   if (token) {
     try {
-      console.log(`antes: ${token}`);
       await logout(token);
     } catch (error) {
       console.log(error);
       throw new Error("Failed to sign out");
     }
-    console.log(`despues: ${token}`);
   }
 
   await AsyncStorage.removeItem("token");

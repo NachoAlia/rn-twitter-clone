@@ -4,10 +4,9 @@ import { Icon } from "react-native-elements";
 import { styles } from "./ProfileButtons.styles";
 import { useNavigation } from '@react-navigation/native'
 import { screen } from '../../../utils/screenName'
-import { sendFriendRequest, deleteFriendship } from '../../../config/api/Friends/friends';
 import { UserContext } from '../../../context/UserProvider'
 
-export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
+export const ProfileButtons = ({ otherPersonId }) => {
 
   const { currentUser, setUpdateInfo, myFriends } = useContext(UserContext);
   const [showButtonAdd, setShowButtonAdd] = useState(false)
@@ -15,18 +14,18 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
   const [showButtonDelete, setShowButtonDelete] = useState(false)
   const navigation = useNavigation();
 
+  const isCurrentUser = currentUser.id === otherPersonId
+
   const goToEditProfile = () => {
     navigation.navigate(screen.account.editProfile);
   };
 
-  // const algo = () => { console.log("jajajajaja:____", myFriends.friends) }
 
-
-  const handleAdd = async () => {
+  const handleAdd = async (otherPersonId) => {
     try {
       setShowButtonAdd(false)
       setShowButtonDelete(false)
-      await sendFriendRequest(myId, otherPersonId);
+      await myFriends.sendFriendRequest(otherPersonId);
       setUpdateInfo(true);
       setShowButtonLoading(true)
     } catch (error) {
@@ -40,7 +39,7 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
     try {
       setShowButtonDelete(false)
       setShowButtonLoading(false)
-      await deleteFriendship(myId, friendshipsAcceptedId);
+      await myFriends.deleteFriendship(friendshipsAcceptedId);
       setUpdateInfo(true);
       setShowButtonAdd(true)
     } catch (error) {
@@ -54,36 +53,22 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
       setShowButtonLoading(false)
       setShowButtonDelete(false)
       setShowButtonAdd(true)
-
-
-      console.log("add on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
 
     if ((myFriends.includedInFriendshipsPending(otherPersonId))) {
       setShowButtonAdd(false)
       setShowButtonDelete(false)
       setShowButtonLoading(true)
-
-
-      console.log("loading on:___", myFriends.includedInFriendshipsPending(otherPersonId));
-
-
     }
 
     if (myFriends.includedInFriendshipsAccepted(otherPersonId)) {
       setShowButtonAdd(false)
       setShowButtonLoading(false)
       setShowButtonDelete(true)
-
-      console.log("deleted on:___", myFriends.includedInFriendshipsAccepted(otherPersonId));
     }
   }, [
-    // handleAdd,
-    // handleDelete,
-    // currentUser,
-    // setUpdateInfo,
-    // myFriends,
-    // myFriendsRequest,
+    handleAdd,
+    handleDelete,
     otherPersonId
   ])
 
@@ -97,7 +82,7 @@ export const ProfileButtons = ({ isCurrentUser, myId, otherPersonId }) => {
         <>
           {
             (showButtonAdd) &&
-            <TouchableOpacity style={styles.friendButton} onPress={handleAdd}>
+            <TouchableOpacity style={styles.friendButton} onPress={() => handleAdd(otherPersonId)}>
               <Text style={styles.friendButtonText}>Add Friend</Text>
             </TouchableOpacity>
           }

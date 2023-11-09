@@ -81,10 +81,10 @@ export function PostsProvider(props) {
       .catch((error) => console.error(error));
   };
 
-  const morePosts = () => {
+  const morePosts = async () => {
     if (lastPostId != 0) {
       setReloading(true);
-      fetchMorePots();
+      await fetchMorePots();
     }
   };
 

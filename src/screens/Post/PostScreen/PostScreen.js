@@ -33,43 +33,88 @@ export function PostScreen({ close, idPost }) {
   return (
     <>
       {dataPost && (
-        <ScrollView
-          style={{
-            backgroundColor: thema
-              ? color.light.background
-              : color.dark.background,
-          }}
-        >
-          <View>
-            {thema ? (
-              <IconsButton name={"arrow_dark"} size={25} onPress={close} />
-            ) : (
-              <IconsButton name={"arrow_light"} size={25} onPress={close} />
-            )}
-          </View>
-          <View style={styles.container}>
-            <View style={styles.title}>
-              <Avatar
-                source={
-                  dataPost.photoProfile_url
-                    ? { uri: dataPost.photoProfile_url }
-                    : require("../../../../assets/icons/default_user_photo.png")
-                }
-                size="medium"
-                rounded
-              />
-              <View style={styles.containerPost}>
+        <>
+          <ScrollView
+            style={{
+              backgroundColor: thema
+                ? color.light.background
+                : color.dark.background,
+            }}
+          >
+            <View>
+              {thema ? (
+                <IconsButton name={"arrow_dark"} size={25} onPress={close} />
+              ) : (
+                <IconsButton name={"arrow_light"} size={25} onPress={close} />
+              )}
+            </View>
+            <View style={styles.container}>
+              <View style={styles.title}>
+                <Avatar
+                  source={
+                    dataPost.photoProfile_url
+                      ? { uri: dataPost.photoProfile_url }
+                      : require("../../../../assets/icons/default_user_photo.png")
+                  }
+                  size="medium"
+                  rounded
+                />
+                <View style={styles.containerPost}>
+                  <Text
+                    style={[
+                      styles.textTitle,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataPost.nickname}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textSubTitle,
+                      {
+                        color: thema
+                          ? color.light.textSecondary
+                          : color.dark.textSecondary,
+                      },
+                    ]}
+                  >
+                    @{dataPost.username}
+                  </Text>
+                </View>
+              </View>
+              {dataPost.body && (
+                <View style={styles.containerElement}>
+                  <Text
+                    style={[
+                      styles.text,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataPost.body}
+                  </Text>
+                </View>
+              )}
+              {dataPost.photoTweet_url ? (
+                <View style={styles.image}>
+                  <ImageAuto
+                    uri={dataPost.photoTweet_url}
+                    desiredWidth={Dimensions.get("window").width * 0.92}
+                  />
+                </View>
+              ) : (
+                <></>
+              )}
+              {dataPost.repost ? (
+                <View style={styles.containerElement}>
+                  <Repost dataPost={dataPost.repost} />
+                </View>
+              ) : (
+                <></>
+              )}
+              <View style={styles.containerElement}>
                 <Text
                   style={[
-                    styles.textTitle,
-                    { color: thema ? color.light.text : color.dark.text },
-                  ]}
-                >
-                  {dataPost.nickname}
-                </Text>
-                <Text
-                  style={[
-                    styles.textSubTitle,
+                    styles.text,
                     {
                       color: thema
                         ? color.light.textSecondary
@@ -77,146 +122,103 @@ export function PostScreen({ close, idPost }) {
                     },
                   ]}
                 >
-                  @{dataPost.username}
+                  {date(dataPost.created_at)}
                 </Text>
               </View>
-            </View>
-            {dataPost.body && (
-              <View style={styles.containerElement}>
-                <Text
-                  style={[
-                    styles.text,
-                    { color: thema ? color.light.text : color.dark.text },
-                  ]}
-                >
-                  {dataPost.body}
-                </Text>
-              </View>
-            )}
-            {dataPost.photoTweet_url ? (
-              <View style={styles.image}>
-                <ImageAuto
-                  uri={dataPost.photoTweet_url}
-                  desiredWidth={Dimensions.get("window").width * 0.92}
-                />
-              </View>
-            ) : (
-              <></>
-            )}
-            {dataPost.repost ? (
-              <View style={styles.containerElement}>
-                <Repost dataPost={dataPost.repost} />
-              </View>
-            ) : (
-              <></>
-            )}
-            <View style={styles.containerElement}>
-              <Text
+              <View
                 style={[
-                  styles.text,
+                  styles.horizontalBar,
                   {
-                    color: thema
-                      ? color.light.textSecondary
-                      : color.dark.textSecondary,
+                    backgroundColor: thema
+                      ? color.light.contrast
+                      : color.dark.contrast,
                   },
                 ]}
-              >
-                {date(dataPost.created_at)}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.horizontalBar,
-                {
-                  backgroundColor: thema
-                    ? color.light.contrast
-                    : color.dark.contrast,
-                },
-              ]}
-            />
-            <View style={styles.row}>
-              <View style={styles.containerUnity}>
-                <Text
-                  style={[
-                    styles.textUnity,
-                    { color: thema ? color.light.text : color.dark.text },
-                  ]}
-                >
-                  {dataPost.retweet_count}
-                </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: thema
-                        ? color.light.textSecondary
-                        : color.dark.textSecondary,
-                    },
-                  ]}
-                >
-                  Reposts
-                </Text>
+              />
+              <View style={styles.row}>
+                <View style={styles.containerUnity}>
+                  <Text
+                    style={[
+                      styles.textUnity,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataPost.retweet_count}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        color: thema
+                          ? color.light.textSecondary
+                          : color.dark.textSecondary,
+                      },
+                    ]}
+                  >
+                    Reposts
+                  </Text>
+                </View>
+                <View style={styles.containerUnity}>
+                  <Text
+                    style={[
+                      styles.textUnity,
+                      { color: thema ? color.light.text : color.dark.text },
+                    ]}
+                  >
+                    {dataPost.likes_count}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        color: thema
+                          ? color.light.textSecondary
+                          : color.dark.textSecondary,
+                      },
+                    ]}
+                  >
+                    Me gusta
+                  </Text>
+                </View>
               </View>
-              <View style={styles.containerUnity}>
-                <Text
-                  style={[
-                    styles.textUnity,
-                    { color: thema ? color.light.text : color.dark.text },
-                  ]}
-                >
-                  {dataPost.likes_count}
-                </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: thema
-                        ? color.light.textSecondary
-                        : color.dark.textSecondary,
-                    },
-                  ]}
-                >
-                  Me gusta
-                </Text>
-              </View>
-            </View>
-            <View
-              style={[
-                styles.horizontalBar,
-                {
-                  backgroundColor: thema
-                    ? color.light.contrast
-                    : color.dark.contrast,
-                },
-              ]}
-            />
+              <View
+                style={[
+                  styles.horizontalBar,
+                  {
+                    backgroundColor: thema
+                      ? color.light.contrast
+                      : color.dark.contrast,
+                  },
+                ]}
+              />
 
-            <PostButtonBar
-              idPost={dataPost.id}
-              recharge={true}
-              reloadPost={setReload}
-              amount={false}
-              size={30}
-            />
-            <View
-              style={[
-                styles.horizontalBar,
-                {
-                  backgroundColor: thema
-                    ? color.light.contrast
-                    : color.dark.contrast,
-                },
-              ]}
-            />
-          </View>
-          <View>
-            <FlatList
-              data={dataPost.comments}
-              renderItem={({ item }) => <Post idPost={item.id} />}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        </ScrollView>
+              <PostButtonBar
+                idPost={dataPost.id}
+                recharge={true}
+                reloadPost={setReload}
+                amount={false}
+                size={30}
+              />
+              <View
+                style={[
+                  styles.horizontalBar,
+                  {
+                    backgroundColor: thema
+                      ? color.light.contrast
+                      : color.dark.contrast,
+                  },
+                ]}
+              />
+            </View>
+            <View>
+              <FlatList
+                data={dataPost.comments}
+                renderItem={({ item }) => <Post idPost={item.id} />}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
+          </ScrollView>
+        </>
       )}
     </>
   );

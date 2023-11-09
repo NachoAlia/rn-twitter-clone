@@ -10,6 +10,7 @@ import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
 import { UserContext, useReloadPostFriendsContext } from "../../../context";
+import Toast from "react-native-toast-message";
 
 export function NewPostScreen({ close }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
@@ -48,6 +49,12 @@ export function NewPostScreen({ close }) {
         setCanNotBePost(true);
         reloadPost();
         close();
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: "Success!",
+          text2: "New post created",
+        });
       } catch (error) {
         console.log(error);
       }

@@ -7,6 +7,7 @@ import { color, screen } from "../../../../utils";
 import { useNavigation } from "@react-navigation/native";
 import { domainUrl } from "../../../../config/host";
 import { UserContext, useReloadPostContext } from "../../../../context";
+import Toast from "react-native-toast-message";
 
 export function RepostsModal({ visible, onBackdropPress, dataPost, citeCase }) {
   const { currentUser } = useContext(UserContext);
@@ -32,6 +33,12 @@ export function RepostsModal({ visible, onBackdropPress, dataPost, citeCase }) {
     if (response.ok) {
       reloadpost();
       onBackdropPress();
+      Toast.show({
+        type: "success",
+        position: "bottom",
+        text1: "Success!",
+        text2: "Repost created",
+      });
     }
   };
 

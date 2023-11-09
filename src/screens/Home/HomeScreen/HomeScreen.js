@@ -50,7 +50,7 @@ export function HomeScreen() {
         backgroundColor: thema ? color.light.background : color.dark.background,
       }}
     >
-      {dataPosts && (
+      {dataPosts ? (
         <VirtualizedList
           data={dataPosts}
           renderItem={({ item }) => <Post idPost={item.id} />}
@@ -81,6 +81,13 @@ export function HomeScreen() {
             )
           }
         />
+      ) : (
+        <View style={{ padding: 20 }}>
+          <Text>
+            Todavía no tienes amigos, has amistad con otro usuario y sus
+            publicaciones te apareceran aqui
+          </Text>
+        </View>
       )}
 
       <ButtonNewPost />

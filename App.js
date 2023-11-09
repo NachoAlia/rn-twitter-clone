@@ -22,15 +22,15 @@ export default function App() {
         <TabBarProvider>
           <UserProvider>
             <NotificationsProvider>
-            <PostsProvider>
-            <PostsFriendsProvider>
-              <ThemaProvider>
-                <NavigationContainer>
-                  <AppStack />
-                </NavigationContainer>
-              </ThemaProvider>
-              </PostsFriendsProvider>
-            </PostsProvider>
+              <PostsProvider>
+                <PostsFriendsProvider>
+                  <ThemaProvider>
+                    <NavigationContainer>
+                      <AppStack />
+                    </NavigationContainer>
+                  </ThemaProvider>
+                </PostsFriendsProvider>
+              </PostsProvider>
             </NotificationsProvider>
           </UserProvider>
         </TabBarProvider>

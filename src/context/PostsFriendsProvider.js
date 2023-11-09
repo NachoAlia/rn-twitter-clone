@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { domainUrl } from "../config/host";
 import { UserContext } from "./UserProvider";
+import { log } from "react-native-reanimated";
 
 export const postsFriendsContext = React.createContext();
 
@@ -41,7 +42,7 @@ export function PostsFriendsProvider(props) {
 
   useEffect(() => {
     setHasMorePosts(true);
-    fetchData();
+    currentUser?.id && fetchData();
   }, [reload, currentUser]);
 
   const fetchData = async () => {
@@ -50,10 +51,16 @@ export function PostsFriendsProvider(props) {
     await fetch(`${domainUrl}/users/${currentUser?.id}/tweets_from_friends`)
       .then((response) => response.json())
       .then((data) => {
-        setDataPosts(data);
-        setLastPostId(data[data.length - 1].id);
+        if (data.length > 0) {
+          setDataPosts(data);
+          setLastPostId(data[data.length - 1].id);
+        } else {
+          setHasMorePosts(false);
+        }
       })
-      .then(setReloading(false))
+      .then(() => {
+        setReloading(false);
+      })
       .catch((error) => console.error(error));
   };
 
@@ -68,6 +75,9 @@ export function PostsFriendsProvider(props) {
         } else {
           setDataPosts((prevData) => [...prevData, ...data]);
           setLastPostId(data[data.length - 1].id);
+          if (data.length < 5) {
+            setHasMorePosts(false);
+          }
         }
       })
 

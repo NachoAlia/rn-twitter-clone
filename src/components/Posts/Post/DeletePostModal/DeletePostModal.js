@@ -5,6 +5,7 @@ import { useThemaContext } from "../../../ThemeProvider";
 import { domainUrl } from "../../../../config/host";
 import { styles } from "./DeletePostModal.style";
 import { color } from "../../../../utils";
+import Toast from "react-native-toast-message";
 
 export function DeletepostModal({ visible, onBackdropPress, dataPost }) {
   const thema = useThemaContext();
@@ -15,9 +16,17 @@ export function DeletepostModal({ visible, onBackdropPress, dataPost }) {
 
     const response = await fetch(apiUrl, {
       method: "DELETE",
+    }).then((response) => {
+      console.log(response);
     });
     if (response.ok) {
       onBackdropPress();
+      Toast.show({
+        type: "success",
+        position: "bottom",
+        text1: "Success!",
+        text2: "Deleted post",
+      });
     }
   };
 

@@ -12,6 +12,7 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { HeaderComment } from "../../../components/Posts";
 import { UserContext } from "../../../context";
 import { domainUrl } from "../../../config/host";
+import Toast from "react-native-toast-message";
 
 export function AddCommentScreen({ close, data }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
@@ -48,6 +49,13 @@ export function AddCommentScreen({ close, data }) {
         });
 
         close();
+
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: "Success!",
+          text2: "Comment created",
+        });
       } catch (error) {
         console.log(error);
       }

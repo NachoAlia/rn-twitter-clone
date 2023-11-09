@@ -17,12 +17,11 @@ import { useSetToSearch } from "../../../context";
 export function SearchScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [toSearchUsers, setToSearchUsers] = useState(null);
-  const [modeSearch, setModeSearch] = useState(false);
+  const [toSearchPost, setToSearchPost] = useState(null);
+  const [modeSearch, setModeSearch] = useState(true);
   const [listUsers, setListUsers] = useState(null);
 
   const thema = useThemaContext();
-
-  const setToSearchPost = useSetToSearch();
 
   useEffect(() => {
     fetchDataUser();
@@ -58,7 +57,7 @@ export function SearchScreen() {
             mode={modeSearch}
             changeMode={setModeSearch}
           />
-          <SearchPosts />
+          <SearchPosts search={toSearchPost} />
         </>
       ) : (
         <>

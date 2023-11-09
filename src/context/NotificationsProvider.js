@@ -32,7 +32,7 @@ export const NotificationsProvider = ({ children }) => {
       }
     };
 
-    fetchData();
+    currentUser && fetchData();
   }, [currentUser, loadNotifications]);
 
   useEffect(() => {

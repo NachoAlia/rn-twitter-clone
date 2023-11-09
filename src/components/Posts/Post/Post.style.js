@@ -5,18 +5,17 @@ export const styles = StyleSheet.create({
   container: { padding: 15, flexDirection: "row" },
   containerTight: { paddingHorizontal: 15, flexDirection: "row" },
   containerData: { flex: 1, paddingLeft: 15 },
-  postTitle: { flexDirection: "row" },
+  postTitle: {},
   title: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   nicknameUser: { fontSize: 16 },
   nameUser: {
-    fontSize: 16,
+    fontSize: 12,
   },
   titleDate: {
     fontSize: 12,
-    alignSelf: "center",
   },
   containerInfo: { marginVertical: 20 },
   body: { marginBottom: 20 },

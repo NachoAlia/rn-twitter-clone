@@ -1,4 +1,13 @@
-const networkAddress = "122.169.5.400";
-const port = "3000";
-export const domainUrl = `http://${networkAddress}:${port}/api/v1`;
-export const cableConsumer = `ws://${networkAddress}:${port}/cable`;
+// example API hosted in localhost, 122.169.5.400 = your ip adress (more info in leeme.txt):
+
+    const networkAddress = "122.169.5.400";
+    const port = "3000";
+    export const domainUrl = `http://${networkAddress}:${port}/api/v1`;
+    export const cableConsumer = `ws://${networkAddress}:${port}/cable`;
+
+
+// example API hosted in flyio:
+
+    // const networkAddress = "owl-twitter-clone.fly.dev";
+    // export const domainUrl = `https://${networkAddress}/api/v1`;
+    // export const cableConsumer = `wss://${networkAddress}/cable`;

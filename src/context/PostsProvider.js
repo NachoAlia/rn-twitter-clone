@@ -19,6 +19,12 @@ export function useReloadingContext() {
   const { reloading } = useContext(postsContext);
   return reloading;
 }
+
+export function useSetToSearch() {
+  const { setSearch } = useContext(postsContext);
+  return setSearch;
+}
+
 export function useReloadPostContext() {
   const { onReloadPosts } = useContext(postsContext);
   return onReloadPosts;
@@ -32,6 +38,7 @@ export function useHasMorePostsContext() {
 export function PostsProvider(props) {
   const [dataPosts, setDataPosts] = useState([]);
   const [reload, setReload] = useState(true);
+  const [search, setSearch] = useState(null);
   const [reloading, setReloading] = useState(false);
   const [lastPostId, setLastPostId] = useState(0);
   const [hasMorePosts, setHasMorePosts] = useState(true);
@@ -39,11 +46,13 @@ export function PostsProvider(props) {
   useEffect(() => {
     setHasMorePosts(true);
     fetchData();
-  }, [reload]);
+  }, [reload, search]);
 
   const fetchData = async () => {
     setReloading(true);
-    await fetch(`${domainUrl}/tweets`)
+    await fetch(
+      search ? `${domainUrl}/tweets?search=${search}` : `${domainUrl}/tweets`
+    )
       .then((response) => response.json())
       .then((data) => {
         setDataPosts(data);
@@ -54,7 +63,11 @@ export function PostsProvider(props) {
   };
 
   const fetchMorePots = async () => {
-    await fetch(`${domainUrl}/tweets?last_tweet_id=${lastPostId}`)
+    await fetch(
+      search
+        ? `${domainUrl}/tweets?search=${search}&last_tweet_id=${lastPostId}`
+        : `${domainUrl}/tweets?last_tweet_id=${lastPostId}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.length < 1) {
@@ -64,15 +77,14 @@ export function PostsProvider(props) {
           setLastPostId(data[data.length - 1].id);
         }
       })
-
       .then(setReloading(false))
       .catch((error) => console.error(error));
   };
 
-  const morePosts = () => {
+  const morePosts = async () => {
     if (lastPostId != 0) {
       setReloading(true);
-      fetchMorePots();
+      await fetchMorePots();
     }
   };
 
@@ -87,6 +99,7 @@ export function PostsProvider(props) {
         hasMorePosts,
         reload,
         reloading,
+        setSearch,
         morePosts,
         onReloadPosts,
       }}

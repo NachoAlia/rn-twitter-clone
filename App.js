@@ -7,6 +7,7 @@ import {
   DrawerProvider,
   TabBarProvider,
   PostsProvider,
+  PostsFriendsProvider,
   UserProvider,
   NotificationsProvider,
 } from "./src/context";
@@ -22,11 +23,13 @@ export default function App() {
           <UserProvider>
             <NotificationsProvider>
               <PostsProvider>
-                <ThemaProvider>
-                  <NavigationContainer>
-                    <AppStack />
-                  </NavigationContainer>
-                </ThemaProvider>
+                <PostsFriendsProvider>
+                  <ThemaProvider>
+                    <NavigationContainer>
+                      <AppStack />
+                    </NavigationContainer>
+                  </ThemaProvider>
+                </PostsFriendsProvider>
               </PostsProvider>
             </NotificationsProvider>
           </UserProvider>

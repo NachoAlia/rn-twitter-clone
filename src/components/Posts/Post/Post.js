@@ -66,7 +66,6 @@ export function Post({ idPost }) {
                   paddingHorizontal: 30,
                 }}
               >
-                {console.log(deleteData)}
                 {deleteData ? (
                   <View
                     style={{
@@ -75,9 +74,7 @@ export function Post({ idPost }) {
                       position: "absolute",
                       backgroundColor: "#000000",
                     }}
-                  >
-                    {console.log(`aca esta en ${deleteData}`)}
-                  </View>
+                  ></View>
                 ) : (
                   <></>
                 )}

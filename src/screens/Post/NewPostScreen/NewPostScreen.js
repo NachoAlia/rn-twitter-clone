@@ -9,13 +9,15 @@ import { IconsButton, ImageAuto, color } from "../../../utils";
 import { CharacterCountBar } from "../../../utils/CharacterCountBar";
 import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
-import { UserContext } from "../../../context";
+import { UserContext, useReloadPostFriendsContext } from "../../../context";
+import Toast from "react-native-toast-message";
 
 export function NewPostScreen({ close }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
   const [image, setImage] = useState(null);
 
   const { currentUser } = useContext(UserContext);
+  const reloadPost = useReloadPostFriendsContext();
 
   const thema = useThemaContext();
 
@@ -45,8 +47,14 @@ export function NewPostScreen({ close }) {
         formik.resetForm();
         setImage(null);
         setCanNotBePost(true);
-
+        reloadPost();
         close();
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: "Success!",
+          text2: "New post created",
+        });
       } catch (error) {
         console.log(error);
       }

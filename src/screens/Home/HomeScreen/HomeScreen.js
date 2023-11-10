@@ -12,11 +12,11 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { color } from "../../../utils";
 
 import {
-  useHasMorePostsContext,
-  useMorePostsContext,
-  usePostsContext,
-  useReloadPostContext,
-  useReloadingContext,
+  useHasMorePostsFriendsContext,
+  useMorePostsFriendsContext,
+  usePostsFriendsContext,
+  useReloadPostFriendsContext,
+  useReloadingFriendsContext,
 } from "../../../context";
 
 export function HomeScreen() {
@@ -24,11 +24,11 @@ export function HomeScreen() {
 
   const thema = useThemaContext();
 
-  const dataPosts = usePostsContext();
-  const morePosts = useMorePostsContext();
-  const reloading = useReloadingContext();
-  const reloadPost = useReloadPostContext();
-  const hasMorePosts = useHasMorePostsContext();
+  const dataPosts = usePostsFriendsContext();
+  const morePosts = useMorePostsFriendsContext();
+  const reloading = useReloadingFriendsContext();
+  const reloadPost = useReloadPostFriendsContext();
+  const hasMorePosts = useHasMorePostsFriendsContext();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -50,7 +50,7 @@ export function HomeScreen() {
         backgroundColor: thema ? color.light.background : color.dark.background,
       }}
     >
-      {dataPosts && (
+      {dataPosts ? (
         <VirtualizedList
           data={dataPosts}
           renderItem={({ item }) => <Post idPost={item.id} />}
@@ -81,6 +81,13 @@ export function HomeScreen() {
             )
           }
         />
+      ) : (
+        <View style={{ padding: 20 }}>
+          <Text>
+            Todavía no tienes amigos, has amistad con otro usuario y sus
+            publicaciones te apareceran aqui
+          </Text>
+        </View>
       )}
 
       <ButtonNewPost />

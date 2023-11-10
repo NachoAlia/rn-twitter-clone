@@ -11,6 +11,7 @@ import { useThemaContext } from "../../../components/ThemeProvider";
 import { domainUrl } from "../../../config/host";
 import { UserContext, useReloadPostContext } from "../../../context";
 import { Repost } from "../../../components/Posts/Post/Repost";
+import Toast from "react-native-toast-message";
 
 export function AddRepostScreen({ close, data }) {
   const [canNotBePost, setCanNotBePost] = useState(true);
@@ -50,6 +51,12 @@ export function AddRepostScreen({ close, data }) {
 
         reloadpost();
         close();
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: "Success!",
+          text2: "Repost created",
+        });
       } catch (error) {
         console.log(error);
       }
